@@ -235,5 +235,6 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     new_nodes = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
     new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
     new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)
+    new_nodes = split_nodes_delimiter(new_nodes, "*", TextType.ITALIC)
 
     return new_nodes

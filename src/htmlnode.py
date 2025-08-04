@@ -82,6 +82,14 @@ class YoutubeLeafNode(LeafNode):
         return f"<iframe{self.props_to_html()} allowfullscreen></iframe>"
 
 
+class HorizontalLineLeafNode(LeafNode):
+    def __init__(self) -> None:
+        super().__init__(value="\0", tag="hr")
+
+    def to_html(self):
+        return "<hr>"
+
+
 class ParentNode(HTMLNode):
     def __init__(self, tag: str, childen: list[HTMLNode], props: dict = {}) -> None:
         super().__init__(tag, "", childen, props)

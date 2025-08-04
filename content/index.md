@@ -1,47 +1,83 @@
-# Tolkien Fan Club
+# Ethan Colucci
+### Developer
+[linktr.ee/ethancolucci](https://linktr.ee/ethancolucci)  
+📧 E.Colucci@outlook.com • 📞 (647) 525-0156 • 📍 Toronto, ON, Canada
 
-![JRR Tolkien sitting](/images/tolkien.png)
-@[youtube](https://www.youtube.com/watch?v=V75dMMIW2B4)
+## About Me
 
-Here's the deal, **I like Tolkien**.
+:::csv
+"Driven and adaptable Game Developer with 7 years of experience building interactive experiences, including 4 years in professional environments. Currently specializing in Unity, C#, and Virtual Reality (VR) development for training and simulation. I create immersive, high-performance applications by combining strong technical foundations with creative design thinking. Experienced across VR, mobile, and traditional platforms, I thrive on solving complex problems, rapidly learning new technologies, and collaborating across disciplines to deliver polished results.", "![Me in Shibuya, Tokyo, Japan](/images/Japan_2024_052.jpg)"
+:::
 
-> "I am in fact a Hobbit in all but size."
->
-> -- J.R.R. Tolkien
+---
 
-## Blog posts
+## Skills and Technologies
 
-- [Why Glorfindel is More Impressive than Legolas](/blog/glorfindel)
-- [Why Tom Bombadil Was a Mistake](/blog/tom)
-- [The Unparalleled Majesty of "The Lord of the Rings"](/blog/majesty)
+:::csv
+"**🧠 Programming**", "**🎮 Game Engines**"
+"C#, C++, Python,\nObject-Oriented Programming,\nAPI Integration", "Unity Engine (VR, mobile, and desktop platforms)"
+"**🗂️ Version Control**", "**🥽 Virtual Reality**"
+"Git (GitHub, SourceTree),\nPlasticSCM", "VR app development,\nInteraction design,\nReal-world tool simulation"
+"**📱 Mobile Development**", "**🎨 Creative Tools**"
+"Cross-platform optimization\nand deployment", "Basic 3D modeling and texturing,\nIllustration,\nVideo editing"
+"**☁️ Other Technologies**", "**🗣️ Languages**"
+"AWS, MongoDB,\nPhoton PUN and Fusion,\nDatabase interaction", "Native English,\nFrench"
+:::
 
-## Reasons I like Tolkien
+---
 
-- You can spend years studying the legendarium and still not understand its depths
-- It can be enjoyed by children and adults alike
-- Disney _didn't ruin it_ (okay, but Amazon might have)
-- It created an entirely new genre of fantasy
+## Professional Experience
 
-## My favorite characters (in order)
+### VR Vision — *Intermediate VR Developer*
+**September 2022 – June 2025**
 
-1. Gandalf
-2. Bilbo
-3. Sam
-4. Glorfindel
-5. Galadriel
-6. Elrond
-7. Thorin
-8. Sauron
-9. Aragorn
+- Develop VR Training apps in Unity  
+- Create accurate simulacrums of professional tools  
+- Create designs based on real training processes  
+- Participate in on-site visits to document training processes  
+- Participate in the design and development of the in-house VR toolkit  
 
-Here's what `elflang` looks like (the perfect coding language):
+### No Fuss Tutors — *Game Programmer*  
+**October 2021 – September 2022**
 
-```
-func main(){
-    fmt.Println("Aiya, Ambar!")
-}
-```
+- Sole C# programmer for a Unity-based game  
+- Participated in the design process  
+- Developed for multiple platforms  
+- Integrated AWS and MongoDB for database interaction  
 
-Want to get in touch? [Contact me here](/contact).
+### Unity Game Developer — *Freelance*  
+**January 2021 – October 2021**
 
-This site was generated with a custom-built [static site generator](https://www.boot.dev/courses/build-static-site-generator-python) from the course on [Boot.dev](https://www.boot.dev).
+- Collaborated with clients to define project goals and timelines  
+- Developed projects using Unity  
+- Communicated effectively and adapted to client needs  
+- Quickly learned and implemented new APIs  
+
+### S&C Canada — *Material Handler*  
+**June 2020 – October 2021**
+
+- Operated Class 2 and Class 5 Lift Trucks in tight spaces  
+- Balanced routine tasks with real-time requests from assembly line  
+- Worked independently and efficiently  
+
+---
+
+## Education
+
+:::csv_headers
+Institution, Degree, Date
+"University of Ontario Institute of Technology", "Bachelor of IT with honors in Game Development and Entrepreneurship", "September 2015 – April 2019"
+"École secondaire Toronto Ouest", "Bilingual High School Diploma (English and French)", "June 2015"
+:::
+
+---
+
+## References
+
+:::csv_headers
+Name, Relationship, Contact Info
+"Ahmad Askri", "Coworker @ VR Vision", "ahmad.askri@vrvision.ca, (647) 575-3208"
+"David Tucciarone", "Manager @ VR Vision", "david.tucciarone@vrvision.ca, (613) 898-2979"
+"Brett Andrews", "Project Collaborator", "blamx165@gmail.com, (613) 330-1812"
+"Nodi Ray", "Coworker @ VR Vision", "nodi1932@gmail.com, (647) 772-7343"
+:::

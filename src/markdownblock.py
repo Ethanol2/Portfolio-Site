@@ -1,6 +1,6 @@
 import re
 from enum import Enum
-from htmlnode import ParentNode, LeafNode
+from htmlnode import ParentNode, LeafNode, HorizontalLineLeafNode
 from textnode import TextNode, TextType, text_to_textnodes, text_node_to_html_node
 
 
@@ -17,7 +17,8 @@ class BlockType(Enum):
     UNORDERED_LIST = "unordered_list"
     ORDERED_LIST = "ordered_list"
     CSV = "csv"
-    CSV_WITH_HEADERS = "csv_with_headers"
+    CSV_WITH_HEADERS = ("csv_with_headers",)
+    HORIZONTAL_LINE = "horizontal_line"
 
 
 HTML_BLOCK_TAGS = {
@@ -34,6 +35,7 @@ HTML_BLOCK_TAGS = {
     BlockType.HEADING6: "h6",
     BlockType.CSV: "table",
     BlockType.CSV_WITH_HEADERS: "table",
+    BlockType.HORIZONTAL_LINE: "hr",
 }
 
 
@@ -92,6 +94,9 @@ def block_to_block_type(block: str) -> BlockType:
             return BlockType.QUOTE
 
         case "-":
+            if block == "---":
+                return BlockType.HORIZONTAL_LINE
+
             lines = block.split("\n")
             for line in lines:
                 line = line.strip()
@@ -155,6 +160,25 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
         return children_nodes
 
     def csv_to_html(has_headers: bool, block: str) -> ParentNode:
+
+        def markdown_cell_to_html(cell: str) -> list:
+            cell_blocks = markdown_to_blocks(cell)
+
+            if len(cell_blocks) == 1:
+                block_type = block_to_block_type(cell_blocks[0])
+                if block_type == BlockType.PARAGRAPH:
+                    cell.replace("\n", "<br>")
+                    return basic_cell_to_html(cell)
+
+            cell_node = markdown_blocks_to_html(cell_blocks)
+
+            return cell_node.children
+
+        def basic_cell_to_html(cell: str) -> list:
+            text_nodes = text_to_textnodes(cell)
+            html_nodes = [text_node_to_html_node(node) for node in text_nodes]
+            return html_nodes
+
         if has_headers:
             trimmed_block = block[14:-3].strip()
         else:
@@ -164,6 +188,7 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
         cells = []
         cell = ""
         in_quotes = False
+        full_markdown = False
 
         for char in trimmed_block:
 
@@ -174,9 +199,14 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
                     cell += char
             else:
                 if char in ",\n":
-                    text_nodes = text_to_textnodes(cell)
-                    html_nodes = [text_node_to_html_node(node) for node in text_nodes]
-                    cells.append(ParentNode("td", html_nodes))
+
+                    if full_markdown:
+                        cell_nodes = markdown_cell_to_html(cell)
+                        full_markdown = False
+                    else:
+                        cell_nodes = basic_cell_to_html(cell)
+
+                    cells.append(ParentNode("td", cell_nodes))
                     cell = ""
 
                     if char == "\n":
@@ -185,12 +215,16 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
 
                 elif char == '"':
                     in_quotes = True
+                    full_markdown = True
                 else:
                     cell += char
 
-        text_nodes = text_to_textnodes(cell)
-        html_nodes = [text_node_to_html_node(node) for node in text_nodes]
-        cells.append(ParentNode("td", html_nodes))
+        if full_markdown:
+            cell_nodes = markdown_cell_to_html(cell)
+        else:
+            cell_nodes = basic_cell_to_html(cell)
+
+        cells.append(ParentNode("td", cell_nodes))
         cell = ""
 
         table_node.children.append(ParentNode("tr", cells))
@@ -249,13 +283,38 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
 
     blocks = markdown_to_blocks(markdown)
 
+    return markdown_blocks_to_html(blocks)
+
+
+def markdown_blocks_to_html(blocks: list[str]) -> ParentNode:
+
     parent_html_node = ParentNode("div", [])
 
-    for block in blocks:
+    for i in range(len(blocks)):
 
-        block_type = block_to_block_type(block)
+        try:
+            block_type = block_to_block_type(blocks[i])
 
-        parent_html_node.children.append(block_to_html_node(block, block_type))
+            if "heading" in block_type.value:
+                sub_blocks = blocks[i].split("\n")
+                if len(sub_blocks) > 1:
+                    blocks = blocks[:i] + sub_blocks + blocks[i + 1 :]
+
+            elif block_type == BlockType.HORIZONTAL_LINE:
+                parent_html_node.children.append(HorizontalLineLeafNode())
+                continue
+
+            parent_html_node.children.append(block_to_html_node(blocks[i], block_type))
+
+        except Exception as e:
+            if i + 1 >= len(blocks):
+                print("Exception parsing last block")
+                continue
+
+            print(
+                f"Exception parsing block {i}. Merging next line to see if that fixes it"
+            )
+            blocks[i + 1] = blocks[i] + "\n" + blocks[i + 1]
 
     return parent_html_node
 
