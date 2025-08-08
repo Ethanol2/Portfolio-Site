@@ -114,8 +114,11 @@ def block_to_block_type(block: str) -> BlockType:
 
         case ":":
 
-            if block[:3] == ":::" and block[-3:] == ":::":
+            if block[:3] == ":::":
                 if block[3:6] == "csv":
+                    if block[-3:] != ":::":
+                        raise Exception("Error: Csv marker not closed")
+
                     if block[6:14] == "_headers":
                         return BlockType.CSV_WITH_HEADERS
                     else:
@@ -163,18 +166,11 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
 
         def markdown_cell_to_html(cell: str) -> list:
             cell_blocks = markdown_to_blocks(cell)
-
-            if len(cell_blocks) == 1:
-                block_type = block_to_block_type(cell_blocks[0])
-                if block_type == BlockType.PARAGRAPH:
-                    cell.replace("\n", "<br>")
-                    return basic_cell_to_html(cell)
-
             cell_node = markdown_blocks_to_html(cell_blocks)
-
             return cell_node.children
 
         def basic_cell_to_html(cell: str) -> list:
+            cell = cell.replace("\n", "<br>")
             text_nodes = text_to_textnodes(cell)
             html_nodes = [text_node_to_html_node(node) for node in text_nodes]
             return html_nodes
@@ -215,7 +211,9 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
 
                 elif char == '"':
                     in_quotes = True
-                    full_markdown = True
+                    if "md" in cell:
+                        cell = ""
+                        full_markdown = True
                 else:
                     cell += char
 
@@ -289,8 +287,10 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
 def markdown_blocks_to_html(blocks: list[str]) -> ParentNode:
 
     parent_html_node = ParentNode("div", [])
+    i = 0
+    length = len(blocks)
 
-    for i in range(len(blocks)):
+    while i < length:
 
         try:
             block_type = block_to_block_type(blocks[i])
@@ -300,8 +300,11 @@ def markdown_blocks_to_html(blocks: list[str]) -> ParentNode:
                 if len(sub_blocks) > 1:
                     blocks = blocks[:i] + sub_blocks + blocks[i + 1 :]
 
+                length = len(blocks)
+
             elif block_type == BlockType.HORIZONTAL_LINE:
                 parent_html_node.children.append(HorizontalLineLeafNode())
+                i += 1
                 continue
 
             parent_html_node.children.append(block_to_html_node(blocks[i], block_type))
@@ -312,9 +315,11 @@ def markdown_blocks_to_html(blocks: list[str]) -> ParentNode:
                 continue
 
             print(
-                f"Exception parsing block {i}. Merging next line to see if that fixes it"
+                f"Exception parsing block {i}. Merging next line to see if that fixes it.\nException: {e}"
             )
-            blocks[i + 1] = blocks[i] + "\n" + blocks[i + 1]
+            blocks[i + 1] = blocks[i] + "\n\n" + blocks[i + 1]
+
+        i += 1
 
     return parent_html_node
 

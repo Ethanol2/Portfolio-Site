@@ -109,6 +109,7 @@ def split_nodes_delimiter(
 
 def extract_markdown_images(text: str) -> list[tuple[str, str]]:
     matches = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+    matches
     return matches
 
 

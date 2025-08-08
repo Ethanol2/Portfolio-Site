@@ -109,8 +109,9 @@ iframe {
   box-shadow: 3px 3px 6px #000;
 }
 
-table {
-  text-align:start;
+tr, td {
+  text-align: left;
+  vertical-align: top;
 }
 
 ::-webkit-scrollbar {

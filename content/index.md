@@ -1,7 +1,13 @@
-# Ethan Colucci
-### Developer
-[linktr.ee/ethancolucci](https://linktr.ee/ethancolucci)  
-📧 E.Colucci@outlook.com • 📞 (647) 525-0156 • 📍 Toronto, ON, Canada
+# ![Ethan Colucci](images/profilePic2025.png){class=.profile-pic} Ethan Colucci - Developper
+[My Links](https://linktr.ee/ethancolucci)
+
+### Contact Me
+:::csv
+"[📧 E.Colucci@outlook.com](mailto:E.Colucci@outlook.com)", "[📞 (647) 525-0156](tel:6475250156)", "📍 Canada"
+:::
+
+### My Links
+
 
 ## About Me
 
@@ -14,14 +20,28 @@
 ## Skills and Technologies
 
 :::csv
-"**🧠 Programming**", "**🎮 Game Engines**"
-"C#, C++, Python,\nObject-Oriented Programming,\nAPI Integration", "Unity Engine (VR, mobile, and desktop platforms)"
-"**🗂️ Version Control**", "**🥽 Virtual Reality**"
-"Git (GitHub, SourceTree),\nPlasticSCM", "VR app development,\nInteraction design,\nReal-world tool simulation"
-"**📱 Mobile Development**", "**🎨 Creative Tools**"
-"Cross-platform optimization\nand deployment", "Basic 3D modeling and texturing,\nIllustration,\nVideo editing"
-"**☁️ Other Technologies**", "**🗣️ Languages**"
-"AWS, MongoDB,\nPhoton PUN and Fusion,\nDatabase interaction", "Native English,\nFrench"
+md"### 🧠 Programming", md"### 🎮 Game Engines"
+md"- C#  
+- C++  
+- Python  
+- Object-Oriented Programming  
+- API Integration", md"- Unity Engine (VR, mobile, and desktop platforms)"
+md"### 🗂️ Version Control", md"### 🥽 Virtual Reality"
+md"- Git (GitHub, SourceTree)  
+- PlasticSCM", md"- VR application development  
+- Interaction design  
+- Real-world tool simulation"
+md"### 📱 Mobile Development", md"### 🎨 Creative Tools"
+md"- Cross-platform optimization  
+- Deployment for multiple platforms", md"- Basic 3D modeling and texturing  
+- Illustration  
+- Video editing"
+md"### ☁️ Other Technologies", md"### 🗣️ Languages"
+md"- AWS  
+- MongoDB  
+- Photon PUN and Fusion  
+- Database interaction", md"- Native English  
+- French"
 :::
 
 ---
