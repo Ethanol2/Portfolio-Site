@@ -1,4 +1,4 @@
-# ![Ethan Colucci](images/profilePic2025.png){class=.profile-pic} Ethan Colucci - Developper
+# ![Ethan Colucci](images/profilePic2025.png){class=profile-pic} Ethan Colucci - Developper
 [My Links](https://linktr.ee/ethancolucci)
 
 ### Contact Me

@@ -4,7 +4,7 @@ class HTMLNode:
         tag: str = "",
         value: str = "",
         childen: list["HTMLNode"] = [],
-        props: dict = {},
+        props: dict[str, str] = {},
     ) -> None:
         self.tag = tag
         self.value = value
@@ -41,7 +41,7 @@ class HTMLNode:
 
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag: str, value: str, props: dict = {}) -> None:
+    def __init__(self, tag: str, value: str, props: dict[str, str] = {}) -> None:
         if value is None:
             raise ValueError("Value can't be None")
 
@@ -57,7 +57,7 @@ class LeafNode(HTMLNode):
 
 
 class ImageLeafNode(LeafNode):
-    def __init__(self, props: dict = {}) -> None:
+    def __init__(self, props: dict[str, str] = {}) -> None:
         super().__init__("img", "", props)
 
     def to_html(self):
@@ -68,7 +68,7 @@ class ImageLeafNode(LeafNode):
 
 
 class YoutubeLeafNode(LeafNode):
-    def __init__(self, props: dict = {}) -> None:
+    def __init__(self, props: dict[str, str] = {}) -> None:
         super().__init__("iframe", "", props)
 
     def to_html(self):
@@ -91,7 +91,9 @@ class HorizontalLineLeafNode(LeafNode):
 
 
 class ParentNode(HTMLNode):
-    def __init__(self, tag: str, childen: list[HTMLNode], props: dict = {}) -> None:
+    def __init__(
+        self, tag: str, childen: list[HTMLNode], props: dict[str, str] = {}
+    ) -> None:
         super().__init__(tag, "", childen, props)
 
     def to_html(self):

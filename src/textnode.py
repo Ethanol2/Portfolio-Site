@@ -24,10 +24,17 @@ HTML_TEXT_TAGS = {
 
 
 class TextNode:
-    def __init__(self, text: str, text_type: TextType, url=None) -> None:
+    def __init__(
+        self,
+        text: str,
+        text_type: TextType,
+        url: str = "",
+        extra_tags: dict[str, str] = {},
+    ) -> None:
         self.text = text
         self.text_type = text_type
         self.url = url
+        self.extra_tags = extra_tags
 
     def __eq__(self, value) -> bool:
         if not isinstance(value, TextNode):
@@ -36,10 +43,11 @@ class TextNode:
             self.text == value.text
             and self.text_type == value.text_type
             and self.url == value.url
+            and self.extra_tags == value.extra_tags
         )
 
     def __repr__(self) -> str:
-        return f"TextNode({self.text}, {self.text_type}, {self.url})"
+        return f"TextNode({self.text}, {self.text_type}, {self.url}, {self.extra_tags})"
 
 
 def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
@@ -52,7 +60,10 @@ def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
             )
 
         case TextType.IMAGE:
-            return ImageLeafNode(props={"src": text_node.url, "alt": text_node.text})
+            return ImageLeafNode(
+                props={"src": text_node.url, "alt": text_node.text}
+                | text_node.extra_tags
+            )
 
         case TextType.YOUTUBE:
             return YoutubeLeafNode(props={"src": text_node.url})
@@ -107,9 +118,8 @@ def split_nodes_delimiter(
     return new_nodes
 
 
-def extract_markdown_images(text: str) -> list[tuple[str, str]]:
-    matches = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
-    matches
+def extract_markdown_images(text: str) -> list[tuple[str, str, str]]:
+    matches = re.findall(r"!\[([^\]]*)\]\(([^)]+)\)(?:\{([^}]*)\})?", text)
     return matches
 
 
@@ -142,11 +152,25 @@ def split_nodes_images(old_nodes: list[TextNode]) -> list[TextNode]:
 
         last_index = 0
         for image in imgs:
-            txt_len = len(image[0]) + len(image[1]) + 5
+
+            has_extra_tags = image[2] != ""
+            extra_tags = {}
+
+            if has_extra_tags:
+                tag_pairs = image[2].split(",")
+                for tag_pair in tag_pairs:
+                    tag_split = tag_pair.split("=")
+                    extra_tags[tag_split[0]] = tag_split[1]
+
+            txt_len = (
+                len(image[0])
+                + len(image[1])
+                + (len(image[2]) + 7 if has_extra_tags else 5)
+            )
             index = node.text.find(f"![{image[0]}]", last_index)
 
             new_nodes.append(TextNode(node.text[last_index:index], TextType.PLAIN))
-            new_nodes.append(TextNode(image[0], TextType.IMAGE, image[1]))
+            new_nodes.append(TextNode(image[0], TextType.IMAGE, image[1], extra_tags))
 
             last_index = index + txt_len
 

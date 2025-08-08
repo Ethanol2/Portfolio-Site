@@ -24,6 +24,9 @@ h6 {
   margin-top: 24px;
   margin-bottom: 16px;
   text-shadow: 2px 2px 4px #000;
+  display: flex;         /* Put icon + text in a row */
+  align-items: center;   /* Vertically align them */
+  gap: 0.5rem; 
 }
 
 h1 {
@@ -141,4 +144,10 @@ tr, td {
 
 ::-webkit-scrollbar-corner {
   background: #1f1c25;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
