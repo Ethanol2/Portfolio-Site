@@ -1,4 +1,4 @@
-# ![Ethan Colucci](images/profilePic2025.png){class=profile-pic} Ethan Colucci - Developper
+# ![Ethan Colucci](images/profilePic2025.png){class=inline_img} Ethan Colucci - Developper
 [My Links](https://linktr.ee/ethancolucci)
 
 ### Contact Me
@@ -94,10 +94,11 @@ Institution, Degree, Date
 
 ## References
 
-:::csv_headers
-Name, Relationship, Contact Info
-"Ahmad Askri", "Coworker @ VR Vision", "ahmad.askri@vrvision.ca, (647) 575-3208"
-"David Tucciarone", "Manager @ VR Vision", "david.tucciarone@vrvision.ca, (613) 898-2979"
-"Brett Andrews", "Project Collaborator", "blamx165@gmail.com, (613) 330-1812"
-"Nodi Ray", "Coworker @ VR Vision", "nodi1932@gmail.com, (647) 772-7343"
+:::csv
+md"### VR Vision"
+"**David Tucciarone**", Manager, "david.tucciarone@vrvision.ca", "(613) 898-2979"
+"**Ahmad Askri**", Coworker, "ahmad.askri@vrvision.ca", "(647) 575-3208"
+"**Nodi Ray**", Coworker, "nodi1932@gmail.com", "(647) 772-7343"
+md"### Other"
+"**Brett Andrews**", Project Collaborator, "blamx165@gmail.com", "(613) 330-1812"
 :::
