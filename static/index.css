@@ -1,169 +1,201 @@
+/* ===== Retro Techwave Theme ===== */
+
+:root {
+  --bg-top: #2d006b;      /* deep purple */
+  --bg-bottom: #00081e;   /* near-black navy */
+  --text: #f8eaff;        /* pale lavender white */
+  --heading: #ff6ec7;     /* neon pink */
+  --link: #00f6ff;        /* cyan */
+  --link-hover: #fffb00;  /* sun yellow */
+  --code-bg: rgba(0, 0, 0, 0.5);
+  --code-text: #fffb00;   /* sun yellow */
+  --blockquote-bg: rgba(255, 110, 199, 0.15);
+  --blockquote-border: #ff6ec7;
+  --blockquote-text: #f8eaff;
+  --img-border: #00f6ff;
+  --scrollbar-track: #00081e;
+  --scrollbar-thumb: #ff6ec7;
+  --scrollbar-thumb-hover: #fffb00;
+}
+
 body {
-  background-color: #1f1c25;
-  color: #f0e6d1;
-  font-family: "Luminari", "Georgia", serif;
+  background: linear-gradient(to bottom, var(--bg-top), var(--bg-bottom));
+  color: var(--text);
+  font-family: "Orbitron", "Segoe UI", sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.4px; /* subtle spacing */
   line-height: 1.7;
   margin: 0;
-  padding: 20px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 40px 20px;
+}
+
+/* Neon grid overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(0, 246, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 246, 255, 0.15) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content wrapper */
+body > * {
+  background-color: rgba(0, 0, 0, 0.5); /* solid but slightly transparent */
+  border-radius: 10px;
+  padding: 20px 30px;
+  box-shadow: 0 0 20px rgba(0, 246, 255, 0.3);
+  position: relative;
+  z-index: 1; /* sits above grid */
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 b {
-  font-weight: 900;
+  font-weight: 1000;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #dda15e;
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading);
   margin-top: 24px;
   margin-bottom: 16px;
-  text-shadow: 2px 2px 4px #000;
-  display: flex;         /* Put icon + text in a row */
-  align-items: center;   /* Vertically align them */
-  gap: 0.5rem; 
-}
-
-h1 {
-  font-size: 2.5em;
-}
-
-h2 {
-  font-size: 2em;
-}
-
-h3 {
-  font-size: 1.5em;
-}
-
-h4,
-h5,
-h6 {
-  font-size: 1.2em;
+  font-family: "Orbitron", sans-serif;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px var(--heading), 0 0 12px var(--heading);
+  z-index: 1;
 }
 
 a {
-  color: #e0a96d;
+  color: var(--link);
   text-decoration: none;
-  border-bottom: 2px solid #e0a96d;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
 }
-
 a:hover {
-  color: #f4a261;
-  border-color: #f4a261;
-}
-
-ul,
-ol {
-  padding-left: 30px;
+  color: var(--link-hover);
+  border-color: var(--link-hover);
+  text-shadow: 0 0 8px var(--link-hover);
 }
 
 code {
-  background-color: #3c3c42;
-  border-radius: 6px;
-  color: #e9c46a;
-  padding: 0.4em 0.6em;
-  font-family: "Courier New", monospace;
-}
-
-pre code {
-  padding: 0;
+  background-color: var(--code-bg);
+  color: var(--code-text);
+  border-radius: 4px;
+  padding: 0.3em 0.5em;
+  font-family: "Share Tech Mono", monospace;
 }
 
 pre {
-  background-color: #3c3c42;
+  background-color: var(--code-bg);
   border-radius: 6px;
   padding: 1em;
-  overflow: auto;
-  box-shadow: 2px 2px 6px #000;
+  overflow-x: auto;
+  box-shadow: 0 0 10px var(--link);
 }
 
 blockquote {
-  background-color: #2e2c35;
-  border-left: 4px solid #8d99ae;
-  padding-left: 2em;
-  margin-left: 0;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-right: 0.5em;
-  color: #ddd;
+  background-color: var(--blockquote-bg);
+  border-left: 4px solid var(--blockquote-border);
+  padding: 0.5em 1em;
+  margin: 1em 0;
+  color: var(--blockquote-text);
   font-style: italic;
 }
 
 img {
   max-width: 100%;
   height: auto;
-  border-radius: 6px;
-  border: 3px solid #3c3c42;
-  box-shadow: 3px 3px 6px #000;
+  border-radius: 4px;
+  border: 2px solid var(--img-border);
+  box-shadow: 0 0 10px var(--img-border);
 }
 
 iframe {
   max-width: 100%;
-  min-width: 100%;
   aspect-ratio: 16/9;
   border-radius: 6px;
-  border: 3px solid #3c3c42;
-  box-shadow: 3px 3px 6px #000;
-}
-
-tr, td {
-  text-align: left;
-  vertical-align: top;
+  border: 2px solid var(--img-border);
 }
 
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #1f1c25;
-  border-radius: 6px;
+  background: var(--scrollbar-track);
 }
-
 ::-webkit-scrollbar-thumb {
-  background-color: #3c3c42;
+  background-color: var(--scrollbar-thumb);
   border-radius: 6px;
-  border: 3px solid #1f1c25;
+  border: 3px solid var(--scrollbar-track);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #5a5466;
+  background-color: var(--scrollbar-thumb-hover);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3c3c42 #1f1c25;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
-::-webkit-scrollbar-corner {
-  background: #1f1c25;
+table {
+  width: 100%;
+  table-layout: fixed; /* lock column widths */
+  border-collapse: collapse;
 }
+
+table th, table td {
+  padding: 0.6em;
+  text-align: left;
+}
+
+/* Common column counts */
+table tr > *:nth-child(1):nth-last-child(1) { width: 100%; }
+table tr > *:nth-child(1):nth-last-child(2),
+table tr > *:nth-child(2):nth-last-child(1) { width: 50%; }
+
+table tr > *:nth-child(1):nth-last-child(3),
+table tr > *:nth-child(2):nth-last-child(2),
+table tr > *:nth-child(3):nth-last-child(1) { width: 33.333%; }
+
+table tr > *:nth-child(1):nth-last-child(4),
+table tr > *:nth-child(2):nth-last-child(3),
+table tr > *:nth-child(3):nth-last-child(2),
+table tr > *:nth-child(4):nth-last-child(1) { width: 25%; }
+
+table tr > *:nth-child(1):nth-last-child(5),
+table tr > *:nth-child(2):nth-last-child(4),
+table tr > *:nth-child(3):nth-last-child(3),
+table tr > *:nth-child(4):nth-last-child(2),
+table tr > *:nth-child(5):nth-last-child(1) { width: 20%; }
+
+table tr > *:nth-child(1):nth-last-child(6),
+table tr > *:nth-child(2):nth-last-child(5),
+table tr > *:nth-child(3):nth-last-child(4),
+table tr > *:nth-child(4):nth-last-child(3),
+table tr > *:nth-child(5):nth-last-child(2),
+table tr > *:nth-child(6):nth-last-child(1) { width: 16.67%; }
+
+/* Add more patterns if you have >5 columns */
+
 
 h1 img.inline_img,
 h2 img.inline_img,
-h3 img.inline_img, 
-h4 img.inline_img, 
-h5 img.inline_img, 
+h3 img.inline_img,
+h4 img.inline_img,
+h5 img.inline_img,
 h6 img.inline_img,
 td img.inline_img,
 ul img.inline_img,
 ol img.inline_img,
 p img.inline_img {
-  display: inline-block;    /* keeps image inline with text */
-  vertical-align: middle;   /* aligns with text baseline */
-  width: 40px;               /* or whatever size */
+  display: inline-block;
+  vertical-align: middle;
+  width: 40px;
   height: 40px;
   object-fit: cover;
-  margin-right: 0.5rem;     /* spacing between icon and text */
-}
-
-table {
-  width: 100%;
+  margin-right: 0.5rem;
 }
