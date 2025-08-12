@@ -107,7 +107,7 @@ blockquote {
 
 img {
   max-width: 100%;
-  height: auto;
+  /* height: auto; */
   border-radius: 4px;
   border: 2px solid var(--img-border);
   box-shadow: 0 0 10px var(--img-border);
