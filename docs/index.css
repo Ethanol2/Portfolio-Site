@@ -152,36 +152,6 @@ table th, table td {
   text-align: left;
 }
 
-/* Common column counts */
-table tr > *:nth-child(1):nth-last-child(1) { width: 100%; }
-table tr > *:nth-child(1):nth-last-child(2),
-table tr > *:nth-child(2):nth-last-child(1) { width: 50%; }
-
-table tr > *:nth-child(1):nth-last-child(3),
-table tr > *:nth-child(2):nth-last-child(2),
-table tr > *:nth-child(3):nth-last-child(1) { width: 33.333%; }
-
-table tr > *:nth-child(1):nth-last-child(4),
-table tr > *:nth-child(2):nth-last-child(3),
-table tr > *:nth-child(3):nth-last-child(2),
-table tr > *:nth-child(4):nth-last-child(1) { width: 25%; }
-
-table tr > *:nth-child(1):nth-last-child(5),
-table tr > *:nth-child(2):nth-last-child(4),
-table tr > *:nth-child(3):nth-last-child(3),
-table tr > *:nth-child(4):nth-last-child(2),
-table tr > *:nth-child(5):nth-last-child(1) { width: 20%; }
-
-table tr > *:nth-child(1):nth-last-child(6),
-table tr > *:nth-child(2):nth-last-child(5),
-table tr > *:nth-child(3):nth-last-child(4),
-table tr > *:nth-child(4):nth-last-child(3),
-table tr > *:nth-child(5):nth-last-child(2),
-table tr > *:nth-child(6):nth-last-child(1) { width: 16.67%; }
-
-/* Add more patterns if you have >5 columns */
-
-
 h1 img.inline_img,
 h2 img.inline_img,
 h3 img.inline_img,
