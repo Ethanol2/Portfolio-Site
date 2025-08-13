@@ -96,9 +96,13 @@ Institution, Degree, Date
 
 :::csv
 md"### VR Vision"
-"**David Tucciarone**", Manager, "david.tucciarone@vrvision.ca", "(613) 898-2979"
-"**Ahmad Askri**", Coworker, "ahmad.askri@vrvision.ca", "(647) 575-3208"
-"**Nodi Ray**", Coworker, "nodi1932@gmail.com", "(647) 772-7343"
+"**David Tucciarone**", Manager, "david.tucciarone@vrvision.ca
+(613) 898-2979"
+"**Ahmad Askri**", Coworker, "ahmad.askri@vrvision.ca
+(647) 575-3208"
+"**Nodi Ray**", Coworker, "nodi1932@gmail.com
+(647) 772-7343"
 md"### Other"
-"**Brett Andrews**", Project Collaborator, "blamx165@gmail.com", "(613) 330-1812"
+"**Brett Andrews**", Project Collaborator, "blamx165@gmail.com
+(613) 330-1812"
 :::

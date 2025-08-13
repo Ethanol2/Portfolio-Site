@@ -4,6 +4,18 @@ import sys
 
 from markdownblock import markdown_to_html_node, extract_title
 
+header_code = """
+<header class="site-header">
+  <div class="header-content">
+    <h1 class="logo">My Portfolio</h1>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+"""
 
 def main():
 
@@ -85,6 +97,7 @@ def generate_page(base_path: str, src_path: str, template_path: str, dest_path: 
         template_contents = f.read()
         f.close()
 
+    template_contents = template_contents.replace("{{ Header }}", header_code)
     template_contents = template_contents.replace("{{ Title }}", title)
     template_contents = template_contents.replace("{{ Content }}", html_node.to_html())
     template_contents = template_contents.replace('href="/', f'href="{base_path}')
