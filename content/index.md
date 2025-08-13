@@ -11,38 +11,62 @@
 
 ## About Me
 
-:::csv
-"Driven and adaptable Game Developer with 7 years of experience building interactive experiences, including 4 years in professional environments. Currently specializing in Unity, C#, and Virtual Reality (VR) development for training and simulation. I create immersive, high-performance applications by combining strong technical foundations with creative design thinking. Experienced across VR, mobile, and traditional platforms, I thrive on solving complex problems, rapidly learning new technologies, and collaborating across disciplines to deliver polished results.", "![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height=300}"
-:::
+-- Row
+Driven and adaptable Game Developer with 7 years of experience building interactive experiences, including 4 years in professional environments. Currently specializing in Unity, C#, and Virtual Reality (VR) development for training and simulation. I create immersive, high-performance applications by combining strong technical foundations with creative design thinking. Experienced across VR, mobile, and traditional platforms, I thrive on solving complex problems, rapidly learning new technologies, and collaborating across disciplines to deliver polished results.
+
+![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height=300}
+--
 
 ---
 
 ## Skills and Technologies
 
-:::csv
-md"### 🧠 Programming", md"### 🎮 Game Engines"
-md"- C#  
+-- Row
+### 🧠 Programming
+- C#  
 - C++  
 - Python  
 - Object-Oriented Programming  
-- API Integration", md"- Unity Engine (VR, mobile, and desktop platforms)"
-md"### 🗂️ Version Control", md"### 🥽 Virtual Reality"
-md"- Git (GitHub, SourceTree)  
-- PlasticSCM", md"- VR application development  
+- API Integration
+
+### 🎮 Game Engines
+- Unity Engine (VR, mobile, and desktop platforms)
+- Godot
+--
+
+-- Row
+### 🗂️ Version Control
+- Git (GitHub, SourceTree)  
+- PlasticSCM
+
+### 🥽 Virtual Reality
+- VR application development  
 - Interaction design  
-- Real-world tool simulation"
-md"### 📱 Mobile Development", md"### 🎨 Creative Tools"
-md"- Cross-platform optimization  
-- Deployment for multiple platforms", md"- Basic 3D modeling and texturing  
+- Real-world tool simulation
+--
+
+-- Row
+### 📱 Mobile Development
+- Cross-platform optimization  
+- Deployment for multiple platforms
+
+### 🎨 Creative Tools
+- Basic 3D modeling and texturing  
 - Illustration  
 - Video editing"
-md"### ☁️ Other Technologies", md"### 🗣️ Languages"
-md"- AWS  
+--
+
+-- Row
+### ☁️ Other Technologies
+- AWS  
 - MongoDB  
 - Photon PUN and Fusion  
-- Database interaction", md"- Native English  
-- French"
-:::
+- Database interaction
+
+### 🗣️ Languages
+- Native English  
+- French
+--
 
 ---
 

@@ -221,3 +221,11 @@ p img.inline_img {
   object-fit: cover;
   margin-right: 0.5rem;
 }
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}

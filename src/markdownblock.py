@@ -17,8 +17,9 @@ class BlockType(Enum):
     UNORDERED_LIST = "unordered_list"
     ORDERED_LIST = "ordered_list"
     CSV = "csv"
-    CSV_WITH_HEADERS = ("csv_with_headers",)
-    HORIZONTAL_LINE = "horizontal_line"
+    CSV_WITH_HEADERS = "csv_with_headers",
+    HORIZONTAL_LINE = "horizontal_line",
+    ROW = "row"
 
 
 HTML_BLOCK_TAGS = {
@@ -36,6 +37,7 @@ HTML_BLOCK_TAGS = {
     BlockType.CSV: "table",
     BlockType.CSV_WITH_HEADERS: "table",
     BlockType.HORIZONTAL_LINE: "hr",
+    BlockType.ROW: "div"
 }
 
 
@@ -96,6 +98,11 @@ def block_to_block_type(block: str) -> BlockType:
         case "-":
             if block == "---":
                 return BlockType.HORIZONTAL_LINE
+            elif block[:6] == "-- Row":
+                if block[-2:] == "--":
+                    return BlockType.ROW
+                else:
+                    raise Exception("Error: Row marker not closed")
 
             lines = block.split("\n")
             for line in lines:
@@ -233,6 +240,20 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
 
         return table_node
 
+    def row_to_html(block: str) -> ParentNode:
+        block = block[6:-2].strip()
+        columns = block.split("\n\n")
+        
+        column_html_nodes = []
+        for column in columns:
+            column_block = markdown_to_blocks(column)
+            column_html = markdown_blocks_to_html(column_block)
+            column_html.props = {"class":"column"}
+
+            column_html_nodes.append(column_html)
+
+        return ParentNode(HTML_BLOCK_TAGS[BlockType.ROW], column_html_nodes, {"class":"row"})
+
     match block_type:
 
         case BlockType.CODE:
@@ -270,6 +291,9 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
 
         case BlockType.CSV_WITH_HEADERS:
             return csv_to_html(True, block)
+        
+        case BlockType.ROW:
+            return row_to_html(block)
 
         case __:
             text_nodes = text_to_textnodes(block.strip().replace("\n", " "))
@@ -311,12 +335,13 @@ def markdown_blocks_to_html(blocks: list[str]) -> ParentNode:
 
         except Exception as e:
             if i + 1 >= len(blocks):
-                print("Exception parsing last block")
+                print(f"Exception parsing last block.\nException: {e}")
                 continue
 
-            print(
-                f"Exception parsing block {i}. Merging next line to see if that fixes it.\nException: {e}"
-            )
+            # print(
+            #     f"Exception parsing block {i}. Merging next line to see if that fixes it.\nException: {e}"
+            # )
+
             blocks[i + 1] = blocks[i] + "\n\n" + blocks[i + 1]
 
         i += 1
