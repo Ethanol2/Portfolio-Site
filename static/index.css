@@ -18,7 +18,7 @@
   --scrollbar-thumb-hover: #fffb00;
 }
 
-/* Full-width neon glass header */
+/* Full-width neon glass header ==========================================================================================================================================*/
 .site-header {
   position: fixed;
   top: 0;
@@ -31,22 +31,45 @@
   background: rgba(0, 0, 0, 0.6); /* transparent black for glass look */
   backdrop-filter: blur(8px);     /* frosted glass effect */
   border-bottom: 2px solid var(--link);
-  z-index: 10;
   box-shadow: 0 0 10px var(--link), 0 0 20px var(--link);
+  transition: transform 0.4s ease-in-out;
+  z-index: 10;
+}
+
+.site-header.header-hidden {
+  transform: translateY(-110%);
+}
+@keyframes headerGlow{
+   0%   { box-shadow: 0 0 10px var(--link), 0 0 20px var(--link); }
+  40%  { box-shadow: 0 0 20px var(--link-hover), 0 0 35px var(--link-hover); }
+  60%  { box-shadow: 0 0 20px var(--link-hover), 0 0 35px var(--link-hover); }
+  100% { box-shadow: 0 0 10px var(--link), 0 0 20px var(--link); }
+}
+.site-header.header-show {
+  animation: headerGlow 3s ease forwards;
 }
 
 .header-content {
   max-width: 1100px;      /* keeps content centered inside header */
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* padding: 8px 20px; */
+}
+
+.header-top {
+  margin-bottom: 4px;
+}
+.header-bottom {
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
 }
 
 .logo {
   font-family: "Orbitron", sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: var(--heading);
   text-shadow: 0 0 8px var(--heading), 0 0 12px var(--heading);
@@ -54,18 +77,49 @@
 }
 
 .nav-links a {
+  display: inline-block;
   color: var(--link);
-  margin-left: 20px;
+  padding-right: 16px;
   text-decoration: none;
   font-weight: 500;
+  font-size: 1rem;
   text-transform: uppercase;
   transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 .nav-links a:hover {
   color: var(--link-hover);
-  text-shadow: 0 0 8px var(--link-hover), 0 0 16px var(--link-hover);
+  /* text-shadow: 0 0 8px var(--link-hover), 0 0 16px var(--link-hover); */
+  border-color: var(--link-hover);
 }
+
+.contact-links {
+  color: var(--link);
+  display: flex;
+  align-items: center;
+}
+.contact-links a {
+  color: var(--link);
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+}
+.contact-links img {
+  height: 16px;
+  width: 16px;
+  filter: drop-shadow(0 0 3px var(--link));
+  transition: filter 0.2s ease;
+  border: none;
+  box-shadow: none;
+}
+.contact-links a:hover img {
+  filter: drop-shadow(0 0 5px var(--link-hover));
+}
+.email-link {
+  font-size: 0.8rem;
+}
+
+/*======================================================================================================================================================================*/
 
 body {
   background: linear-gradient(to bottom, var(--bg-top), var(--bg-bottom));

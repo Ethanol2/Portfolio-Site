@@ -72,7 +72,7 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 
 ## Professional Experience
 
-### VR Vision — *Intermediate VR Developer*
+### ![vr vision logo](images/company-logos/vr_vision_inc_logo.jpeg){class=inline_img} VR Vision — *Intermediate VR Developer*
 **September 2022 – June 2025**
 
 - Develop VR Training apps in Unity  
@@ -81,7 +81,7 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - Participate in on-site visits to document training processes  
 - Participate in the design and development of the in-house VR toolkit  
 
-### No Fuss Tutors — *Game Programmer*  
+### ![no fuss tutors logo](images/company-logos/no_fuss_tutors_logo.jpeg){class=inline_img} No Fuss Tutors — *Game Programmer*  
 **October 2021 – September 2022**
 
 - Sole C# programmer for a Unity-based game  
@@ -89,7 +89,7 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - Developed for multiple platforms  
 - Integrated AWS and MongoDB for database interaction  
 
-### Unity Game Developer — *Freelance*  
+### ![unity logo](images/company-logos/unity_logo.jpeg){class=inline_img} Unity Game Developer — *Freelance*  
 **January 2021 – October 2021**
 
 - Collaborated with clients to define project goals and timelines  
@@ -97,7 +97,7 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - Communicated effectively and adapted to client needs  
 - Quickly learned and implemented new APIs  
 
-### S&C Canada — *Material Handler*  
+### ![s&c logo](images/company-logos/sc_electric_company_logo.jpeg){class=inline_img} S&C Canada — *Material Handler*  
 **June 2020 – October 2021**
 
 - Operated Class 2 and Class 5 Lift Trucks in tight spaces  

@@ -7,12 +7,27 @@ from markdownblock import markdown_to_html_node, extract_title
 header_code = """
 <header class="site-header">
   <div class="header-content">
-    <h1 class="logo">My Portfolio</h1>
-    <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="/projects">Projects</a>
-      <a href="/contact">Contact</a>
-    </nav>
+    
+    <div class="header-top">
+        <h1 class="logo">My Portfolio</h1>
+    </div>
+    
+    <div class="header-bottom">
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+        </nav>
+        <div class="contact-links">
+            <a href="https://github.com/YourUsername" target="_blank" aria-label="GitHub">
+                <img src="icons/github-mark-white.svg" alt="GitHub">
+            </a>
+            <a href="https://www.linkedin.com/in/YourUsername" target="_blank" aria-label="LinkedIn">
+                <img src="icons/InBug-White.png" alt="LinkedIn">
+            </a>
+            <a href="mailto:youremail@example.com" class="email-link">youremail@example.com</a>
+        </div>
+    </div>
+
   </div>
 </header>
 """
