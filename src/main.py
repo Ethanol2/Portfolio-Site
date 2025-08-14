@@ -2,35 +2,7 @@ import os
 import shutil
 import sys
 
-from markdownblock import markdown_to_html_node, extract_title
-
-header_code = """
-<header class="site-header">
-  <div class="header-content">
-    
-    <div class="header-top">
-        <h1 class="logo">My Portfolio</h1>
-    </div>
-    
-    <div class="header-bottom">
-        <nav class="nav-links">
-            <a href="/">Home</a>
-            <a href="/projects">Projects</a>
-        </nav>
-        <div class="contact-links">
-            <a href="https://github.com/YourUsername" target="_blank" aria-label="GitHub">
-                <img src="icons/github-mark-white.svg" alt="GitHub">
-            </a>
-            <a href="https://www.linkedin.com/in/YourUsername" target="_blank" aria-label="LinkedIn">
-                <img src="icons/InBug-White.png" alt="LinkedIn">
-            </a>
-            <a href="mailto:youremail@example.com" class="email-link">youremail@example.com</a>
-        </div>
-    </div>
-
-  </div>
-</header>
-"""
+from markdownblock import markdown_to_html_node, extract_title, header_block_to_html
 
 def main():
 
@@ -44,6 +16,7 @@ def main():
     static_path = "static/"
     content_path = "content/"
     template_path = "template.html"
+    header_template_path = "header_template.html"
 
     public_path = "docs/"
 
@@ -54,6 +27,8 @@ def main():
         raise Exception(f'The content folder doesn\'t exist. "{content_path}"')
     if not os.path.exists(template_path):
         raise Exception(f'The HTML template is missing. "{template_path}"')
+    if not os.path.exists(header_template_path):
+        raise Exception(f'The header HTML template is missing. "{header_template_path}"')
 
     # Clear the public folder
     if os.path.exists(public_path):
@@ -62,9 +37,43 @@ def main():
     os.mkdir(public_path)
 
     # Populate public folder
+    header_html, title_suffix = generate_header(content_path, header_template_path)
     copy_dir_to_dir(static_path, public_path)
-    generate_pages_recursive(base_path, content_path, template_path, public_path)
+    generate_pages_recursive(base_path, content_path, template_path, public_path, header_html, title_suffix)
 
+def generate_header(content_path: str, header_template_path: str) -> tuple[str, str]:
+
+    header_path = os.path.join(content_path, "_header.md")
+    if not os.path.exists(header_path):
+        raise Exception(f'The header.md is missing in the content folder. "{content_path}"')
+
+    with open(header_path) as f:
+        file_contents = f.read()
+        f.close()
+    
+    blocks = file_contents.split("\n\n")
+
+    title_content = header_block_to_html(blocks[0])
+    nav_links = header_block_to_html(blocks[1])
+    contact_links = header_block_to_html(blocks[2])
+
+    title_suffix = " | "
+    for node in title_content.children:
+        if node.tag == "":
+            title_suffix += node.value
+
+    for node in contact_links.children:
+        node.props["target"] = "_blank"
+
+    with open(header_template_path) as f:
+        template_contents = f.read()
+        f.close()
+    
+    template_contents = template_contents.replace("{Title}", title_content.to_html())
+    template_contents = template_contents.replace("{Nav Links}", nav_links.to_html())
+    template_contents = template_contents.replace("{Contact Links}", contact_links.to_html())
+
+    return template_contents, title_suffix
 
 def copy_dir_to_dir(source: str, destination: str):
 
@@ -80,7 +89,7 @@ def copy_dir_to_dir(source: str, destination: str):
 
 
 def generate_pages_recursive(
-    base_path: str, dir_path_content: str, template_path: str, dest_dir_path: str
+    base_path: str, dir_path_content: str, template_path: str, dest_dir_path: str, header_html: str, title_suffix: str
 ):
 
     for item in os.listdir(dir_path_content):
@@ -89,12 +98,15 @@ def generate_pages_recursive(
         dest_path = os.path.join(dest_dir_path, item)
 
         if os.path.isdir(path):
-            generate_pages_recursive(base_path, path, template_path, dest_path)
+            generate_pages_recursive(base_path, path, template_path, dest_path, header_html, title_suffix)
         elif os.path.isfile(path) and ".md" in path:
-            generate_page(base_path, path, template_path, dest_path[:-3] + ".html")
+            generate_page(base_path, path, template_path, dest_path[:-3] + ".html", header_html, title_suffix)
 
 
-def generate_page(base_path: str, src_path: str, template_path: str, dest_path: str):
+def generate_page(base_path: str, src_path: str, template_path: str, dest_path: str, header_html: str, title_suffix):
+
+    if os.path.basename(src_path)[0] == '_':
+        return
 
     print(f"Generating page from {src_path} to {dest_path} using {template_path}")
 
@@ -106,13 +118,13 @@ def generate_page(base_path: str, src_path: str, template_path: str, dest_path: 
         f.close()
 
     html_node = markdown_to_html_node(file_contents)
-    title = extract_title(html_node)
+    title = extract_title(html_node) + title_suffix
 
     with open(template_path) as f:
         template_contents = f.read()
         f.close()
 
-    template_contents = template_contents.replace("{{ Header }}", header_code)
+    template_contents = template_contents.replace("{{ Header }}", header_html)
     template_contents = template_contents.replace("{{ Title }}", title)
     template_contents = template_contents.replace("{{ Content }}", html_node.to_html())
     template_contents = template_contents.replace('href="/', f'href="{base_path}')

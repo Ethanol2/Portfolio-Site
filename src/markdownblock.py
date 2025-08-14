@@ -135,7 +135,7 @@ def block_to_block_type(block: str) -> BlockType:
 
 
 def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
-
+    
     def code_to_html(block: str) -> ParentNode:
         trimmed_block = block[3:-3]
 
@@ -358,3 +358,8 @@ def extract_title(parent_node: ParentNode) -> str:
 
             return text
     raise Exception("Error: Markdown file should have a main heading (Heading 1)")
+
+def header_block_to_html(block: str) -> ParentNode:
+    text_nodes = text_to_textnodes(block)
+    html_nodes = [text_node_to_html_node(node) for node in text_nodes]
+    return ParentNode("", html_nodes)

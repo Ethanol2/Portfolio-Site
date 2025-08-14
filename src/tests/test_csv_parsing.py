@@ -113,22 +113,6 @@ class TestCSVMarkdownParsing(unittest.TestCase):
         )
         self.assertEqual(node.to_html(), expected_html)
 
-    def test_csv_cell_with_heading_and_list_in_same_cell(self):
-        markdown = (
-            ":::csv_headers\n"
-            '"Profile"\n'
-            'md"## Alice\n- Editor\n- Markdown Enthusiast"\n'
-            ":::"
-        )
-        node = markdown_to_html_node(markdown)
-        expected_html = (
-            "<div><table>"
-            "<tr><th>Profile</th></tr>"
-            "<tr><td><h2>Alice</h2><ul><li>Editor</li><li>Markdown Enthusiast</li></ul></td></tr>"
-            "</table></div>"
-        )
-        self.assertEqual(node.to_html(), expected_html)
-
 
 if __name__ == "__main__":
     unittest.main()

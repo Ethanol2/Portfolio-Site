@@ -19,7 +19,7 @@ class TestTextNode(unittest.TestCase):
         node = TextNode("This node has a URL", TextType.URL, "https://google.ca")
         node2 = TextNode("This node doesn't have a URL", TextType.PLAIN)
         self.assertIsNotNone(node.url)
-        self.assertIsNone(node2.url)
+        self.assertEqual('',node2.url)
         
     def test_text(self):
         node = TextNode("This is a text node", TextType.PLAIN)
@@ -116,15 +116,24 @@ class TestTextNode(unittest.TestCase):
         matches = extract_markdown_images(
             "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
         )
-        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png", '')], matches)
         
     def test_extract_markdown_images(self):
         matches = extract_markdown_images(
             "This is text some images; ![image1](https://i.imgur.com/zjjcJKZ.png), ![image2](https://i.imgur.com/zjjcJKZ.png)"
         )
         self.assertListEqual([
-            ("image1", "https://i.imgur.com/zjjcJKZ.png"),
-            ("image2", "https://i.imgur.com/zjjcJKZ.png")
+            ("image1", "https://i.imgur.com/zjjcJKZ.png", ''),
+            ("image2", "https://i.imgur.com/zjjcJKZ.png", '')
+            ], matches)
+    
+    def test_extract_markdown_images_with_tags(self):
+        matches = extract_markdown_images(
+            "This is text some images; ![image1](https://i.imgur.com/zjjcJKZ.png){class=special-img}, ![image2](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([
+            ("image1", "https://i.imgur.com/zjjcJKZ.png", 'class=special-img'),
+            ("image2", "https://i.imgur.com/zjjcJKZ.png", '')
             ], matches)
         
     def test_extract_markdown_url(self):

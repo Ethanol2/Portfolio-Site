@@ -1,15 +1,4 @@
-# ![Ethan Colucci](images/profilePic2025.png){class=inline_img} Ethan Colucci - Developper
-[My Links](https://linktr.ee/ethancolucci)
-
-### Contact Me
-:::csv
-"[📧 E.Colucci@outlook.com](mailto:E.Colucci@outlook.com)", "[📞 (647) 525-0156](tel:6475250156)", "📍 Canada"
-:::
-
-### My Links
-
-
-## About Me
+# About Me
 
 -- Row
 Driven and adaptable Game Developer with 7 years of experience building interactive experiences, including 4 years in professional environments. Currently specializing in Unity, C#, and Virtual Reality (VR) development for training and simulation. I create immersive, high-performance applications by combining strong technical foundations with creative design thinking. Experienced across VR, mobile, and traditional platforms, I thrive on solving complex problems, rapidly learning new technologies, and collaborating across disciplines to deliver polished results.

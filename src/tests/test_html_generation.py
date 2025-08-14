@@ -61,7 +61,40 @@ This is another paragraph with _italic_ text and `code` here
             markdown_to_html_node("Above\n\n---\n\nBelow").to_html(),
             "<div><p>Above</p><hr><p>Below</p></div>",
         )
+    def test_image_link(self):
+        md = '[![alt text](https://example.com/image.png)](https://example.com)'
+        html = markdown_to_html_node(md).to_html()
+        expected = (
+            '<div>'
+            '<p>'
+            '<a href="https://example.com">'
+            '<img src="https://example.com/image.png" alt="alt text"/>'
+            '</a>'
+            '</p>'
+            '</div>'
+        )
+        self.assertEqual(html, expected)
 
+    def test_multiple_image_links(self):
+        md = (
+            '[![img1](https://example.com/1.png)](https://example.com/one) '
+            'and '
+            '[![img2](https://example.com/2.png)](https://example.com/two)'
+        )
+        html = markdown_to_html_node(md).to_html()
+        expected = (
+            '<div>'
+            '<p>'
+            '<a href="https://example.com/one">'
+            '<img src="https://example.com/1.png" alt="img1"/>'
+            '</a> and '
+            '<a href="https://example.com/two">'
+            '<img src="https://example.com/2.png" alt="img2"/>'
+            '</a>'
+            '</p>'
+            '</div>'
+        )
+        self.assertEqual(html, expected)
 
 if __name__ == "__main__":
     unittest.main()

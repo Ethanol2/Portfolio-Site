@@ -32,7 +32,7 @@
   backdrop-filter: blur(8px);     /* frosted glass effect */
   border-bottom: 2px solid var(--link);
   box-shadow: 0 0 10px var(--link), 0 0 20px var(--link);
-  transition: transform 0.4s ease-in-out;
+  transition: transform 0.2s ease-in-out;
   z-index: 10;
 }
 
@@ -85,7 +85,6 @@
   font-size: 1rem;
   text-transform: uppercase;
   transition: color 0.2s ease, text-shadow 0.2s ease;
-  border-bottom: 2px solid transparent;
 }
 
 .nav-links a:hover {
@@ -178,7 +177,7 @@ h1, h2, h3, h4, h5, h6 {
 a {
   color: var(--link);
   text-decoration: none;
-  border-bottom: 2px solid transparent;
+  /* border-bottom: 2px solid transparent; */
   transition: border-color 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
 }
 a:hover {
