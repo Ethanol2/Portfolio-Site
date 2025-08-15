@@ -32,4 +32,5 @@ window.addEventListener('scroll', () => {
 
 hamburger.addEventListener('click', () => {
   menu.classList.toggle('open');
+  hamburger.classList.toggle('active');
 });
