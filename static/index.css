@@ -285,30 +285,93 @@ p img.inline_img {
   padding: 0px 16px 0px 16px;
 }
 
-/* Extra small devices (phones, 600px and down) */
+/* Make tables scroll on small screens */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* smooth iOS scroll */
+}
+
+.table-wrapper table {
+  min-width: 500px; /* prevents columns from collapsing too much */
+}
+
+
+/* Extra small devices (phones, up to 600px) */
 @media only screen and (max-width: 600px) {
-  .column {flex: 100%}
-  .row {display: block;}
+  body {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 100px; /* slightly less to fit smaller header */
+  }
+
+  body > * {
+    padding: 15px 20px;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 8px 0;
+    font-size: 0.9rem;
+  }
+
+  .contact-links {
+    margin-top: 8px;
+  }
+
+  .row {
+    display: block;
+  }
+
+  .column {
+    flex: 100%;
+    padding: 0;
+  }
+
+  body::before {
+    background-size: 30px 30px; /* tighter grid for small screens */
+  }
 }
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-  .column {flex: 100%}
-  .row {display: block;}
+/* Small devices (portrait tablets and large phones, 600px–768px) */
+@media only screen and (min-width: 601px) and (max-width: 767px) {
+  .row {
+    display: block;
+  }
+  .column {
+    flex: 100%;
+    padding: 0;
+  }
 }
 
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-  .column {flex: 50%}
-  .row {display: flex;}
-} 
+/* Medium devices (landscape tablets, 768px–991px) */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .row {
+    display: flex;
+  }
+  .column {
+    flex: 50%;
+    padding: 0 8px;
+  }
+}
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-  
-} 
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-  
+  .row {
+    display: flex;
+  }
+  .column {
+    flex: 50%;
+    padding: 0 16px;
+  }
 }

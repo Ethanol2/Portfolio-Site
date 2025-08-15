@@ -238,7 +238,7 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
             for node in table_node.children[0].children:
                 node.tag = "th"
 
-        return table_node
+        return ParentNode("div", [table_node], {"class":"table-wrapper"})
 
     def row_to_html(block: str) -> ParentNode:
         block = block[6:-2].strip()
