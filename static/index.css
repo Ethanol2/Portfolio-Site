@@ -55,16 +55,16 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  /* padding: 8px 20px; */
 }
 
 .header-top {
-  margin-bottom: 4px;
+  padding-bottom: 8px;
 }
 .header-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 8px;
 }
 
 .logo {
@@ -157,25 +157,11 @@
 
 /* Slide-down animation for the menu */
 .hamburger-menu {
-  max-height: 0;
   overflow: hidden;
-  opacity: 0;
   transition: max-height 0.4s ease, opacity 0.4s ease;
-  display: flex;
-  flex-direction: column;
+  display: contents;
+  flex-direction: row;
   width: 100%;
-}
-
-.hamburger-menu.open {
-  max-height: 500px; /* enough for links */
-  opacity: 1;
-}
-
-/* Individual links styling */
-.hamburger-menu .nav-links a,
-.hamburger-menu .contact-links a {
-  display: block;
-  padding: 8px 0;
 }
 
 /*#endregion */
@@ -357,11 +343,12 @@ p img.inline_img {
 /*#endregion */
 
 /*#region Screen Size Rules*/
-/* Extra small devices (phones, up to 600px) */
+/* Extra small devices (phones, up to 615px) */
 @media only screen and (max-width: 615px) {
   /*#region Header*/
    .header-top {
     display: flex;
+    margin-bottom: 0;
     align-items: center;
     width: 100%;
   }
@@ -369,7 +356,7 @@ p img.inline_img {
   .header-bottom {
     flex-direction: column;
     width: 100%;
-    margin-top: 8px;
+    padding-top: 4px;
   }
 
   .header-bottom.show {
@@ -377,7 +364,7 @@ p img.inline_img {
   }
 
   .nav-links a {
-    padding: 8px 0;
+    margin: 8px 0;
     font-size: 0.9rem;
   }
 
@@ -388,6 +375,26 @@ p img.inline_img {
 
   .hamburger {
     display: flex;
+  }
+
+  .hamburger-menu
+  {
+    opacity: 0;
+    max-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hamburger-menu.open {
+    opacity: 1;
+    max-height: 500px;
+  }
+
+  /* Individual links styling */
+  .hamburger-menu .nav-links a,
+  .hamburger-menu .contact-links a {
+    display: block;
+    padding: 8px 0;
   }
   /*#endregion */
 
