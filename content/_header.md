@@ -1,5 +1,4 @@
-![Ethan Colucci](images/profilePic2025.png){class=inline_img}
-Ethan Colucci
+![Ethan Colucci](images/profilePic2025.png){class=inline_img} Ethan Colucci
 
 [Home](./)
 [Projects](projects.html)
