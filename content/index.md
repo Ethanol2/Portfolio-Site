@@ -97,6 +97,28 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 
 ## Education
 
+### Boot.Dev - Backend Development
+
+[My Boot.Dev Portfolio](https://www.boot.dev/u/easyspecial23)
+
+-- Row
+#### Courses
+- [Learn to Code in Python](https://www.boot.dev/courses/learn-code-python)
+- [Learn Linux](https://www.boot.dev/courses/learn-linux)
+- [Learn Git](https://www.boot.dev/courses/learn-git)
+- [Learn Object Orientated Programming in Python](https://www.boot.dev/courses/learn-object-oriented-programming-python)
+- [Learn Functional Programming in Python](https://www.boot.dev/courses/learn-functional-programming-python)
+- [Learn Data Structures and Algorithms in Python](https://www.boot.dev/courses/learn-data-structures-and-algorithms-python)
+- [Learn Memory Management in C](https://www.boot.dev/courses/learn-memory-management-c)
+
+#### Guided Projects
+- [Build a Bookbot in Python](https://www.boot.dev/courses/build-bookbot-python)
+- [Build Asteroids using Python and Pygame](https://www.boot.dev/courses/build-asteroids-python)
+- [Build and AI Agent in Python](https://www.boot.dev/courses/build-ai-agent-python)
+- [Build a Static Site Generator in Python](https://www.boot.dev/courses/build-static-site-generator-python)
+--
+
+### School
 :::csv_headers
 Institution, Degree, Date
 "University of Ontario Institute of Technology", "Bachelor of IT with honors in Game Development and Entrepreneurship", "September 2015 – April 2019"
