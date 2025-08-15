@@ -2,16 +2,23 @@
   <div class="header-content">
     
     <div class="header-top">
-        <h1 class="logo">{Title}</h1>
+        <h1 class="logo">{{ Title }}</h1>
+        <button class="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
     </div>
     
     <div class="header-bottom">
+      <div class="hamburger-menu">
         <nav class="nav-links">
-            {Nav Links}
+            {{ Nav Links }}
         </nav>
-        <div class="contact-links">
-            {Contact Links}
-        </div>
+        <nav class="contact-links">
+            {{ Contact Links }}
+        </nav>
+      </div>
     </div>
 
   </div>

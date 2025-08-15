@@ -4,15 +4,19 @@ const headerShow = 'header-show';
 const headerHidden = 'header-hidden';
 const scrollThreshold = 5;
 
+const hamburger = document.querySelector('.hamburger');
+const menu = document.querySelector('.hamburger-menu');
+
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
 
     if (Math.abs(currentScroll - lastScroll) < scrollThreshold)
         return;
-
+    
     if (currentScroll > lastScroll && currentScroll > header.offsetHeight)
     {
         header.classList.add(headerHidden);
+        menu.classList.remove('open');
     }
     else if (header.classList.contains(headerHidden))
     {
@@ -24,4 +28,8 @@ window.addEventListener('scroll', () => {
     }
 
     lastScroll = currentScroll;
+});
+
+hamburger.addEventListener('click', () => {
+  menu.classList.toggle('open');
 });

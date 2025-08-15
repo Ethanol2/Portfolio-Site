@@ -3,6 +3,7 @@ import shutil
 import sys
 
 from markdownblock import markdown_to_html_node, extract_title, header_block_to_html
+from htmlnode import LeafNode
 
 def main():
 
@@ -39,7 +40,22 @@ def main():
     # Populate public folder
     header_html, title_suffix = generate_header(content_path, header_template_path)
     copy_dir_to_dir(static_path, public_path)
-    generate_pages_recursive(base_path, content_path, template_path, public_path, header_html, title_suffix)
+    js_html = generate_js_html(public_path)
+    generate_pages_recursive(base_path, content_path, template_path, public_path, header_html, js_html, title_suffix)
+
+def generate_js_html(content_path: str) -> str:
+
+    html = ""
+    for item in os.listdir(content_path):
+        path = os.path.join(content_path, item)
+        if os.path.isfile(path):
+            if '.js' in item:
+                html += '\n' + LeafNode("script", "", {"src":item}).to_html()
+        else:
+            html += generate_js_html(path)
+    
+    return html.strip()
+
 
 def generate_header(content_path: str, header_template_path: str) -> tuple[str, str]:
 
@@ -69,9 +85,9 @@ def generate_header(content_path: str, header_template_path: str) -> tuple[str, 
         template_contents = f.read()
         f.close()
     
-    template_contents = template_contents.replace("{Title}", title_content.to_html())
-    template_contents = template_contents.replace("{Nav Links}", nav_links.to_html())
-    template_contents = template_contents.replace("{Contact Links}", contact_links.to_html())
+    template_contents = template_contents.replace("{{ Title }}", title_content.to_html())
+    template_contents = template_contents.replace("{{ Nav Links }}", nav_links.to_html())
+    template_contents = template_contents.replace("{{ Contact Links }}", contact_links.to_html())
 
     return template_contents, title_suffix
 
@@ -89,7 +105,7 @@ def copy_dir_to_dir(source: str, destination: str):
 
 
 def generate_pages_recursive(
-    base_path: str, dir_path_content: str, template_path: str, dest_dir_path: str, header_html: str, title_suffix: str
+    base_path: str, dir_path_content: str, template_path: str, dest_dir_path: str, header_html: str, js_html: str, title_suffix: str
 ):
 
     for item in os.listdir(dir_path_content):
@@ -98,12 +114,12 @@ def generate_pages_recursive(
         dest_path = os.path.join(dest_dir_path, item)
 
         if os.path.isdir(path):
-            generate_pages_recursive(base_path, path, template_path, dest_path, header_html, title_suffix)
+            generate_pages_recursive(base_path, path, template_path, dest_path, header_html, js_html, title_suffix)
         elif os.path.isfile(path) and ".md" in path:
-            generate_page(base_path, path, template_path, dest_path[:-3] + ".html", header_html, title_suffix)
+            generate_page(base_path, path, template_path, dest_path[:-3] + ".html", header_html, js_html, title_suffix)
 
 
-def generate_page(base_path: str, src_path: str, template_path: str, dest_path: str, header_html: str, title_suffix):
+def generate_page(base_path: str, src_path: str, template_path: str, dest_path: str, header_html: str, js_html: str, title_suffix):
 
     if os.path.basename(src_path)[0] == '_':
         return
@@ -127,6 +143,7 @@ def generate_page(base_path: str, src_path: str, template_path: str, dest_path: 
     template_contents = template_contents.replace("{{ Header }}", header_html)
     template_contents = template_contents.replace("{{ Title }}", title)
     template_contents = template_contents.replace("{{ Content }}", html_node.to_html())
+    template_contents = template_contents.replace("{{ JavaScript }}", js_html)
     template_contents = template_contents.replace('href="/', f'href="{base_path}')
     template_contents = template_contents.replace('src="/', f'src="{base_path}')
 
