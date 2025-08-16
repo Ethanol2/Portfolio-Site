@@ -1,0 +1,67 @@
+header:
+  tag: "header"
+  props: 
+    - class: "site-header"
+  children:
+    - header-top:
+        tag: "div"
+        props:
+          - class: "header-top"
+        children:
+          - title:
+              tag: "h1"
+              props:
+                - class: "logo"
+              children:
+                 - logo: 
+                    tag: "img"
+                    props:
+                      - class: "inline-img"
+                    src: "images/profilePic2025.png"
+                    alt: "Ethan Colucci"
+                 - title:
+                    value: "Ethan Colucci"
+          - hamburger:
+              tag: "button"
+              props:
+                - class: "hamburger"
+                - aria-label: "Toggle Menu"
+              children:
+                - span:
+                    tag: "span"
+                - span:
+                    tag: "span"
+                - span:
+                    tag: "span"
+    - header-bottom:
+        tag: "div"
+        props:
+          - class: "header-bottom"
+        children:
+          - hamburger-menu:
+              tag: "div"
+              props:
+                - class: "hamburger-menu"
+              children:
+                - nav-links:
+                    tag: "nav"
+                    props:
+                      - class: "nav-links"
+                    children:
+                      - Home:
+                          tag: "url"
+                          props
+
+
+
+  div:
+title:
+  text: "Ethan Colucci"
+  class: "logo"
+  image:
+    src: "images/profilePic2025.png"
+    alt: "Ethan Colucci"
+    class: "inline-img"
+
+nav:
+  class: 

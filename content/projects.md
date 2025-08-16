@@ -1,3 +1,7 @@
+---
+title: Projects | Ethan Colucci
+---
+
 # Examples of my Work
 
 ## VR Vision

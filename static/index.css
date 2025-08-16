@@ -306,16 +306,16 @@ table th, table td {
   text-align: left;
 }
 
-h1 img.inline_img,
-h2 img.inline_img,
-h3 img.inline_img,
-h4 img.inline_img,
-h5 img.inline_img,
-h6 img.inline_img,
-td img.inline_img,
-ul img.inline_img,
-ol img.inline_img,
-p img.inline_img {
+h1 img.inline-img,
+h2 img.inline-img,
+h3 img.inline-img,
+h4 img.inline-img,
+h5 img.inline-img,
+h6 img.inline-img,
+td img.inline-img,
+ul img.inline-img,
+ol img.inline-img,
+p img.inline-img {
   display: inline-block;
   vertical-align: middle;
   width: 40px;

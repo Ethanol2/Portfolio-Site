@@ -2,22 +2,26 @@ import os
 import shutil
 import sys
 
-from markdownblock import markdown_to_html_node, extract_title, header_block_to_html
+from markdownblock import markdown_to_html_node_and_metadata, extract_title, header_block_to_html
 from htmlnode import LeafNode
+from templatelibrary import TemplateLibrary
 
 def main():
 
-    base_path = "/"
+    base_path = ""
 
     # Get base path
     if len(sys.argv) > 1:
         base_path = sys.argv[1]
 
     # Create paths
-    static_path = "static/"
-    content_path = "content/"
-    template_path = "template.html"
-    header_template_path = "header_template.html"
+    static_path = os.path.join(base_path, "static/")
+    content_path = os.path.join(base_path, "content/")
+    data_path = os.path.join(base_path, "data/")
+    templates_path = os.path.join(base_path, "templates/")
+
+    # To be removed
+    header_template_path = os.path.join(base_path, "templates/header_template.html")
 
     public_path = "docs/"
 
@@ -26,10 +30,10 @@ def main():
         raise Exception(f'The static folder doesn\'t exist. "{static_path}"')
     if not os.path.exists(content_path):
         raise Exception(f'The content folder doesn\'t exist. "{content_path}"')
-    if not os.path.exists(template_path):
-        raise Exception(f'The HTML template is missing. "{template_path}"')
-    if not os.path.exists(header_template_path):
-        raise Exception(f'The header HTML template is missing. "{header_template_path}"')
+    if not os.path.exists(data_path):
+        raise Exception(f'The data folder doesn\'t exist. "{data_path}"')
+    if not os.path.exists(templates_path):
+        raise Exception(f'The HTML templates folder is missing. "{templates_path}"')
 
     # Clear the public folder
     if os.path.exists(public_path):
@@ -37,11 +41,14 @@ def main():
 
     os.mkdir(public_path)
 
+    # Find Templates
+    templates= TemplateLibrary(templates_path, base_path)
+
     # Populate public folder
-    header_html, title_suffix = generate_header(content_path, header_template_path)
+    header_html = generate_header(data_path, header_template_path)
     copy_dir_to_dir(static_path, public_path)
     js_html = generate_js_html(public_path)
-    generate_pages_recursive(base_path, content_path, template_path, public_path, header_html, js_html, title_suffix)
+    generate_pages_recursive(content_path, templates, public_path, header_html, js_html)
 
 def generate_js_html(content_path: str) -> str:
 
@@ -57,7 +64,7 @@ def generate_js_html(content_path: str) -> str:
     return html.strip()
 
 
-def generate_header(content_path: str, header_template_path: str) -> tuple[str, str]:
+def generate_header(content_path: str, header_template_path: str) -> str:
 
     header_path = os.path.join(content_path, "_header.md")
     if not os.path.exists(header_path):
@@ -73,11 +80,6 @@ def generate_header(content_path: str, header_template_path: str) -> tuple[str, 
     nav_links = header_block_to_html(blocks[1])
     contact_links = header_block_to_html(blocks[2])
 
-    title_suffix = " | "
-    for node in title_content.children:
-        if node.tag == "":
-            title_suffix += node.value
-
     for node in contact_links.children:
         node.props["target"] = "_blank"
 
@@ -89,7 +91,7 @@ def generate_header(content_path: str, header_template_path: str) -> tuple[str, 
     template_contents = template_contents.replace("{{ Nav Links }}", nav_links.to_html())
     template_contents = template_contents.replace("{{ Contact Links }}", contact_links.to_html())
 
-    return template_contents, title_suffix
+    return template_contents
 
 def copy_dir_to_dir(source: str, destination: str):
 
@@ -104,9 +106,7 @@ def copy_dir_to_dir(source: str, destination: str):
             copy_dir_to_dir(src_joined_path, tgt_joined_path)
 
 
-def generate_pages_recursive(
-    base_path: str, dir_path_content: str, template_path: str, dest_dir_path: str, header_html: str, js_html: str, title_suffix: str
-):
+def generate_pages_recursive(dir_path_content: str, templates: TemplateLibrary, dest_dir_path: str, header_html: str, js_html: str):
 
     for item in os.listdir(dir_path_content):
 
@@ -114,38 +114,36 @@ def generate_pages_recursive(
         dest_path = os.path.join(dest_dir_path, item)
 
         if os.path.isdir(path):
-            generate_pages_recursive(base_path, path, template_path, dest_path, header_html, js_html, title_suffix)
+            generate_pages_recursive(path, templates, dest_path, header_html, js_html)
         elif os.path.isfile(path) and ".md" in path:
-            generate_page(base_path, path, template_path, dest_path[:-3] + ".html", header_html, js_html, title_suffix)
+            generate_page(templates, path, dest_path[:-3] + ".html", header_html, js_html)
 
 
-def generate_page(base_path: str, src_path: str, template_path: str, dest_path: str, header_html: str, js_html: str, title_suffix):
-
-    if os.path.basename(src_path)[0] == '_':
-        return
-
-    print(f"Generating page from {src_path} to {dest_path} using {template_path}")
-
-    if src_path is None or template_path is None or dest_path is None:
-        raise Exception("Error: All paths must have a value")
+def generate_page(templates: TemplateLibrary, src_path: str, dest_path: str, header_html: str, js_html: str):
 
     with open(src_path) as f:
         file_contents = f.read()
         f.close()
 
-    html_node = markdown_to_html_node(file_contents)
-    title = extract_title(html_node) + title_suffix
+    html_node, metadata = markdown_to_html_node_and_metadata(file_contents)
+    
+    if "title" in metadata.keys():
+        title = metadata["title"]
+    else:
+        title = extract_title(html_node)
+        
+    template_name = "default"
+    if "layout" in metadata.keys():
+        template_name = metadata["layout"]
+        
+    template_contents = templates.get_template(template_name)
 
-    with open(template_path) as f:
-        template_contents = f.read()
-        f.close()
-
+    print(f'Generating page from {src_path} to {dest_path} using the "{template_name}" template')
+    
     template_contents = template_contents.replace("{{ Header }}", header_html)
     template_contents = template_contents.replace("{{ Title }}", title)
     template_contents = template_contents.replace("{{ Content }}", html_node.to_html())
     template_contents = template_contents.replace("{{ JavaScript }}", js_html)
-    template_contents = template_contents.replace('href="/', f'href="{base_path}')
-    template_contents = template_contents.replace('src="/', f'src="{base_path}')
 
     dest_path_split = dest_path.split("/")
     if not os.path.isfile(dest_path_split[0]):

@@ -1,5 +1,5 @@
 import unittest
-from markdownblock import markdown_to_blocks
+from markdownblock import markdown_to_blocks_and_metadata
 
 
 class TestMarkdownToBlocks(unittest.TestCase):
@@ -14,7 +14,7 @@ This is the same paragraph on a new line
 - This is a list
 - with items
 """
-        blocks = markdown_to_blocks(md)
+        blocks = markdown_to_blocks_and_metadata(md)
         self.assertEqual(
             blocks,
             [
@@ -27,17 +27,17 @@ This is the same paragraph on a new line
     def test_single_block(self):
         text = "This is a single paragraph with **bold** and _italic_."
         expected = ["This is a single paragraph with **bold** and _italic_."]
-        self.assertListEqual(markdown_to_blocks(text), expected)
+        self.assertListEqual(markdown_to_blocks_and_metadata(text), expected)
 
     def test_two_blocks(self):
         text = "First paragraph.\n\nSecond paragraph."
         expected = ["First paragraph.", "Second paragraph."]
-        self.assertListEqual(markdown_to_blocks(text), expected)
+        self.assertListEqual(markdown_to_blocks_and_metadata(text), expected)
 
     def test_three_blocks_with_extra_newlines(self):
         text = "Para one.\n\n\n\nPara two.\n\nPara three."
         expected = ["Para one.", "Para two.", "Para three."]
-        self.assertListEqual(markdown_to_blocks(text), expected)
+        self.assertListEqual(markdown_to_blocks_and_metadata(text), expected)
 
     def test_blocks_with_mixed_content(self):
         text = (
@@ -50,19 +50,19 @@ This is the same paragraph on a new line
             "![img](https://img.com)",
             "Another block with [a link](https://example.com).",
         ]
-        self.assertListEqual(markdown_to_blocks(text), expected)
+        self.assertListEqual(markdown_to_blocks_and_metadata(text), expected)
 
     def test_leading_and_trailing_newlines(self):
         text = "\n\nFirst block.\n\nSecond block.\n\n\n"
         expected = ["First block.", "Second block."]
-        self.assertListEqual(markdown_to_blocks(text), expected)
+        self.assertListEqual(markdown_to_blocks_and_metadata(text), expected)
 
     def test_no_blocks_empty_string(self):
         text = ""
         expected = []
-        self.assertListEqual(markdown_to_blocks(text), expected)
+        self.assertListEqual(markdown_to_blocks_and_metadata(text), expected)
 
     def test_only_whitespace_and_newlines(self):
         text = "   \n \n\n  \n"
         expected = []
-        self.assertListEqual(markdown_to_blocks(text), expected)
+        self.assertListEqual(markdown_to_blocks_and_metadata(text), expected)

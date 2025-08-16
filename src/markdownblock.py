@@ -41,7 +41,7 @@ HTML_BLOCK_TAGS = {
 }
 
 
-def markdown_to_blocks(markdown: str) -> list[str]:
+def markdown_to_blocks_and_metadata(markdown: str) -> tuple[list[str], dict[str,str]]:
 
     blocks = markdown.split("\n\n")
 
@@ -50,7 +50,9 @@ def markdown_to_blocks(markdown: str) -> list[str]:
         if len(blocks[i]) == 0:
             blocks.pop(i)
 
-    return blocks
+    blocks, metadata = extract_metadata(blocks)
+    
+    return blocks, metadata
 
 
 def block_to_block_type(block: str) -> BlockType:
@@ -172,7 +174,7 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
     def csv_to_html(has_headers: bool, block: str) -> ParentNode:
 
         def markdown_cell_to_html(cell: str) -> list:
-            cell_blocks = markdown_to_blocks(cell)
+            cell_blocks = markdown_to_blocks_and_metadata(cell)[0]
             cell_node = markdown_blocks_to_html(cell_blocks)
             return cell_node.children
 
@@ -246,7 +248,7 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
         
         column_html_nodes = []
         for column in columns:
-            column_block = markdown_to_blocks(column)
+            column_block = markdown_to_blocks_and_metadata(column)[0]
             column_html = markdown_blocks_to_html(column_block)
             column_html.props = {"class":"column"}
 
@@ -301,11 +303,11 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
             return ParentNode(HTML_BLOCK_TAGS[BlockType.PARAGRAPH], children_nodes)
 
 
-def markdown_to_html_node(markdown: str) -> ParentNode:
+def markdown_to_html_node_and_metadata(markdown: str) -> tuple[ParentNode, dict[str,str]]:
 
-    blocks = markdown_to_blocks(markdown)
+    blocks, metadata = markdown_to_blocks_and_metadata(markdown)
 
-    return markdown_blocks_to_html(blocks)
+    return markdown_blocks_to_html(blocks), metadata
 
 
 def markdown_blocks_to_html(blocks: list[str]) -> ParentNode:
@@ -358,6 +360,25 @@ def extract_title(parent_node: ParentNode) -> str:
 
             return text
     raise Exception("Error: Markdown file should have a main heading (Heading 1)")
+
+def extract_metadata(blocks: list[str]) -> tuple[list[str], dict[str, str]]:
+    
+    metadata_block = blocks[0]
+    
+    # No meta data syntax at the top of the file
+    if metadata_block[:4] != '---\n' or metadata_block[-4:] != '\n---':
+        return blocks, {}
+    
+    props = {}
+    
+    metadata = metadata_block.split('\n')
+    for line in metadata[1:-1]:
+        values = line.split(':', 1)
+        props[values[0].strip()] = values[1].strip()
+        
+    return blocks[1:], props
+            
+    
 
 def header_block_to_html(block: str) -> ParentNode:
     text_nodes = text_to_textnodes(block)
