@@ -265,8 +265,10 @@ img {
   box-shadow: 0 0 10px var(--img-border);
 }
 
-iframe {
-  max-width: 100%;
+iframe {  
+  width: fill-available;
+  width: -webkit-fill-available;
+  width: -moz-available;
   aspect-ratio: 16/9;
   border-radius: 6px;
   border: 2px solid var(--img-border);
