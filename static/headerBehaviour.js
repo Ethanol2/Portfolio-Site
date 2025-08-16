@@ -17,6 +17,7 @@ window.addEventListener('scroll', () => {
     {
         header.classList.add(headerHidden);
         menu.classList.remove('open');
+        hamburger.classList.remove('active');
     }
     else if (header.classList.contains(headerHidden))
     {
