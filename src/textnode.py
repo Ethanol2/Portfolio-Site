@@ -92,6 +92,10 @@ def split_nodes_delimiter(
         marker = 0
         while i < len(node.text):
 
+            if "<img" in node.text[i : i + 4]:
+                while node.text[i] != '>':
+                    i += 1
+            
             if node.text[i : i + delim_len] == delimiter:
 
                 new_nodes.append(TextNode(node.text[marker:i], TextType.PLAIN))
@@ -132,73 +136,34 @@ def extract_markdown_youtube(text: str) -> list[tuple[str, str]]:
     matches = re.findall(r"@\[(.*?)\]\((.*?)\)", text)
     return matches
 
-
-def split_nodes_images(old_nodes: list[TextNode]) -> list[TextNode]:
+def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
     new_nodes = []
 
-    for node in old_nodes:
-
-        if not isinstance(node, TextNode):
-            continue
+    for node in old_nodes:        
         if node.text_type != TextType.PLAIN:
             new_nodes.append(node)
             continue
-
+        
         imgs = extract_markdown_images(node.text)
-
-        if len(imgs) == 0:
-            new_nodes.append(node)
-            continue
-
-        last_index = 0
-        for image in imgs:
-
-            nodes, last_index = process_image(image, node.text, last_index)
-            new_nodes += nodes
-
-        if last_index < len(node.text):
-            new_nodes.append(
-                TextNode(node.text[last_index : len(node.text)], TextType.PLAIN)
-            )
-
-    return new_nodes
-
-def process_image(image: tuple[str, str, str], node_text: str, last_index: int) -> tuple[list[TextNode],int]:
-    new_nodes = []
-    
-    has_extra_tags = image[2] != ""
-    extra_tags = {}
-
-    if has_extra_tags:
-        tag_pairs = re.split(r',(\w+\s*=\s*"[^"]*")', image[2])
-        for tag_pair in tag_pairs:
-            if tag_pair != '':
-                tag_split = tag_pair.split("=", 1)
-                extra_tags[tag_split[0]] = tag_split[1].replace('"', '')
-
-    txt_len = (
-        len(image[0])
-        + len(image[1])
-        + (len(image[2]) + 7 if has_extra_tags else 5)
-    )
-    index = node_text.find(f"![{image[0]}]", last_index)
-
-    new_nodes.append(TextNode(node_text[last_index:index], TextType.PLAIN))
-    new_nodes.append(TextNode(image[0], TextType.IMAGE, image[1], extra_tags))
-
-    return new_nodes, index + txt_len
-
-def split_nodes_links(old_nodes: list[TextNode]) -> list[TextNode]:
-    new_nodes = []
-
-    for node in old_nodes:
-
-        if not isinstance(node, TextNode):
-            continue
-        if node.text_type != TextType.PLAIN:
-            new_nodes.append(node)
-            continue
-
+        
+        for img in imgs:
+            raw_string = f'![{img[0]}]({img[1]})'
+            extra_tags = {}
+            
+            if img[2] != '':
+                raw_string += '{' + img[2] + '}'
+                
+                tag_pairs = re.split(r',(\w+\s*=\s*"[^"]*")', img[2])
+                for tag_pair in tag_pairs:
+                    if tag_pair != '':
+                        tag_split = tag_pair.split("=", 1)
+                        extra_tags[tag_split[0]] = tag_split[1].replace('"', '')
+            
+            
+            text_node = TextNode(img[0], TextType.IMAGE, img[1], extra_tags)
+            html_node = text_node_to_html_node(text_node)
+            node.text = node.text.replace(raw_string, html_node.to_html())
+        
         urls = extract_markdown_links(node.text)
 
         if len(urls) == 0:
@@ -263,8 +228,7 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     new_nodes = [TextNode(text, TextType.PLAIN)]
 
     new_nodes = split_nodes_youtube(new_nodes)
-    new_nodes = split_nodes_images(new_nodes)
-    new_nodes = split_nodes_links(new_nodes)
+    new_nodes = split_nodes_links_and_images(new_nodes)
     new_nodes = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
     new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
     new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)
