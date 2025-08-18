@@ -1,67 +1,35 @@
-header:
-  tag: "header"
-  props: 
-    - class: "site-header"
-  children:
-    - header-top:
-        tag: "div"
-        props:
-          - class: "header-top"
-        children:
-          - title:
-              tag: "h1"
-              props:
-                - class: "logo"
-              children:
-                 - logo: 
-                    tag: "img"
-                    props:
-                      - class: "inline-img"
-                    src: "images/profilePic2025.png"
-                    alt: "Ethan Colucci"
-                 - title:
-                    value: "Ethan Colucci"
-          - hamburger:
-              tag: "button"
-              props:
-                - class: "hamburger"
-                - aria-label: "Toggle Menu"
-              children:
-                - span:
-                    tag: "span"
-                - span:
-                    tag: "span"
-                - span:
-                    tag: "span"
-    - header-bottom:
-        tag: "div"
-        props:
-          - class: "header-bottom"
-        children:
-          - hamburger-menu:
-              tag: "div"
-              props:
-                - class: "hamburger-menu"
-              children:
-                - nav-links:
-                    tag: "nav"
-                    props:
-                      - class: "nav-links"
-                    children:
-                      - Home:
-                          tag: "url"
-                          props
-
-
-
-  div:
-title:
-  text: "Ethan Colucci"
-  class: "logo"
-  image:
-    src: "images/profilePic2025.png"
-    alt: "Ethan Colucci"
-    class: "inline-img"
-
-nav:
-  class: 
+header.site-header:
+  div.header-content:
+    div.header-top:
+      h1.logo:
+        - img.inline-img:
+            src: images/profilePic2025.png
+            alt: Ethan Colucci
+        - " Ethan Colucci"
+      button.hamburger:
+        aria-label: Toggle menu
+          - span
+          - span
+          - span
+    div.header-bottom:
+      div.hamburger-menu:
+        nav.nav-links:
+          - "./": Home
+          - "projects.html": Projects
+        nav.contact-links:
+          - "https://github.com/Ethanol2":
+              target: _blank
+              icon:
+                src: icons/github-mark-white.svg
+                alt: GitHub
+          - "https://www.linkedin.com/in/ethan-colucci/":
+              target: _blank
+              icon:
+                src: icons/InBug-White.png
+                alt: LinkedIn
+          - "mailto:E.Colucci@outlook.com":
+              target: _blank
+              label: "E.Colucci@outlook.com"
+          - "tel:6475250156":
+              target: _blank
+              label: "(647) 525 0156"
