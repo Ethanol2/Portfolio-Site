@@ -338,6 +338,7 @@ def markdown_blocks_to_html(blocks: list[str]) -> ParentNode:
         except Exception as e:
             if i + 1 >= len(blocks):
                 print(f"Exception parsing last block.\nException: {e}")
+                i += 1
                 continue
 
             # print(

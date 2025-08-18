@@ -170,10 +170,11 @@ def process_image(image: tuple[str, str, str], node_text: str, last_index: int) 
     extra_tags = {}
 
     if has_extra_tags:
-        tag_pairs = image[2].split(",")
+        tag_pairs = re.split(r',(\w+\s*=\s*"[^"]*")', image[2])
         for tag_pair in tag_pairs:
-            tag_split = tag_pair.split("=")
-            extra_tags[tag_split[0]] = tag_split[1]
+            if tag_pair != '':
+                tag_split = tag_pair.split("=", 1)
+                extra_tags[tag_split[0]] = tag_split[1].replace('"', '')
 
     txt_len = (
         len(image[0])
@@ -197,18 +198,6 @@ def split_nodes_links(old_nodes: list[TextNode]) -> list[TextNode]:
         if node.text_type != TextType.PLAIN:
             new_nodes.append(node)
             continue
-        
-        # Check for img links
-        imgs = extract_markdown_images(node.text)
-
-        for img in imgs:
-            if img[2] == '':
-                img_str = f"![{img[0]}]({img[1]})"
-            else:
-                img_str = f"![{img[0]}]({img[1]})" + "{" + img[2] + "}"
-            
-            if f'[{img_str}]' in node.text:
-                node.text = node.text.replace(img_str, "{img}")
 
         urls = extract_markdown_links(node.text)
 
@@ -222,15 +211,8 @@ def split_nodes_links(old_nodes: list[TextNode]) -> list[TextNode]:
             index = node.text.find(f"[{url[0]}]", last_index)
 
             new_nodes.append(TextNode(node.text[last_index:index], TextType.PLAIN))
-            
-            url_text = url[0]
-            if "{img}" in url_text:
-                img = imgs.pop(0)
-                nodes = process_image(img, "", 0)[0]
-                url_text = text_node_to_html_node(nodes[1]).to_html()
+            new_nodes.append(TextNode(url[0], TextType.URL, url[1]))
 
-            new_nodes.append(TextNode(url_text, TextType.URL, url[1]))
-            
             last_index = index + txt_len
 
         if last_index < len(node.text):
@@ -281,8 +263,8 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     new_nodes = [TextNode(text, TextType.PLAIN)]
 
     new_nodes = split_nodes_youtube(new_nodes)
-    new_nodes = split_nodes_links(new_nodes)
     new_nodes = split_nodes_images(new_nodes)
+    new_nodes = split_nodes_links(new_nodes)
     new_nodes = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
     new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
     new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)

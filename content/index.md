@@ -7,10 +7,23 @@ title: Home | Ethan Colucci
 -- Row
 Driven and adaptable Game Developer with 7 years of experience building interactive experiences, including 4 years in professional environments. Currently specializing in Unity, C#, and Virtual Reality (VR) development for training and simulation. I create immersive, high-performance applications by combining strong technical foundations with creative design thinking. Experienced across VR, mobile, and traditional platforms, I thrive on solving complex problems, rapidly learning new technologies, and collaborating across disciplines to deliver polished results.
 
-![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height=300}
+![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height="300"}
 --
 
 ---
+
+## My Links
+
+-- Row
+### Get in Touch
+📧 [E.Colucci@outlook.com](mailto:E.Colucci@outlook.com)
+![LinkedIn](icons/InBug-White.png){class="inline-img"} [LinkedIn](https://www.linkedin.com/in/ethan-colucci/)
+
+### Explore my Work
+[Projects](projects.html)
+![GitHub](icons/github-mark-white.svg){class="inline-img",style="height:27.2px; border:none; border-radius:0px; box-shadow:none"} [GitHub](https://github.com/Ethanol2/)
+
+--
 
 ## Skills and Technologies
 
