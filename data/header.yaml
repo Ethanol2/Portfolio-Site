@@ -7,10 +7,9 @@ header.site-header:
             alt: Ethan Colucci
         - " Ethan Colucci"
       button.hamburger:
-        aria-label: Toggle menu
-          - span
-          - span
-          - span
+        - span
+        - span
+        - span
     div.header-bottom:
       div.hamburger-menu:
         nav.nav-links:
@@ -18,18 +17,12 @@ header.site-header:
           - "projects.html": Projects
         nav.contact-links:
           - "https://github.com/Ethanol2":
-              target: _blank
               icon:
                 src: icons/github-mark-white.svg
                 alt: GitHub
           - "https://www.linkedin.com/in/ethan-colucci/":
-              target: _blank
               icon:
                 src: icons/InBug-White.png
                 alt: LinkedIn
           - "mailto:E.Colucci@outlook.com":
-              target: _blank
               label: "E.Colucci@outlook.com"
-          - "tel:6475250156":
-              target: _blank
-              label: "(647) 525 0156"

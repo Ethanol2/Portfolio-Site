@@ -5,6 +5,7 @@ import sys
 from markdownblock import markdown_to_html_node_and_metadata, extract_title, header_block_to_html
 from htmlnode import LeafNode
 from templatelibrary import TemplateLibrary
+from yamlblock import yaml_to_html_node
 
 def main():
 
@@ -66,7 +67,7 @@ def generate_js_html(content_path: str) -> str:
 
 def generate_header(content_path: str, header_template_path: str) -> str:
 
-    header_path = os.path.join(content_path, "_header.md")
+    header_path = os.path.join(content_path, "header.yaml")
     if not os.path.exists(header_path):
         raise Exception(f'The header.md is missing in the content folder. "{content_path}"')
 
@@ -74,25 +75,8 @@ def generate_header(content_path: str, header_template_path: str) -> str:
         file_contents = f.read()
         f.close()
     
-    blocks = file_contents.split("\n\n")
-
-    title_content = header_block_to_html(blocks[0])
-    nav_links = header_block_to_html(blocks[1])
-    contact_links = header_block_to_html(blocks[2])
-
-    for node in contact_links.children:
-        node.props["target"] = "_blank"
-
-    with open(header_template_path) as f:
-        template_contents = f.read()
-        f.close()
+    return yaml_to_html_node(file_contents).to_html()
     
-    template_contents = template_contents.replace("{{ Title }}", title_content.to_html())
-    template_contents = template_contents.replace("{{ Nav Links }}", nav_links.to_html())
-    template_contents = template_contents.replace("{{ Contact Links }}", contact_links.to_html())
-
-    return template_contents
-
 def copy_dir_to_dir(source: str, destination: str):
 
     for item in os.listdir(source):
