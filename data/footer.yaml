@@ -1,0 +1,22 @@
+footer.site-footer:
+  div.footer-nav:
+    - "./": Home
+    - "projects.html": Projects
+    - "https://drive.google.com/file/d/1RsVWCJFhy8Cvwiau8d3baaBwhGKGhaxt/view?usp=sharing" : "Resume"
+  
+  div.footer-contacts:
+    - "https://github.com/Ethanol2":
+        img:
+          src: icons/github-mark-white.svg
+          alt: GitHub
+        label: " GitHub"
+    - "https://www.linkedin.com/in/ethan-colucci/":
+        img:
+          src: icons/InBug-White.png
+          alt: LinkedIn
+        label: " LinkedIn"
+    - "mailto:E.Colucci@outlook.com":
+        label: "E.Colucci@outlook.com"
+  
+  div.footer-bottom:
+    - "&copy; 2025 Ethan Colucci. All rights reserved."

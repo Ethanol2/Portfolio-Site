@@ -20,11 +20,11 @@ header.site-header:
           - "https://drive.google.com/file/d/1RsVWCJFhy8Cvwiau8d3baaBwhGKGhaxt/view?usp=sharing" : "Resume"
         nav.contact-links:
           - "https://github.com/Ethanol2":
-              icon:
+              img:
                 src: icons/github-mark-white.svg
                 alt: GitHub
           - "https://www.linkedin.com/in/ethan-colucci/":
-              icon:
+              img:
                 src: icons/InBug-White.png
                 alt: LinkedIn
           - "mailto:E.Colucci@outlook.com":

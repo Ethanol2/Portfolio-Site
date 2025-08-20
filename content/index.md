@@ -130,11 +130,11 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - [Learn Data Structures and Algorithms in Python](https://www.boot.dev/courses/learn-data-structures-and-algorithms-python)
 - [Learn Memory Management in C](https://www.boot.dev/courses/learn-memory-management-c)
 
-#### Guided Projects
-- [Build a Bookbot in Python](https://www.boot.dev/courses/build-bookbot-python)
-- [Build Asteroids using Python and Pygame](https://www.boot.dev/courses/build-asteroids-python)
-- [Build and AI Agent in Python](https://www.boot.dev/courses/build-ai-agent-python)
-- [Build a Static Site Generator in Python](https://www.boot.dev/courses/build-static-site-generator-python)
+#### Guided Projects ![GitHub](icons/github-mark-white.svg)
+- [Build a Bookbot in Python](https://github.com/Ethanol2/bookbot)
+- [Build Asteroids using Python and Pygame](https://github.com/Ethanol2/pygame-asteroids)
+- [Build and AI Agent in Python](https://github.com/Ethanol2/Ai-Agent)
+- [Build a Static Site Generator in Python](https://github.com/Ethanol2/Static-Site-Generator)
 --
 
 ### School

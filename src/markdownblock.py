@@ -378,10 +378,3 @@ def extract_metadata(blocks: list[str]) -> tuple[list[str], dict[str, str]]:
         props[values[0].strip()] = values[1].strip()
         
     return blocks[1:], props
-            
-    
-
-def header_block_to_html(block: str) -> ParentNode:
-    text_nodes = text_to_textnodes(block)
-    html_nodes = [text_node_to_html_node(node) for node in text_nodes]
-    return ParentNode("", html_nodes)

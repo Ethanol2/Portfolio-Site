@@ -72,7 +72,7 @@ def create_parent_node(tag_class: str) -> ParentNode:
         props = props
     )
     
-def parse_link(data, uri: str) -> LeafNode:
+def parse_link(data, uri: str) -> HTMLNode:
     
     text_node = TextNode('', TextType.URL, uri)
     
@@ -81,11 +81,11 @@ def parse_link(data, uri: str) -> LeafNode:
         
     elif isinstance(data, dict):
         
-        if data.get('icon') != None:
-            text_node.text = ImageLeafNode(data['icon']).to_html()
+        if data.get('img') != None:
+            text_node.text += ImageLeafNode(data['img']).to_html()
             
-        elif data.get('label') != None:
-            text_node.text = create_html_recursive(data['label']).to_html()
+        if data.get('label') != None:
+            text_node.text += create_html_recursive(data['label']).to_html()
             
     return text_node_to_html_node(text_node)
 

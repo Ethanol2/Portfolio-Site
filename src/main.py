@@ -2,7 +2,7 @@ import os
 import shutil
 import sys
 
-from markdownblock import markdown_to_html_node_and_metadata, extract_title, header_block_to_html
+from markdownblock import markdown_to_html_node_and_metadata, extract_title
 from htmlnode import LeafNode
 from templatelibrary import TemplateLibrary
 from yamlblock import yaml_to_html_node
@@ -20,9 +20,6 @@ def main():
     content_path = os.path.join(base_path, "content/")
     data_path = os.path.join(base_path, "data/")
     templates_path = os.path.join(base_path, "templates/")
-
-    # To be removed
-    header_template_path = os.path.join(base_path, "templates/header_template.html")
 
     public_path = "docs/"
 
@@ -46,10 +43,11 @@ def main():
     templates= TemplateLibrary(templates_path, base_path)
 
     # Populate public folder
-    header_html = generate_header(data_path, header_template_path)
+    header_html = generate_html_from_yaml(data_path, "header.yaml")
+    footer_html = generate_html_from_yaml(data_path, "footer.yaml")
     copy_dir_to_dir(static_path, public_path)
     js_html = generate_js_html(public_path)
-    generate_pages_recursive(content_path, templates, public_path, header_html, js_html)
+    generate_pages_recursive(content_path, templates, public_path, header_html, js_html, footer_html)
 
 def generate_js_html(content_path: str) -> str:
 
@@ -65,13 +63,13 @@ def generate_js_html(content_path: str) -> str:
     return html.strip()
 
 
-def generate_header(content_path: str, header_template_path: str) -> str:
+def generate_html_from_yaml(content_path: str, file_name: str) -> str:
 
-    header_path = os.path.join(content_path, "header.yaml")
-    if not os.path.exists(header_path):
-        raise Exception(f'The header.md is missing in the content folder. "{content_path}"')
+    file_path = os.path.join(content_path, file_name)
+    if not os.path.exists(file_path):
+        raise Exception(f'The file "{file_name}" is missing in the content folder. "{content_path}"')
 
-    with open(header_path) as f:
+    with open(file_path) as f:
         file_contents = f.read()
         f.close()
     
@@ -90,7 +88,7 @@ def copy_dir_to_dir(source: str, destination: str):
             copy_dir_to_dir(src_joined_path, tgt_joined_path)
 
 
-def generate_pages_recursive(dir_path_content: str, templates: TemplateLibrary, dest_dir_path: str, header_html: str, js_html: str):
+def generate_pages_recursive(dir_path_content: str, templates: TemplateLibrary, dest_dir_path: str, header_html: str, js_html: str, footer_html: str):
 
     for item in os.listdir(dir_path_content):
 
@@ -98,12 +96,12 @@ def generate_pages_recursive(dir_path_content: str, templates: TemplateLibrary, 
         dest_path = os.path.join(dest_dir_path, item)
 
         if os.path.isdir(path):
-            generate_pages_recursive(path, templates, dest_path, header_html, js_html)
+            generate_pages_recursive(path, templates, dest_path, header_html, js_html, footer_html)
         elif os.path.isfile(path) and ".md" in path:
-            generate_page(templates, path, dest_path[:-3] + ".html", header_html, js_html)
+            generate_page(templates, path, dest_path[:-3] + ".html", header_html, js_html, footer_html)
 
 
-def generate_page(templates: TemplateLibrary, src_path: str, dest_path: str, header_html: str, js_html: str):
+def generate_page(templates: TemplateLibrary, src_path: str, dest_path: str, header_html: str, js_html: str, footer_html: str):
 
     with open(src_path) as f:
         file_contents = f.read()
@@ -128,6 +126,7 @@ def generate_page(templates: TemplateLibrary, src_path: str, dest_path: str, hea
     template_contents = template_contents.replace("{{ Title }}", title)
     template_contents = template_contents.replace("{{ Content }}", html_node.to_html())
     template_contents = template_contents.replace("{{ JavaScript }}", js_html)
+    template_contents = template_contents.replace("{{ Footer }}", footer_html)
 
     dest_path_split = dest_path.split("/")
     if not os.path.isfile(dest_path_split[0]):

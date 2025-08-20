@@ -26,6 +26,11 @@ window.addEventListener('scroll', () => {
         header.classList.remove(headerShow);
         void header.offsetWidth;
         header.classList.add(headerShow);
+
+        setTimeout(() => 
+            {
+                header.classList.remove(headerShow);
+            }, 3000);
     }
 
     lastScroll = currentScroll;
