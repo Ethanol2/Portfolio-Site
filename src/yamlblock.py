@@ -1,5 +1,5 @@
 import os
-from yaml import safe_load, safe_dump
+from yaml import safe_load
 from urllib.parse import urlparse
 
 from htmlnode import ParentNode, LeafNode, ImageLeafNode, HTMLNode
@@ -9,29 +9,37 @@ def yaml_to_html_node(block: str) -> HTMLNode:
     
     parsed = safe_load(block)
     
-    key = next(iter(parsed))
-    return create_html_recursive(parsed[key], key)
+    return create_html_recursive(parsed)
 
-def create_html_recursive(data, key: str) -> HTMLNode:
+def create_html_recursive(data, key: str = '') -> HTMLNode:
     
     children = []
+    
+    if isinstance(key, (dict, list)):
+        return create_html_recursive(key)
+    
     if isinstance(data, dict):
         
         if key == '':
             key = next(iter(data))
             
         if ('.html' in key) or ('./' in key) or ('mailto:' in key) or ('tel:' in key) or (uri_validator(key)):
-            return parse_link(key, data[key])
-        elif ('img' in key):
+            return parse_link(data[key], key)
+        
+        if ('img' in key):
             parent_node = create_parent_node(key)
             parent_node.props |= data[key]
-            return parent_node
+            return parent_node        
+            
+        parent_node = create_parent_node(key)
+        
+        if isinstance(data[key], dict):       
+            for item in data[key]:
+                children.append(create_html_recursive(data[key], item))
         else:
-            parent_node = create_parent_node(key)
-        
-        for item in data:        
-            children.append(create_html_recursive(data[item], item))
-        
+            for item in data[key]:
+                children.append(create_html_recursive(item))
+                
         parent_node.children = children
         return parent_node
     
@@ -39,7 +47,7 @@ def create_html_recursive(data, key: str) -> HTMLNode:
         parent_node = create_parent_node(key)
         
         for item in data:
-            children.append(create_html_recursive(item, ''))
+            children.append(create_html_recursive(item))
         parent_node.children = children
         return parent_node
     
@@ -64,19 +72,20 @@ def create_parent_node(tag_class: str) -> ParentNode:
         props = props
     )
     
-def parse_link(link: str, data) -> LeafNode:
+def parse_link(data, uri: str) -> LeafNode:
     
-    text_node = TextNode('', TextType.URL, link)
+    text_node = TextNode('', TextType.URL, uri)
     
     if isinstance(data, str):
         text_node.text = data
         
     elif isinstance(data, dict):
+        
         if data.get('icon') != None:
-               text_node.text = ImageLeafNode(data['icon']).to_html()
+            text_node.text = ImageLeafNode(data['icon']).to_html()
             
         elif data.get('label') != None:
-            text_node.text = data['label']
+            text_node.text = create_html_recursive(data['label']).to_html()
             
     return text_node_to_html_node(text_node)
 

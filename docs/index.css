@@ -73,7 +73,12 @@
   font-weight: 700;
   color: var(--heading);
   text-shadow: 0 0 8px var(--heading), 0 0 12px var(--heading);
+  transition: border-color 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
   margin: 0;
+}
+
+.logo:hover {
+  text-shadow: 0 0 8px var(--link-hover), 0 0 12px var(--link-hover);
 }
 
 .nav-links a {
@@ -230,6 +235,19 @@ a:hover {
   color: var(--link-hover);
   border-color: var(--link-hover);
   text-shadow: 0 0 8px var(--link-hover);
+}
+a img {
+  height: 16px;
+  width: 16px;
+  filter: drop-shadow(0 0 3px var(--link));
+  transition: filter 0.2s ease;
+  border: none;
+  box-shadow: none;
+  vertical-align: sub;
+}
+a:hover img {
+  filter: drop-shadow(0 0 3px var(--link-hover));
+  transition: filter 0.2s ease;
 }
 
 code {

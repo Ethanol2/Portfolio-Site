@@ -1,11 +1,13 @@
 header.site-header:
   div.header-content:
     div.header-top:
-      h1.logo:
-        - img.inline-img:
-            src: images/profilePic2025.png
-            alt: Ethan Colucci
-        - " Ethan Colucci"
+      "./": 
+        label:
+          h1.logo:
+          - img.inline-img:
+              src: images/profilePic2025.png
+              alt: Ethan Colucci
+          - " Ethan Colucci"
       button.hamburger:
         - span
         - span
@@ -15,6 +17,7 @@ header.site-header:
         nav.nav-links:
           - "./": Home
           - "projects.html": Projects
+          - "https://drive.google.com/file/d/1RsVWCJFhy8Cvwiau8d3baaBwhGKGhaxt/view?usp=sharing" : "Resume"
         nav.contact-links:
           - "https://github.com/Ethanol2":
               icon:
