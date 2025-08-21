@@ -17,7 +17,7 @@ header.site-header:
         nav.nav-links:
           - "./": Home
           - "projects.html": Projects
-          - "https://drive.google.com/file/d/1RsVWCJFhy8Cvwiau8d3baaBwhGKGhaxt/view?usp=sharing" : "Resume"
+          - "resume.html" : "Resume"
         nav.contact-links:
           - "https://github.com/Ethanol2":
               img:

@@ -3,4 +3,7 @@ document.querySelectorAll('a[href]').forEach(link => {
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
   }
+  if (link.href == window.location.href) {
+    link.classList.add("active");
+  }
 });

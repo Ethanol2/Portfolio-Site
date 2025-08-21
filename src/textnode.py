@@ -1,6 +1,6 @@
 import re
 from enum import Enum
-from htmlnode import HTMLNode, LeafNode, ImageLeafNode, YoutubeLeafNode
+from htmlnode import HTMLNode, LeafNode, ImageLeafNode, YoutubeLeafNode, PassthroughLeafNode
 
 
 class TextType(Enum):
@@ -11,6 +11,7 @@ class TextType(Enum):
     URL = "url"
     IMAGE = "image"
     YOUTUBE = "youtube"
+    PASSTHROUGH = "passthrough"
 
 
 HTML_TEXT_TAGS = {
@@ -67,6 +68,9 @@ def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
 
         case TextType.YOUTUBE:
             return YoutubeLeafNode(props={"src": text_node.url})
+        
+        case TextType.PASSTHROUGH:
+            return PassthroughLeafNode(text_node.text)
 
         case __:
             return LeafNode(
@@ -126,15 +130,49 @@ def extract_markdown_images(text: str) -> list[tuple[str, str, str]]:
     matches = re.findall(r"!\[([^\]]*)\]\(([^)]+)\)(?:\{([^}]*)\})?", text)
     return matches
 
-
 def extract_markdown_links(text: str) -> list[tuple[str, str]]:
     matches = re.findall(r"(?<!\!)\[(.*?)\]\((.*?)\)", text)
     return matches
 
-
 def extract_markdown_youtube(text: str) -> list[tuple[str, str]]:
     matches = re.findall(r"@\[(.*?)\]\((.*?)\)", text)
     return matches
+
+def extract_markdown_passthrough(text: str) -> list[str]:
+    #matches = re.findall(r"(?:^|[^\\]|\\\\)\{([^}]*)\}", text)
+    #return matches
+    
+    results = []
+    stack = []
+    start = None
+    i = 0
+    while i < len(text):
+        char = text[i]
+
+        # Check if this "{" is escaped
+        if char == '{':
+            # Count backslashes before '{'
+            backslashes = 0
+            j = i - 1
+            while j >= 0 and text[j] == '\\':
+                backslashes += 1
+                j -= 1
+
+            if backslashes % 2 == 0:  # even number of "\" → not escaped
+                if not stack:
+                    start = i
+                stack.append('{')
+
+        elif char == '}':
+            if stack:
+                stack.pop()
+                if not stack and start is not None:
+                    results.append(text[start + 1:i])  # exclude braces
+                    start = None
+
+        i += 1
+
+    return results
 
 def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
     new_nodes = []
@@ -153,9 +191,9 @@ def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
             if img[2] != '':
                 raw_string += '{' + img[2] + '}'
                 
-                tag_pairs = re.split(r',(\w+\s*=\s*"[^"]*")', img[2])
+                tag_pairs = re.split(r'(\w+\s*=\s*"[^"]*")', img[2])
                 for tag_pair in tag_pairs:
-                    if tag_pair != '':
+                    if tag_pair.strip() != '':
                         tag_split = tag_pair.split("=", 1)
                         extra_tags[tag_split[0]] = tag_split[1].replace('"', '')
             
@@ -187,6 +225,33 @@ def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
 
     return new_nodes
 
+def split_nodes_passthrough(old_nodes: list[TextNode]) -> list[TextNode]:
+    new_nodes = []
+    
+    for node in old_nodes:
+        
+        if not isinstance(node, TextNode):
+            continue
+        if node.text_type != TextType.PLAIN:
+            new_nodes.append(node)
+            continue
+        
+        text = node.text.replace('{}', '')
+        matches = extract_markdown_passthrough(text)
+        
+        for match in matches:            
+            if len(match) == 0:
+                continue
+            
+            split = text.split(match, 1)
+            new_nodes.append(TextNode(split[0][:-1], TextType.PLAIN))
+            new_nodes.append(TextNode(match, TextType.PASSTHROUGH))
+            text = split[1][1:]
+        
+        if len(text) > 0:
+            new_nodes.append(TextNode(text, TextType.PLAIN))
+    
+    return new_nodes
 
 def split_nodes_youtube(old_nodes: list[TextNode]) -> list[TextNode]:
     new_nodes = []
@@ -229,6 +294,7 @@ def text_to_textnodes(text: str) -> list[TextNode]:
 
     new_nodes = split_nodes_youtube(new_nodes)
     new_nodes = split_nodes_links_and_images(new_nodes)
+    new_nodes = split_nodes_passthrough(new_nodes)
     new_nodes = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
     new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
     new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)

@@ -152,29 +152,6 @@ class TestTextNode(unittest.TestCase):
             ("link2", "https://i.imgur.com/zjjcJKZ.png")
             ], matches)
     
-    def test_split_images(self):
-        node = TextNode(
-            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
-            TextType.PLAIN,
-        )
-        new_nodes = split_nodes_images([node])        
-        
-        # for node in new_nodes:
-        #     print("\n")
-        #     print(node)
-        
-        self.assertListEqual(
-            [
-                TextNode("This is text with an ", TextType.PLAIN),
-                TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
-                TextNode(" and another ", TextType.PLAIN),
-                TextNode(
-                    "second image", TextType.IMAGE, "https://i.imgur.com/3elNhQu.png"
-                ),
-            ],
-            new_nodes,
-        )
-    
     def test_split_links(self):
         node = TextNode(
             "This is text with a [link](https://i.imgur.com/zjjcJKZ.png) and another [second link](https://i.imgur.com/3elNhQu.png)",
@@ -199,29 +176,6 @@ class TestTextNode(unittest.TestCase):
         )
 
     # Test Main Split Function ==================================================================
-    def test_general_split_one(self):
-        
-        new_nodes = text_to_textnodes("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)")
-        
-        # for node in new_nodes:
-        #     print("\n")
-        #     print(node)
-        
-        correct_nodes = [
-            TextNode("This is ", TextType.PLAIN),
-            TextNode("text", TextType.BOLD),
-            TextNode(" with an ", TextType.PLAIN),
-            TextNode("italic", TextType.ITALIC),
-            TextNode(" word and a ", TextType.PLAIN),
-            TextNode("code block", TextType.CODE),
-            TextNode(" and an ", TextType.PLAIN),
-            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-            TextNode(" and a ", TextType.PLAIN),
-            TextNode("link", TextType.URL, "https://boot.dev"),
-        ]
-        
-        self.assertListEqual(new_nodes, correct_nodes)
-    
     def test_basic_formatting(self):
         text = "This is **bold** and _italic_ and a [link](https://site.com)."
         expected = [
@@ -232,26 +186,6 @@ class TestTextNode(unittest.TestCase):
             TextNode(" and a ", TextType.PLAIN),
             TextNode("link", TextType.URL, "https://site.com"),
             TextNode(".", TextType.PLAIN)
-        ]
-        self.assertListEqual(text_to_textnodes(text), expected)
-
-    def test_image_and_formatting(self):
-        text = "![logo](https://img.com/logo.png) Welcome to the **Show**!"
-        expected = [
-            TextNode("logo", TextType.IMAGE, "https://img.com/logo.png"),
-            TextNode(" Welcome to the ", TextType.PLAIN),
-            TextNode("Show", TextType.BOLD),
-            TextNode("!", TextType.PLAIN)
-        ]
-        self.assertListEqual(text_to_textnodes(text), expected)
-
-    def test_link_and_image_mixed(self):
-        text = "Visit [GitHub](https://github.com) and see ![icon](https://img.com/icon.png)"
-        expected = [
-            TextNode("Visit ", TextType.PLAIN),
-            TextNode("GitHub", TextType.URL, "https://github.com"),
-            TextNode(" and see ", TextType.PLAIN),
-            TextNode("icon", TextType.IMAGE, "https://img.com/icon.png")
         ]
         self.assertListEqual(text_to_textnodes(text), expected)
 
@@ -281,23 +215,6 @@ class TestTextNode(unittest.TestCase):
         ]
         self.assertListEqual(text_to_textnodes(text), expected)
     
-    def test_repeated_identical_images(self):
-        text = "This is the same text once ![image](https://www.img.com/img) and twice ![image](https://www.img.com/img)"
-        expected = [
-            TextNode("This is the same text once ", TextType.PLAIN),
-            TextNode("image", TextType.IMAGE, "https://www.img.com/img"),
-            TextNode(" and twice ", TextType.PLAIN),
-            TextNode("image", TextType.IMAGE, "https://www.img.com/img")
-        ]
-        
-        new_nodes = text_to_textnodes(text)
-        
-        # for node in new_nodes:
-        #     print("\n")
-        #     print(node)
-        
-        self.assertListEqual(new_nodes, expected)
-
     def test_repeated_identical_links(self):
         text = "Check [here](https://example.com) and again [here](https://example.com)"
         expected = [
@@ -315,7 +232,108 @@ class TestTextNode(unittest.TestCase):
         
         self.assertListEqual(new_nodes, expected)
 
+    def test_plain_image(self):
+        text = "Here is an ![alt text](https://example.com/img.png)"
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        self.assertEqual(
+            html,
+            'Here is an <img src="https://example.com/img.png" alt="alt text"/>'
+        )
+
+    def test_plain_link(self):
+        text = "Here is a [link](https://example.com)"
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        self.assertEqual(
+            html,
+            'Here is a <a href="https://example.com">link</a>'
+        )
+
+    def test_image_inside_link(self):
+        text = "Click this [![alt](https://example.com/img.png)](https://example.com)"
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        self.assertEqual(
+            html,
+            'Click this <a href="https://example.com"><img src="https://example.com/img.png" alt="alt"/></a>'
+        )
+
+    def test_link_with_text_and_image(self):
+        text = "[Check this ![alt](https://example.com/img.png)](https://example.com)"
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        self.assertEqual(
+            html,
+            '<a href="https://example.com">Check this <img src="https://example.com/img.png" alt="alt"/></a>'
+        )
+
+    def test_malformed_image(self):
+        # Missing closing parenthesis, should fall back to plain text
+        text = "Broken ![alt](https://example.com/img.png"
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        self.assertEqual(
+            html,
+            "Broken ![alt](https://example.com/img.png"
+        )
+
+    def test_malformed_link(self):
+        # Missing closing bracket, should fall back to plain text
+        text = "Broken [link(https://example.com)"
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        self.assertEqual(
+            html,
+            "Broken [link(https://example.com)"
+        )
     
+    def test_image_with_class(self):
+        text = 'Here is an ![Img](img.com/img.png){class="special-img"}'
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        self.assertEqual(
+            html,
+            'Here is an <img src="img.com/img.png" alt="Img" class="special-img"/>'
+        )
+
+    def test_image_with_multiple_attributes(self):
+        text = '![Logo](logo.png){class="logo" id="main-logo"}'
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        self.assertEqual(
+            html,
+            '<img src="logo.png" alt="Logo" class="logo" id="main-logo"/>'
+        )
+
+    def test_image_with_empty_attributes(self):
+        text = '![Alt](pic.png){}'
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        # Empty braces should just be ignored
+        self.assertEqual(
+            html,
+            '<img src="pic.png" alt="Alt"/>'
+        )
+
+    def test_image_in_link_with_attribute(self):
+        text = '[![Alt](pic.png){class="small"}](https://example.com)'
+        nodes = text_to_textnodes(text)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        self.assertEqual(
+            html,
+            '<a href="https://example.com"><img src="pic.png" alt="Alt" class="small"/></a>'
+        )
     
 if __name__ == "__main__":
     unittest.main()

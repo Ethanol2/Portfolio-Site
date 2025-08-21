@@ -17,7 +17,7 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 -- Row
 
 - [Projects Showcase](projects.html)
-- [Download Resume](https://drive.google.com/file/d/1RsVWCJFhy8Cvwiau8d3baaBwhGKGhaxt/view?usp=sharing)
+- [My Resume](resume.html)
 
 - [![GitHub](icons/github-mark-white.svg) GitHub](https://github.com/Ethanol2)
 - [![LinkedIn](icons/InBug-White.png) LinkedIn](https://www.linkedin.com/in/ethan-colucci/)
@@ -103,14 +103,7 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - Collaborated with clients to define project goals and timelines  
 - Developed projects using Unity  
 - Communicated effectively and adapted to client needs  
-- Quickly learned and implemented new APIs  
-
-### ![s&c logo](images/company-logos/sc_electric_company_logo.jpeg){class=inline-img} S&C Canada — *Material Handler*  
-**June 2020 – October 2021**
-
-- Operated Class 2 and Class 5 Lift Trucks in tight spaces  
-- Balanced routine tasks with real-time requests from assembly line  
-- Worked independently and efficiently  
+- Quickly learned and implemented new APIs
 
 ---
 
@@ -140,6 +133,6 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 ### School
 :::csv_headers
 Institution, Degree, Date
-"University of Ontario Institute of Technology", "Bachelor of IT with honors in Game Development and Entrepreneurship", "Graduated April 2019"
-"École secondaire Toronto Ouest", "Bilingual High School Diploma (English and French)", "Graduated June 2015"
+"**University of Ontario Institute of Technology**", "Bachelor of IT with honors in Game Development and Entrepreneurship", "Graduated April 2019"
+"**École secondaire Toronto Ouest**", "Bilingual High School Diploma (English and French)", "Graduated June 2015"
 :::

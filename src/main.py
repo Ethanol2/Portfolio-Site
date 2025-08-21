@@ -2,7 +2,7 @@ import os
 import shutil
 import sys
 
-from markdownblock import markdown_to_html_node_and_metadata, extract_title
+from markdownblock import markdown_to_html_and_metadata, extract_title
 from htmlnode import LeafNode
 from templatelibrary import TemplateLibrary
 from yamlblock import yaml_to_html_node
@@ -107,13 +107,8 @@ def generate_page(templates: TemplateLibrary, src_path: str, dest_path: str, hea
         file_contents = f.read()
         f.close()
 
-    html_node, metadata = markdown_to_html_node_and_metadata(file_contents)
+    html, metadata = markdown_to_html_and_metadata(file_contents)
     
-    if "title" in metadata.keys():
-        title = metadata["title"]
-    else:
-        title = extract_title(html_node)
-        
     template_name = "default"
     if "layout" in metadata.keys():
         template_name = metadata["layout"]
@@ -123,8 +118,8 @@ def generate_page(templates: TemplateLibrary, src_path: str, dest_path: str, hea
     print(f'Generating page from {src_path} to {dest_path} using the "{template_name}" template')
     
     template_contents = template_contents.replace("{{ Header }}", header_html)
-    template_contents = template_contents.replace("{{ Title }}", title)
-    template_contents = template_contents.replace("{{ Content }}", html_node.to_html())
+    template_contents = template_contents.replace("{{ Title }}", metadata["title"])
+    template_contents = template_contents.replace("{{ Content }}", html)
     template_contents = template_contents.replace("{{ JavaScript }}", js_html)
     template_contents = template_contents.replace("{{ Footer }}", footer_html)
 

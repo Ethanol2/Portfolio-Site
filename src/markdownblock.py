@@ -220,9 +220,8 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
 
                 elif char == '"':
                     in_quotes = True
-                    if "md" in cell:
-                        cell = ""
-                        full_markdown = True
+                    cell = ""
+                    full_markdown = True
                 else:
                     cell += char
 
@@ -302,12 +301,16 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
             children_nodes = [text_node_to_html_node(node) for node in text_nodes]
             return ParentNode(HTML_BLOCK_TAGS[BlockType.PARAGRAPH], children_nodes)
 
-
-def markdown_to_html_node_and_metadata(markdown: str) -> tuple[ParentNode, dict[str,str]]:
-
+def markdown_to_html_and_metadata(markdown: str) -> tuple[str, dict[str,str]]:
+    
     blocks, metadata = markdown_to_blocks_and_metadata(markdown)
+    blocks = markdown_blocks_to_html(blocks)
+    html = blocks.to_html()
+    
+    if "title" not in metadata.keys():
+        metadata["title"] = extract_title(blocks)
 
-    return markdown_blocks_to_html(blocks), metadata
+    return html, metadata
 
 
 def markdown_blocks_to_html(blocks: list[str]) -> ParentNode:
@@ -360,9 +363,13 @@ def extract_title(parent_node: ParentNode) -> str:
                 text += child.value
 
             return text
-    raise Exception("Error: Markdown file should have a main heading (Heading 1)")
+    print("Warning: Markdown content has no title included in its metadate, nor a main heading (h1). Page title will be blank")
+    return ''
 
 def extract_metadata(blocks: list[str]) -> tuple[list[str], dict[str, str]]:
+    
+    if len(blocks) == 0:
+        return blocks, {}
     
     metadata_block = blocks[0]
     

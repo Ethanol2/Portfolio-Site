@@ -89,6 +89,12 @@ class HorizontalLineLeafNode(LeafNode):
     def to_html(self):
         return "<hr>"
 
+class PassthroughLeafNode(LeafNode):
+    def __init__(self, value: str) -> None:
+        super().__init__('', value, {})
+
+    def to_html(self):
+        return self.value
 
 class ParentNode(HTMLNode):
     def __init__(
