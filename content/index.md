@@ -140,23 +140,6 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 ### School
 :::csv_headers
 Institution, Degree, Date
-"University of Ontario Institute of Technology", "Bachelor of IT with honors in Game Development and Entrepreneurship", "September 2015 – April 2019"
-"École secondaire Toronto Ouest", "Bilingual High School Diploma (English and French)", "June 2015"
-:::
-
----
-
-## References
-
-:::csv
-md"### VR Vision"
-"**David Tucciarone**", Manager, "david.tucciarone@vrvision.ca
-(613) 898-2979"
-"**Ahmad Askri**", Coworker, "ahmad.askri@vrvision.ca
-(647) 575-3208"
-"**Nodi Ray**", Coworker, "nodi1932@gmail.com
-(647) 772-7343"
-md"### Other"
-"**Brett Andrews**", Project Collaborator, "blamx165@gmail.com
-(613) 330-1812"
+"University of Ontario Institute of Technology", "Bachelor of IT with honors in Game Development and Entrepreneurship", "Graduated April 2019"
+"École secondaire Toronto Ouest", "Bilingual High School Diploma (English and French)", "Graduated June 2015"
 :::
