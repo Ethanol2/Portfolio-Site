@@ -12,18 +12,20 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 
 ---
 
-## My Links
+### My Links
 
 -- Row
-### Get in Touch
-📧 [E.Colucci@outlook.com](mailto:E.Colucci@outlook.com)
-![LinkedIn](icons/InBug-White.png){class="inline-img"} [LinkedIn](https://www.linkedin.com/in/ethan-colucci/)
 
-### Explore my Work
-[Projects](projects.html)
-[![GitHub](icons/github-mark-white.svg){class="inline-img",style="height:27.2px; border:none; border-radius:0px; box-shadow:none"}](https://github.com/Ethanol2/)
+- [Projects Showcase](projects.html)
+- [Download Resume](https://drive.google.com/file/d/1RsVWCJFhy8Cvwiau8d3baaBwhGKGhaxt/view?usp=sharing)
+
+- [![GitHub](icons/github-mark-white.svg) GitHub](https://github.com/Ethanol2)
+- [![LinkedIn](icons/InBug-White.png) LinkedIn](https://www.linkedin.com/in/ethan-colucci/)
+- [E.Colucci@outlook.com](mailto:E.Colucci@outlook.com)
 
 --
+
+---
 
 ## Skills and Technologies
 
