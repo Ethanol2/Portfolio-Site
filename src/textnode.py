@@ -5,7 +5,7 @@ from htmlnode import HTMLNode, LeafNode, ImageLeafNode, YoutubeLeafNode, Passthr
 
 class TextType(Enum):
     PLAIN = "plain"
-    BOLD = "bolt"
+    BOLD = "bold"
     ITALIC = "italic"
     CODE = "code"
     URL = "url"
@@ -57,17 +57,17 @@ def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
 
         case TextType.URL:
             return LeafNode(
-                tag="a", value=text_node.text, props={"href": text_node.url}
+                tag="a", value=text_node.text, props={"href": text_node.url} | text_node.extra_tags
             )
 
         case TextType.IMAGE:
             return ImageLeafNode(
-                props={"src": text_node.url, "alt": text_node.text}
-                | text_node.extra_tags
+                props={"src": text_node.url, "alt": text_node.text} | text_node.extra_tags
             )
 
         case TextType.YOUTUBE:
-            return YoutubeLeafNode(props={"src": text_node.url})
+            return YoutubeLeafNode(props={"src": text_node.url} | text_node.extra_tags
+            )
         
         case TextType.PASSTHROUGH:
             return PassthroughLeafNode(text_node.text)
@@ -130,12 +130,12 @@ def extract_markdown_images(text: str) -> list[tuple[str, str, str]]:
     matches = re.findall(r"!\[([^\]]*)\]\(([^)]+)\)(?:\{([^}]*)\})?", text)
     return matches
 
-def extract_markdown_links(text: str) -> list[tuple[str, str]]:
-    matches = re.findall(r"(?<!\!)\[(.*?)\]\((.*?)\)", text)
+def extract_markdown_links(text: str) -> list[tuple[str, str, str]]:
+    matches = re.findall(r"\[([^\]]*)\]\(([^)]+)\)(?:\{([^}]*)\})?", text)
     return matches
 
-def extract_markdown_youtube(text: str) -> list[tuple[str, str]]:
-    matches = re.findall(r"@\[(.*?)\]\((.*?)\)", text)
+def extract_markdown_youtube(text: str) -> list[tuple[str, str, str]]:
+    matches = re.findall(r"@\[([^\]]*)\]\(([^)]+)\)(?:\{([^}]*)\})?", text)
     return matches
 
 def extract_markdown_passthrough(text: str) -> list[str]:
@@ -174,6 +174,17 @@ def extract_markdown_passthrough(text: str) -> list[str]:
 
     return results
 
+def extract_special_properties(text: str) -> dict[str,str]:
+    props = {}
+    
+    tag_pairs = re.split(r'(\w+\s*=\s*"[^"]*")', text)
+    for tag_pair in tag_pairs:
+        if tag_pair.strip() != '':
+            tag_split = tag_pair.split("=", 1)
+            props[tag_split[0]] = tag_split[1].replace('"', '')
+    
+    return props
+
 def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
     new_nodes = []
 
@@ -182,6 +193,8 @@ def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
             new_nodes.append(node)
             continue
         
+        text = node.text
+        
         imgs = extract_markdown_images(node.text)
         
         for img in imgs:
@@ -189,40 +202,35 @@ def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
             extra_tags = {}
             
             if img[2] != '':
-                raw_string += '{' + img[2] + '}'
-                
-                tag_pairs = re.split(r'(\w+\s*=\s*"[^"]*")', img[2])
-                for tag_pair in tag_pairs:
-                    if tag_pair.strip() != '':
-                        tag_split = tag_pair.split("=", 1)
-                        extra_tags[tag_split[0]] = tag_split[1].replace('"', '')
-            
+                raw_string += '{' + img[2] + '}'                
+                extra_tags = extract_special_properties(img[2])            
             
             text_node = TextNode(img[0], TextType.IMAGE, img[1], extra_tags)
             html_node = text_node_to_html_node(text_node)
-            node.text = node.text.replace(raw_string, html_node.to_html())
+            text = text.replace(raw_string, html_node.to_html())
         
-        urls = extract_markdown_links(node.text)
+        urls = extract_markdown_links(text)
 
-        if len(urls) == 0:
+        if len(urls) == 0 and len(imgs) == 0:
             new_nodes.append(node)
             continue
-
-        last_index = 0
+        
         for url in urls:
-            txt_len = len(url[0]) + len(url[1]) + 4
-            index = node.text.find(f"[{url[0]}]", last_index)
-
-            new_nodes.append(TextNode(node.text[last_index:index], TextType.PLAIN))
-            new_nodes.append(TextNode(url[0], TextType.URL, url[1]))
-
-            last_index = index + txt_len
-
-        if last_index < len(node.text):
-            new_nodes.append(
-                TextNode(node.text[last_index : len(node.text)], TextType.PLAIN)
-            )
-
+            raw_string = f'[{url[0]}]({url[1]})'
+            extra_tags = {}
+            
+            if url[2] != '':
+                raw_string += '{' + url[2] + '}'
+                extra_tags = extract_special_properties(url[2])
+                
+            split = text.split(raw_string, 1)
+            new_nodes.append(TextNode(split[0], TextType.PLAIN))
+            new_nodes.append(TextNode(url[0], TextType.URL, url[1], extra_tags))
+            text = split[1]
+        
+        if len(text) > 0:
+            new_nodes.append(TextNode(text, TextType.PLAIN))
+            
     return new_nodes
 
 def split_nodes_passthrough(old_nodes: list[TextNode]) -> list[TextNode]:
@@ -263,27 +271,31 @@ def split_nodes_youtube(old_nodes: list[TextNode]) -> list[TextNode]:
         if node.text_type != TextType.PLAIN:
             new_nodes.append(node)
             continue
-
-        videos = extract_markdown_youtube(node.text)
+        
+        text = node.text
+        
+        videos = extract_markdown_youtube(text)
 
         if len(videos) == 0:
             new_nodes.append(node)
             continue
 
-        last_index = 0
         for video in videos:
-            txt_len = len(video[0]) + len(video[1]) + 5
-            index = node.text.find(f"@[{video[0]}]", last_index)
-
-            new_nodes.append(TextNode(node.text[last_index:index], TextType.PLAIN))
-            new_nodes.append(TextNode(video[0], TextType.YOUTUBE, video[1]))
-
-            last_index = index + txt_len
-
-        if last_index < len(node.text):
-            new_nodes.append(
-                TextNode(node.text[last_index : len(node.text)], TextType.PLAIN)
-            )
+            
+            raw_string = f'@[{video[0]}]({video[1]})'
+            
+            extra_tags = {}
+            if video[2] != '':
+                raw_string += '{' + video[2] + '}'
+                extra_tags = extract_special_properties(video[2])
+            
+            split = text.split(raw_string, 1)
+            new_nodes.append(TextNode(split[0], TextType.PLAIN))
+            new_nodes.append(TextNode(video[0], TextType.YOUTUBE, video[1], extra_tags))
+            text = split[1]
+        
+        if len(text) > 0:
+            new_nodes.append(TextNode(text, TextType.PLAIN))            
 
     return new_nodes
 

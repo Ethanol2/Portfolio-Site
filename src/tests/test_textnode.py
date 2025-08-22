@@ -140,7 +140,7 @@ class TestTextNode(unittest.TestCase):
         matches = extract_markdown_links(
             "This is text with a [link](https://i.imgur.com/zjjcJKZ.png)"
         )
-        self.assertListEqual([("link", "https://i.imgur.com/zjjcJKZ.png")], matches)
+        self.assertListEqual([("link", "https://i.imgur.com/zjjcJKZ.png", "")], matches)
         
     def test_extract_markdown_urls(self):
         
@@ -148,8 +148,8 @@ class TestTextNode(unittest.TestCase):
             "This is text some links; [link1](https://i.imgur.com/zjjcJKZ.png), [link2](https://i.imgur.com/zjjcJKZ.png)"
         )
         self.assertListEqual([
-            ("link1", "https://i.imgur.com/zjjcJKZ.png"),
-            ("link2", "https://i.imgur.com/zjjcJKZ.png")
+            ("link1", "https://i.imgur.com/zjjcJKZ.png", ""),
+            ("link2", "https://i.imgur.com/zjjcJKZ.png", "")
             ], matches)
     
     def test_split_links(self):
@@ -333,7 +333,23 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(
             html,
             '<a href="https://example.com"><img src="pic.png" alt="Alt" class="small"/></a>'
-        )
+        )        
+    
+    def test_link_with_attribute(self):
+        md = '[Google](https://google.com){target="_blank"}'
+        nodes = text_to_textnodes(md)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        expected = '<a href="https://google.com" target="_blank">Google</a>'
+        self.assertEqual(html, expected)
+
+    def test_link_with_multiple_attributes(self):
+        md = '[Example](https://example.com){class="link" target="_blank"}'
+        nodes = text_to_textnodes(md)
+        nodes = [text_node_to_html_node(node) for node in nodes]
+        html = "".join(n.to_html() for n in nodes)
+        expected = '<a href="https://example.com" class="link" target="_blank">Example</a>'
+        self.assertEqual(html, expected)
     
 if __name__ == "__main__":
     unittest.main()
