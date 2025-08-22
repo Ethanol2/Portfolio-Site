@@ -10,29 +10,35 @@ This page is a showcase of some of the projects I worked on while at VR Vision. 
 
 ---
 
--- Row
+::: row
+::: column
 ### VR Tutorial
 **September 6, 2024**
 I refactored the VR Vision tutorial in summer 2024, adding some new elements and removing others. The cannon was my idea, and with some workshopping, I implemented it as a demo for some of the interactions users will face. Another addition that I took the lead on is the tool system that drives the ratchet interaction. The tutorial is free to try on **ManageXR**.
 @[VR Tutorial](https://www.youtube.com/watch?v=WkB_i6dFh8c)
-
+:::
+::: column
 ### Megger Testing & Generator Fan Motor Replacement VR Training
 **May 31, 2023**
 This module is part of a larger project based on wind turbine maintenance for a client. The project is networked using **Photon PUN**.
 @[Megger Testing & Generator Fan Motor Replacement VR Training](https://www.youtube.com/watch?v=TUBfFgAgtE4)
---
+:::
+:::
 
--- Row
+::: row
+::: column
 ### Railcar Inspection Training
 **July 31, 2024**
 Developed collaboratively with an artist, this short demo module covers how a railcar is inspected during an initial basic inspection.
 @[Railcar Inspection Training](https://www.youtube.com/watch?v=uOtPLN9U_P4)
-
+:::
+::: column
 ### Proportional Valve Replacement VR Training
 **May 31, 2023**
 Another module related to the wind turbine maintenance project, also networked using **Photon PUN**.
 @[Proportional Valve Replacement VR Training](https://www.youtube.com/watch?v=u78ikhtwD4I)
---
+:::
+:::
 
 ## Projects I’ve Worked On
 

@@ -2,10 +2,13 @@ import os
 import shutil
 import sys
 
-from markdownblock import markdown_to_html_and_metadata, extract_title
-from htmlnode import LeafNode
+from markdownblock import markdown_to_html_and_metadata, ref_js_in_html
 from templatelibrary import TemplateLibrary
 from yamlblock import yaml_to_html_node
+
+JS = "javascript"
+HEADER = "header"
+FOOTER = "footer"
 
 def main():
 
@@ -41,13 +44,18 @@ def main():
 
     # Find Templates
     templates= TemplateLibrary(templates_path, base_path)
-
+    
     # Populate public folder
-    header_html = generate_html_from_yaml(data_path, "header.yaml")
-    footer_html = generate_html_from_yaml(data_path, "footer.yaml")
     copy_dir_to_dir(static_path, public_path)
-    js_html = generate_js_html(public_path)
-    generate_pages_recursive(content_path, templates, public_path, header_html, js_html, footer_html)
+    
+    # Generate Insert HTML
+    inserts = {}
+    inserts[HEADER] = generate_html_from_yaml(data_path, "header.yaml")
+    inserts[FOOTER] = generate_html_from_yaml(data_path, "footer.yaml")
+    inserts[JS] = generate_js_html(public_path)
+    
+    # Generate HTML
+    generate_pages_recursive(content_path, templates, public_path, inserts)
 
 def generate_js_html(content_path: str) -> str:
 
@@ -56,12 +64,11 @@ def generate_js_html(content_path: str) -> str:
         path = os.path.join(content_path, item)
         if os.path.isfile(path):
             if '.js' in item:
-                html += '\n' + LeafNode("script", "", {"src":item}).to_html()
+                html += '\n' + ref_js_in_html(item)
         else:
             html += generate_js_html(path)
     
     return html.strip()
-
 
 def generate_html_from_yaml(content_path: str, file_name: str) -> str:
 
@@ -88,7 +95,7 @@ def copy_dir_to_dir(source: str, destination: str):
             copy_dir_to_dir(src_joined_path, tgt_joined_path)
 
 
-def generate_pages_recursive(dir_path_content: str, templates: TemplateLibrary, dest_dir_path: str, header_html: str, js_html: str, footer_html: str):
+def generate_pages_recursive(dir_path_content: str, templates: TemplateLibrary, dest_dir_path: str, html_inserts: dict[str, str]):
 
     for item in os.listdir(dir_path_content):
 
@@ -96,32 +103,36 @@ def generate_pages_recursive(dir_path_content: str, templates: TemplateLibrary, 
         dest_path = os.path.join(dest_dir_path, item)
 
         if os.path.isdir(path):
-            generate_pages_recursive(path, templates, dest_path, header_html, js_html, footer_html)
+            generate_pages_recursive(path, templates, dest_path, html_inserts)
         elif os.path.isfile(path) and ".md" in path:
-            generate_page(templates, path, dest_path[:-3] + ".html", header_html, js_html, footer_html)
+            generate_page(templates, path, dest_path[:-3] + ".html", html_inserts)
 
 
-def generate_page(templates: TemplateLibrary, src_path: str, dest_path: str, header_html: str, js_html: str, footer_html: str):
+def generate_page(templates: TemplateLibrary, src_path: str, dest_path: str, html_inserts: dict[str, str]):
 
     with open(src_path) as f:
         file_contents = f.read()
         f.close()
 
-    html, metadata = markdown_to_html_and_metadata(file_contents)
+    try:
+        html, metadata = markdown_to_html_and_metadata(file_contents)
+    except Exception as e:
+        print(f'The file at "{src_path}" caused an exception to occur:\n{e}')
+        return
     
     template_name = "default"
     if "layout" in metadata.keys():
-        template_name = metadata["layout"]
+        template_name = metadata["layout"].lower()
         
     template_contents = templates.get_template(template_name)
 
     print(f'Generating page from {src_path} to {dest_path} using the "{template_name}" template')
     
-    template_contents = template_contents.replace("{{ Header }}", header_html)
+    template_contents = template_contents.replace("{{ Header }}", html_inserts[HEADER])
     template_contents = template_contents.replace("{{ Title }}", metadata["title"])
     template_contents = template_contents.replace("{{ Content }}", html)
-    template_contents = template_contents.replace("{{ JavaScript }}", js_html)
-    template_contents = template_contents.replace("{{ Footer }}", footer_html)
+    template_contents = template_contents.replace("{{ JavaScript }}", html_inserts[JS])
+    template_contents = template_contents.replace("{{ Footer }}", html_inserts[FOOTER])
 
     dest_path_split = dest_path.split("/")
     if not os.path.isfile(dest_path_split[0]):

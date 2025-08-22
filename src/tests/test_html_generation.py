@@ -95,6 +95,111 @@ This is another paragraph with _italic_ text and `code` here
             '</div>'
         )
         self.assertEqual(html, expected)
+        
+    def test_simple_container(self):
+        md = """\
+    ::: note
+    This is a note.
+    :::
+    """
+        html, _ = markdown_to_html_and_metadata(md)
+        print(html)
+        self.assertIn('<div class="note">', html)
+        self.assertIn('This is a note.', html)
+        self.assertTrue(html.strip().endswith('</div>'))
+
+
+    def test_nested_containers(self):
+        md = """\
+    ::: row
+    ::: column
+    Content A
+    :::
+    ::: column
+    Content B
+    :::
+    :::
+    """
+        html, _ = markdown_to_html_and_metadata(md)
+        self.assertIn('<div class="row">', html)
+        self.assertEqual(html.count('<div class="column">'), 2)
+        self.assertIn('Content A', html)
+        self.assertIn('Content B', html)
+
+
+    def test_container_wraps_csv_table(self):
+        md = """\
+    ::: special-table
+    ::: csv
+    a,b,c
+    1,2,3
+    :::
+    :::
+    """
+        html, _ = markdown_to_html_and_metadata(md)
+        self.assertIn('<div class="special-table">', html)
+        self.assertIn('<table', html)
+        self.assertIn('<tr>', html)
+        self.assertIn('<td>1</td>', html)
+
+
+    # def test_multiple_classes_and_attributes(self):
+    #     md = """\
+    # ::: row large data-info="foo"
+    # Hello
+    # :::
+    # """
+    #     html, _ = markdown_to_html_and_metadata(md)
+    #     self.assertIn('<div class="row large"', html)
+    #     self.assertIn('data-info="foo"', html)
+    #     self.assertIn('Hello', html)
+
+
+    def test_empty_container(self):
+        md = """\
+    :::
+    :::
+    """
+        html, _ = markdown_to_html_and_metadata(md)
+        self.assertTrue('<div>' in html or '<div ' in html)
+        self.assertIn('</div>', html)
+
+    def test_csv_block(self):
+        md = """\
+    ::: csv
+    a,b,c
+    1,2,3
+    4,5,6
+    :::
+    """
+        html, _ = markdown_to_html_and_metadata(md)
+        # Expect a table without a thead
+        self.assertIn('<table', html)
+        self.assertNotIn('<thead>', html)
+        self.assertIn('<tr>', html)
+        self.assertIn('<td>a</td>', html)
+        self.assertIn('<td>1</td>', html)
+        self.assertIn('<td>6</td>', html)
+
+
+    def test_csv_headers_block(self):
+        md = """\
+    ::: csv_headers
+    a,b,c
+    1,2,3
+    4,5,6
+    :::
+    """
+        html, _ = markdown_to_html_and_metadata(md)
+        # Expect a table with a thead and th cells
+        self.assertIn('<table', html)
+        self.assertIn('<thead>', html)
+        self.assertIn('<th>a</th>', html)
+        self.assertIn('<th>b</th>', html)
+        self.assertIn('<th>c</th>', html)
+        self.assertIn('<td>1</td>', html)
+        self.assertIn('<td>6</td>', html)
+
 
 if __name__ == "__main__":
     unittest.main()

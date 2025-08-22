@@ -8,8 +8,12 @@ class TemplateLibrary:
         
         templates = self.__import_templates(templates_path)
         
+        if len(templates) == 0:
+            raise Exception(f'Error: No templates found in the templates folder. "{templates_path}"')
+        
         if "default" not in templates.keys():
-            raise Exception(f'Error: No default template included in template folder. "{templates_path}"')
+            first_key = next(iter(templates))
+            templates["default"] = templates[first_key]
         
         for template in templates.keys():
             template_contents = templates[template]
@@ -36,7 +40,7 @@ class TemplateLibrary:
                         template_contents = f.read()
                         f.close()
                     
-                    templates[item[:-5]] = template_contents
+                    templates[item[:-5].lower()] = template_contents
             else:
                 templates = templates | self.__import_templates(path)
         
