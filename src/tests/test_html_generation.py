@@ -23,7 +23,7 @@ This is another paragraph with _italic_ text and `code` here
         html = markdown_to_html_and_metadata(md)[0]
         self.assertEqual(
             html,
-            "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
+            "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff</code></pre></div>",
         )
 
     def test_lists_headings_quotes(self):
@@ -39,7 +39,7 @@ This is another paragraph with _italic_ text and `code` here
         )
         self.assertEqual(
             markdown_to_html_and_metadata("1. Item one\n2. Item two\n3. Item three")[0],
-            "<div><ol><li>Item one</li><li>Item two</li><li>Item three</li></ol></div>",
+            '<div><ol start="1"><li>Item one</li><li>Item two</li><li>Item three</li></ol></div>',
         )
         self.assertEqual(
             markdown_to_html_and_metadata("> This is a quote.\n> It has two lines.")[0],
@@ -199,6 +199,78 @@ This is another paragraph with _italic_ text and `code` here
         self.assertIn('<th>c</th>', html)
         self.assertIn('<td>1</td>', html)
         self.assertIn('<td>6</td>', html)
+
+    def test_ordered_list_start_at_one(self):
+        md = """1. First
+2. Second
+3. Third"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            '<ol start="1">'
+            "<li>First</li>"
+            "<li>Second</li>"
+            "<li>Third</li>"
+            "</ol>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_ordered_list_start_at_three(self):
+        md = """3. Third
+4. Fourth"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            '<ol start="3">'
+            "<li>Third</li>"
+            "<li>Fourth</li>"
+            "</ol>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_ordered_list_start_at_ten(self):
+        md = """10. Tenth
+11. Eleventh"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            '<ol start="10">'
+            "<li>Tenth</li>"
+            "<li>Eleventh</li>"
+            "</ol>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_ordered_list_single_item_high_start(self):
+        md = """42. The Answer"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            '<ol start="42">'
+            "<li>The Answer</li>"
+            "</ol>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_ordered_list_with_gap(self):
+        md = """7. First
+9. Skipped one"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            '<ol start="7">'
+            "<li>First</li>"
+            "</ol>"
+            '<ol start="9">'
+            "<li>Skipped one</li>"
+            "</ol>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
 
 
 if __name__ == "__main__":

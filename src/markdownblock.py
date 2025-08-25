@@ -1,5 +1,6 @@
 import re
 from enum import Enum
+from typing import Any
 from htmlnode import ParentNode, LeafNode, HorizontalLineLeafNode
 from textnode import TextNode, TextType, text_to_textnodes, text_node_to_html_node
 
@@ -42,14 +43,10 @@ HTML_BLOCK_TAGS = {
 }
 
 # Returns the block, the type and the remainder
-def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[str, BlockType, list[str]]:
+def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[Any, BlockType, list[str]]:
     
     if markdown_lines[0].strip() == '':
         return '', BlockType.NONE, markdown_lines[1:] 
-    
-    if len(markdown_lines) == 1: 
-        if len(markdown_lines[0]) < 3:
-            return markdown_lines[0], BlockType.PARAGRAPH, []
 
     lines = markdown_lines
     lines[0] = lines[0].strip()
@@ -89,7 +86,7 @@ def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[str, BlockTyp
                 if i >= len(lines):
                     raise Exception('Error: Code marker "```" never closed')
                                 
-                return code, BlockType.CODE, lines[i + 1:]
+                return code.strip(), BlockType.CODE, lines[i + 1:]
 
         case ">":
                         
@@ -103,37 +100,39 @@ def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[str, BlockTyp
                 i += 1
             
             if len(quote) > 0:
-                return quote, BlockType.QUOTE, lines[i:]
+                return quote.strip(), BlockType.QUOTE, lines[i:]
 
         case "-":
             if lines[0] == "---":
                 return lines[0], BlockType.HORIZONTAL_LINE, lines[1:]
             
-            list = ""
             i = 0
             for line in lines:
                 line = line.strip()
                 if len(line) == 0 or line[:2] != "- ":
                     break
-                list += '\n' + line
+                lines[i] = lines[i][2:]
                 i += 1
             
-            if len(list) > 0:
-                return list.strip(), BlockType.UNORDERED_LIST, lines[i:]
+            if i > 0:
+                return lines[:i], BlockType.UNORDERED_LIST, lines[i:]
 
-        case "1":
-            if lines[0][:2] == '1.':
+        case "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0":
+            num_chars = lines[0].split('.', 1)
+            n = int(num_chars[0]) if num_chars[0].isdecimal() else None 
+            
+            if n is not None and lines[0].find(f'{n}. ') == 0:
                 
-                list = ""
                 i = 0
                 for i in range(len(lines)):
                     lines[i] = lines[i].strip()
-                    if len(lines[i]) == 0 or lines[i][:3] != f"{i + 1}. ":
+                    tag_len = len(f'{n}') + 2
+                    if len(lines[i]) == 0 or lines[i][:tag_len] != f"{n + i}. ":
+                        i -= 1
                         break
-                    list += '\n' + lines[i]
-                        
-                if len(list) > 0:
-                    return list.strip(), BlockType.ORDERED_LIST, lines[i + 1:]
+                    lines[i] = lines[i][tag_len:]
+                            
+                return [n] + lines[:i + 1], BlockType.ORDERED_LIST, lines[i + 1:]
 
         case ":":
             
@@ -176,7 +175,7 @@ def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[str, BlockTyp
         contents += '\n' + lines[i]
         i += 1
     
-    return contents, BlockType.PARAGRAPH, lines[i:] if i + 1 < len(lines) else []
+    return contents.strip(), BlockType.PARAGRAPH, lines[i:] if i + 1 < len(lines) else []
 
 def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
     
@@ -198,9 +197,8 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
         leaf_nodes = [text_node_to_html_node(node) for node in text_nodes]
         return ParentNode(HTML_BLOCK_TAGS[BlockType.QUOTE], leaf_nodes)
 
-    def list_to_html(tag_len: int, block: str) -> list[LeafNode]:
-        lines = block.split("\n")
-        text_nodes = [text_to_textnodes(line[tag_len:].strip()) for line in lines]
+    def list_to_html(block: str) -> list[LeafNode]:
+        text_nodes = [text_to_textnodes(line) for line in block]
         children_nodes = []
 
         for nodes in text_nodes:
@@ -212,7 +210,7 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
     def csv_to_html(has_headers: bool, block: str) -> ParentNode:
 
         def markdown_cell_to_html(cell: str) -> list:
-            cell_node = markdown_to_html(cell)
+            cell_node = markdown_to_html_node(cell)
             return cell_node.children
 
         def basic_cell_to_html(cell: str) -> list:
@@ -287,7 +285,7 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
         custom_class = split[0][3:].strip()
         block = split[1].strip()[:-3].strip()
             
-        custom_node = markdown_to_html(block)
+        custom_node = markdown_to_html_node(block)
         custom_node.props = {"class":custom_class}
 
         return custom_node
@@ -319,10 +317,10 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
             return quote_to_html(block)
 
         case BlockType.ORDERED_LIST:
-            return ParentNode(HTML_BLOCK_TAGS[BlockType.ORDERED_LIST], list_to_html(3, block))  # type: ignore
+            return ParentNode(HTML_BLOCK_TAGS[BlockType.ORDERED_LIST], list_to_html(block[1:]), {"start":block[0]})  # type: ignore
 
         case BlockType.UNORDERED_LIST:
-            return ParentNode(HTML_BLOCK_TAGS[BlockType.UNORDERED_LIST], list_to_html(2, block))  # type: ignore
+            return ParentNode(HTML_BLOCK_TAGS[BlockType.UNORDERED_LIST], list_to_html(block))  # type: ignore
 
         case BlockType.CSV:
             return csv_to_html(False, block)
@@ -334,14 +332,14 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
             return custom_to_html(block)
 
         case __:
-            text_nodes = text_to_textnodes(block.strip().replace("\n", " "))
+            text_nodes = text_to_textnodes(block.replace("\n", " "))
             children_nodes = [text_node_to_html_node(node) for node in text_nodes]
             return ParentNode(HTML_BLOCK_TAGS[BlockType.PARAGRAPH], children_nodes)
 
 def markdown_to_html_and_metadata(markdown: str) -> tuple[str, dict[str,str]]:
     
     metadata, markdown = extract_metadata(markdown)
-    blocks = markdown_to_html(markdown)
+    blocks = markdown_to_html_node(markdown)
     html = blocks.to_html()
     
     if "title" not in metadata.keys():
@@ -350,7 +348,7 @@ def markdown_to_html_and_metadata(markdown: str) -> tuple[str, dict[str,str]]:
     return html, metadata
 
 
-def markdown_to_html(markdown: str) -> ParentNode:
+def markdown_to_html_node(markdown: str) -> ParentNode:
 
     parent_html_node = ParentNode("div", [])
     remainder = markdown.splitlines()
@@ -358,6 +356,7 @@ def markdown_to_html(markdown: str) -> ParentNode:
     while len(remainder) > 0:
         
         block, block_type, remainder = markdown_to_block_and_type(remainder)
+        
         if block_type == BlockType.HORIZONTAL_LINE:
             parent_html_node.children.append(HorizontalLineLeafNode())
         elif block_type == BlockType.NONE:
