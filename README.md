@@ -102,6 +102,14 @@ Use `#` at the start of a line (1–6 levels):
   2. Second
   ```
 
+Sub lists are supported, but require either tabs or **4 spaces** for indentation
+
+```markdown
+1. First
+  - This uses a tab
+    - This uses 4 spaces
+2. Second
+```
 ---
 
 ### Code Blocks

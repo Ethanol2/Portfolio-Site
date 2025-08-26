@@ -45,6 +45,89 @@ HTML_BLOCK_TAGS = {
 # Returns the block, the type and the remainder
 def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[Any, BlockType, list[str]]:
     
+    def is_unordered_list(line: str) -> bool:
+        if line == "---":
+            return False
+        return True
+        
+    def is_ordered_list(line: str) -> tuple[bool, Any]:
+        num_chars = line.split('.', 1)
+        n = int(num_chars[0]) if num_chars[0].isdecimal() else None 
+        
+        return n is not None and line.find(f'{n}. ') == 0, n
+    
+    def get_indent_level(line: str) -> int:
+        line = line.replace('    ', '\t')
+        return line.count('\t')
+    
+    def parse_unordered_list(lines: list[str], indent_lvl: int) -> tuple[list, int]:        
+        md_list = []
+        i = 0
+        while i < len(lines):
+            
+            line = lines[i]
+            line_indent = get_indent_level(line)
+            line = line.strip()
+            
+            if line_indent - 1 == indent_lvl:
+                is_ol, n = is_ordered_list(line)
+                if is_ol:
+                    sub_list, length = parse_ordered_list(lines[i:], n, line_indent)
+                    sub_list.insert(0, BlockType.ORDERED_LIST)
+                    md_list.append(sub_list)
+                    i += length
+                elif is_unordered_list(line):
+                    sub_list, length = parse_unordered_list(lines[i:], line_indent)
+                    sub_list.insert(0, BlockType.UNORDERED_LIST)
+                    md_list.append(sub_list)
+                    i += length
+                continue
+            elif line_indent != indent_lvl:
+                break
+            
+            if len(line) == 0 or line[:2] != "- ":
+                break
+            md_list.append(line[2:])
+            i += 1
+        
+        return md_list, i
+    
+    def parse_ordered_list(lines: list[str], start_num: int, indent_lvl: int) -> tuple[list, int]:
+        md_list = []
+        md_list.append(start_num)
+        
+        i = 0
+        current_num = start_num
+        while i < len(lines):
+            line = lines[i]
+            line_indent = get_indent_level(line)
+            line = line.strip()
+            if line_indent - 1 == indent_lvl:
+                is_ol, n = is_ordered_list(line)
+                if is_ol:
+                    sub_list, length = parse_ordered_list(lines[i:], n, line_indent)
+                    sub_list.insert(0, BlockType.ORDERED_LIST)
+                    md_list.append(sub_list)
+                    i += length
+                elif is_unordered_list(line):
+                    sub_list, length = parse_unordered_list(lines[i:], line_indent)
+                    sub_list.insert(0, BlockType.UNORDERED_LIST)
+                    md_list.append(sub_list)
+                    i += length
+                continue
+            elif line_indent != indent_lvl:
+                break
+                    
+            tag_len = len(f'{start_num}') + 2
+            if len(line) == 0 or line[:tag_len] != f"{current_num}. ":
+                break
+            
+            md_list.append(line[tag_len:])
+            i += 1
+            current_num += 1
+                    
+        return md_list, i
+    
     if markdown_lines[0].strip() == '':
         return '', BlockType.NONE, markdown_lines[1:] 
 
@@ -102,37 +185,18 @@ def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[Any, BlockTyp
             if len(quote) > 0:
                 return quote.strip(), BlockType.QUOTE, lines[i:]
 
-        case "-":
-            if lines[0] == "---":
-                return lines[0], BlockType.HORIZONTAL_LINE, lines[1:]
+        case "-":            
+            if is_unordered_list(lines[0]):
+                ul_list, remainder = parse_unordered_list(lines, 0)
+                return ul_list, BlockType.UNORDERED_LIST, lines[remainder:]
             
-            i = 0
-            for line in lines:
-                line = line.strip()
-                if len(line) == 0 or line[:2] != "- ":
-                    break
-                lines[i] = lines[i][2:]
-                i += 1
-            
-            if i > 0:
-                return lines[:i], BlockType.UNORDERED_LIST, lines[i:]
+            return lines[0], BlockType.HORIZONTAL_LINE, lines[1:]
 
         case "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "0":
-            num_chars = lines[0].split('.', 1)
-            n = int(num_chars[0]) if num_chars[0].isdecimal() else None 
-            
-            if n is not None and lines[0].find(f'{n}. ') == 0:
-                
-                i = 0
-                for i in range(len(lines)):
-                    lines[i] = lines[i].strip()
-                    tag_len = len(f'{n}') + 2
-                    if len(lines[i]) == 0 or lines[i][:tag_len] != f"{n + i}. ":
-                        i -= 1
-                        break
-                    lines[i] = lines[i][tag_len:]
-                            
-                return [n] + lines[:i + 1], BlockType.ORDERED_LIST, lines[i + 1:]
+            is_ol, n = is_ordered_list(lines[0])
+            if is_ol:                
+                ol_list, remainder = parse_ordered_list(lines, n, 0)
+                return ol_list, BlockType.ORDERED_LIST, lines[remainder:]
 
         case ":":
             
@@ -177,7 +241,7 @@ def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[Any, BlockTyp
     
     return contents.strip(), BlockType.PARAGRAPH, lines[i:] if i + 1 < len(lines) else []
 
-def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
+def block_to_html_node(block, block_type: BlockType) -> ParentNode:
     
     def code_to_html(block: str) -> ParentNode:
         
@@ -197,13 +261,27 @@ def block_to_html_node(block: str, block_type: BlockType) -> ParentNode:
         leaf_nodes = [text_node_to_html_node(node) for node in text_nodes]
         return ParentNode(HTML_BLOCK_TAGS[BlockType.QUOTE], leaf_nodes)
 
-    def list_to_html(block: str) -> list[LeafNode]:
-        text_nodes = [text_to_textnodes(line) for line in block]
+    def list_to_html(block: list) -> list[LeafNode]:
+        text_nodes = []
+        
+        for line in block:
+            if isinstance(line, str):
+                text_nodes.append(text_to_textnodes(line))
+            elif isinstance(line, list):
+                block_type = line.pop(0)
+                                
+                if isinstance(block_type, BlockType):
+                    text_nodes.append(block_to_html_node(line, block_type))                
+        
         children_nodes = []
 
         for nodes in text_nodes:
-            leafs = ParentNode("li", [text_node_to_html_node(node) for node in nodes])
-            children_nodes.append(leafs)
+            leafs = ParentNode("li", [])
+            if isinstance(nodes, ParentNode):
+                children_nodes[-1].children.append(nodes)
+            else:
+                leafs.children = [text_node_to_html_node(node) for node in nodes]
+                children_nodes.append(leafs)                
 
         return children_nodes
 

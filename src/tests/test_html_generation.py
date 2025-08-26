@@ -271,6 +271,97 @@ This is another paragraph with _italic_ text and `code` here
             "</div>"
         )
         self.assertEqual(html, expected)
+    
+    def test_simple_nested_ordered_list(self):
+        md = """1. First
+    1. Sub-first
+    2. Sub-second
+2. Second"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            '<ol start="1">'
+            "<li>First"
+            '<ol start="1">'
+            "<li>Sub-first</li>"
+            "<li>Sub-second</li>"
+            "</ol>"
+            "</li>"
+            "<li>Second</li>"
+            "</ol>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_mixed_unordered_in_ordered(self):
+        md = """1. First
+    - Bullet A
+    - Bullet B
+2. Second"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            '<ol start="1">'
+            "<li>First"
+            "<ul>"
+            "<li>Bullet A</li>"
+            "<li>Bullet B</li>"
+            "</ul>"
+            "</li>"
+            "<li>Second</li>"
+            "</ol>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_nested_multiple_levels(self):
+        md = """1. One
+    1. One-One
+        - Bullet under One-One
+    2. One-Two
+2. Two"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            '<ol start="1">'
+            "<li>One"
+            '<ol start="1">'
+            "<li>One-One"
+            "<ul>"
+            "<li>Bullet under One-One</li>"
+            "</ul>"
+            "</li>"
+            "<li>One-Two</li>"
+            "</ol>"
+            "</li>"
+            "<li>Two</li>"
+            "</ol>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_nested_unordered_list_first(self):
+        md = """- A
+    1. A-One
+    2. A-Two
+- B"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<ul>"
+            "<li>A"
+            '<ol start="1">'
+            "<li>A-One</li>"
+            "<li>A-Two</li>"
+            "</ol>"
+            "</li>"
+            "<li>B</li>"
+            "</ul>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+
 
 
 if __name__ == "__main__":
