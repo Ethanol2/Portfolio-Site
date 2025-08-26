@@ -15,7 +15,7 @@ This is another paragraph with _italic_ text and `code` here
         html = markdown_to_html_and_metadata(md)[0]
         self.assertEqual(
             html,
-            "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
+            "<div><p>This is <strong>bolded</strong> paragraph text in a p tag here</p><p>This is another paragraph with <em>italic</em> text and <code>code</code> here</p></div>",
         )
 
     def test_codeblock(self):
@@ -361,8 +361,158 @@ This is another paragraph with _italic_ text and `code` here
         )
         self.assertEqual(html, expected)
 
+    def test_basic_table(self):
+        md = """| Col1 | Col2 |
+| ---- | ---- |
+| A    | B    |
+| C    | D    |"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<table>"
+            "<thead><tr><th>Col1</th><th>Col2</th></tr></thead>"
+            "<tbody>"
+            "<tr><td align=\"left\">A</td><td align=\"left\">B</td></tr>"
+            "<tr><td align=\"left\">C</td><td align=\"left\">D</td></tr>"
+            "</tbody>"
+            "</table>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
 
+    def test_alignment_table(self):
+        md = """| Left | Center | Right |
+| :--- | :----: | ----: |
+| l1   | c1     | r1    |
+| l2   | c2     | r2    |"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<table>"
+            "<thead><tr><th>Left</th><th>Center</th><th>Right</th></tr></thead>"
+            "<tbody>"
+            "<tr>"
+            "<td align=\"left\">l1</td>"
+            "<td align=\"center\">c1</td>"
+            "<td align=\"right\">r1</td>"
+            "</tr>"
+            "<tr>"
+            "<td align=\"left\">l2</td>"
+            "<td align=\"center\">c2</td>"
+            "<td align=\"right\">r2</td>"
+            "</tr>"
+            "</tbody>"
+            "</table>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
 
+    def test_table_with_extra_spaces(self):
+        md = """|  Name   | Value   |
+|   ---   |   ---   |
+|   Foo   |   Bar   |"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<table>"
+            "<thead><tr><th>Name</th><th>Value</th></tr></thead>"
+            "<tbody>"
+            "<tr><td align=\"left\">Foo</td><td align=\"left\">Bar</td></tr>"
+            "</tbody>"
+            "</table>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_table_with_missing_cells(self):
+        md = """| Col1 | Col2 | Col3 |
+| ---- | ---- | ---- |
+| a    | b    |      |
+| c    |      | e    |"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<table>"
+            "<thead><tr><th>Col1</th><th>Col2</th><th>Col3</th></tr></thead>"
+            "<tbody>"
+            "<tr><td align=\"left\">a</td><td align=\"left\">b</td><td align=\"left\"></td></tr>"
+            "<tr><td align=\"left\">c</td><td align=\"left\"></td><td align=\"left\">e</td></tr>"
+            "</tbody>"
+            "</table>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_table_with_bold_and_italic(self):
+        md = """| Col1 | Col2 |
+| ---- | ---- |
+| **bold** | _italic_ |"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<table>"
+            "<thead><tr><th>Col1</th><th>Col2</th></tr></thead>"
+            "<tbody>"
+            "<tr><td align=\"left\"><strong>bold</strong></td><td align=\"left\"><em>italic</em></td></tr>"
+            "</tbody>"
+            "</table>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_table_with_inline_code(self):
+        md = """| Code |
+| ---- |
+| `print(1)` |"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<table>"
+            "<thead><tr><th>Code</th></tr></thead>"
+            "<tbody>"
+            "<tr><td align=\"left\"><code>print(1)</code></td></tr>"
+            "</tbody>"
+            "</table>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_table_with_link_and_image(self):
+        md = """| Link | Image |
+| ---- | ----- |
+| [OpenAI](https://openai.com) | ![alt](img.png) |"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<table>"
+            "<thead><tr><th>Link</th><th>Image</th></tr></thead>"
+            "<tbody>"
+            "<tr>"
+            "<td align=\"left\"><a href=\"https://openai.com\">OpenAI</a></td>"
+            "<td align=\"left\"><img src=\"img.png\" alt=\"alt\"/></td>"
+            "</tr>"
+            "</tbody>"
+            "</table>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+
+    def test_table_with_nested_formatting(self):
+        md = """| Mixed |
+| ----- |
+| **bold and _italic_ with `code`** |"""
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<table>"
+            "<thead><tr><th>Mixed</th></tr></thead>"
+            "<tbody>"
+            "<tr><td align=\"left\"><b>bold and <i>italic</i> with <code>code</code></b></td></tr>"
+            "</tbody>"
+            "</table>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
 
 if __name__ == "__main__":
     unittest.main()

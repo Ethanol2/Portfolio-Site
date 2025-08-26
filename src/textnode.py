@@ -15,8 +15,8 @@ class TextType(Enum):
 
 
 HTML_TEXT_TAGS = {
-    TextType.BOLD: "b",
-    TextType.ITALIC: "i",
+    TextType.BOLD: "strong",
+    TextType.ITALIC: "em",
     TextType.CODE: "code",
     TextType.IMAGE: "img",
     TextType.URL: "a",
@@ -30,12 +30,12 @@ class TextNode:
         text: str,
         text_type: TextType,
         url: str = "",
-        extra_tags: dict[str, str] = {},
+        props: dict[str, str] = {},
     ) -> None:
         self.text = text
         self.text_type = text_type
         self.url = url
-        self.extra_tags = extra_tags
+        self.props = props
 
     def __eq__(self, value) -> bool:
         if not isinstance(value, TextNode):
@@ -44,11 +44,11 @@ class TextNode:
             self.text == value.text
             and self.text_type == value.text_type
             and self.url == value.url
-            and self.extra_tags == value.extra_tags
+            and self.props == value.props
         )
 
     def __repr__(self) -> str:
-        return f"TextNode({self.text}, {self.text_type}, {self.url}, {self.extra_tags})"
+        return f"TextNode({self.text}, {self.text_type}, {self.url}, {self.props})"
 
 
 def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
@@ -57,16 +57,16 @@ def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
 
         case TextType.URL:
             return LeafNode(
-                tag="a", value=text_node.text, props={"href": text_node.url} | text_node.extra_tags
+                tag="a", value=text_node.text, props={"href": text_node.url} | text_node.props
             )
 
         case TextType.IMAGE:
             return ImageLeafNode(
-                props={"src": text_node.url, "alt": text_node.text} | text_node.extra_tags
+                props={"src": text_node.url, "alt": text_node.text} | text_node.props
             )
 
         case TextType.YOUTUBE:
-            return YoutubeLeafNode(props={"src": text_node.url} | text_node.extra_tags
+            return YoutubeLeafNode(props={"src": text_node.url} | text_node.props
             )
         
         case TextType.PASSTHROUGH:

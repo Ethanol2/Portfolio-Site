@@ -17,6 +17,7 @@ class BlockType(Enum):
     QUOTE = "quote"
     UNORDERED_LIST = "unordered_list"
     ORDERED_LIST = "ordered_list"
+    TABLE = "table"
     CSV = "csv"
     CSV_WITH_HEADERS = "csv_with_headers",
     HORIZONTAL_LINE = "horizontal_line",
@@ -36,6 +37,7 @@ HTML_BLOCK_TAGS = {
     BlockType.HEADING4: "h4",
     BlockType.HEADING5: "h5",
     BlockType.HEADING6: "h6",
+    BlockType.TABLE: "table",
     BlockType.CSV: "table",
     BlockType.CSV_WITH_HEADERS: "table",
     BlockType.HORIZONTAL_LINE: "hr",
@@ -232,6 +234,28 @@ def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[Any, BlockTyp
                 else:
                     return contents, BlockType.CUSTOM, lines[i:]
 
+        case "|":
+            if lines[0][-1] == '|':
+                
+                format_line = lines[1]
+                if format_line[0] == '|' and format_line[-1] == '|':
+                    format_cells = format_line[1:-1].split('|')
+                    good_format = True
+                    for cell in format_cells:
+                        format_cells= format_cells and cell.count('-') > 0
+                    
+                    if good_format:                        
+                        i = 0
+                        table = []
+                        while i < len(lines):
+                            if lines[i][0] == '|' and lines[i][-1] == '|':
+                                table.append(lines[i])
+                            else:
+                                i -= 1
+                                break
+                            i += 1
+                            
+                        return table, BlockType.TABLE, lines[i:]
     
     contents = ""
     i = 0
@@ -358,6 +382,45 @@ def block_to_html_node(block, block_type: BlockType) -> ParentNode:
 
         return table_node
 
+    def table_to_html(block: list[str]) -> ParentNode:
+        table_node = ParentNode(HTML_BLOCK_TAGS[block_type], [])
+        
+        # Header
+        headers_node = ParentNode("thead", [ParentNode("tr", [])], {})
+        headers = block.pop(0)[1:-1].split('|')
+        for header in headers:
+            text_nodes = text_to_textnodes(header.strip())
+            headers_node.children[0].children.append(ParentNode("th", [text_node_to_html_node(node) for node in text_nodes]))
+        table_node.children.append(headers_node)
+        
+        # Formatting
+        formating = []
+        format_row = block.pop(0)[1:-1].split('|')
+        for cell in format_row:
+            cell = cell.strip()
+            if cell[-1] == ':':
+                if cell[0] == ':':
+                    alignment = "center"
+                else:
+                    alignment = "right"
+            else:
+                alignment = "left"
+            
+            formating.append(alignment)
+        
+        # Body
+        body_node = ParentNode("tbody", [])
+        for row in block:
+            cells = row[1:-1].split('|')
+            row_node = ParentNode("tr", [])
+            for i in range(len(cells)):
+                text_nodes = text_to_textnodes(cells[i].strip())
+                row_node.children.append(ParentNode("td", [text_node_to_html_node(node) for node in text_nodes], {"align":formating[i]}))
+            body_node.children.append(row_node)
+        table_node.children.append(body_node)
+        
+        return table_node
+    
     def custom_to_html(block: str) -> ParentNode:
         split = block.split('\n', 1)
         custom_class = split[0][3:].strip()
@@ -400,6 +463,9 @@ def block_to_html_node(block, block_type: BlockType) -> ParentNode:
         case BlockType.UNORDERED_LIST:
             return ParentNode(HTML_BLOCK_TAGS[BlockType.UNORDERED_LIST], list_to_html(block))  # type: ignore
 
+        case BlockType.TABLE:
+            return table_to_html(block)
+        
         case BlockType.CSV:
             return csv_to_html(False, block)
 

@@ -266,7 +266,29 @@ Bob,25
 
 ### Tables
 
-I plan on adding support for standard markdown tables... eventually
+Normal markdown table syntax can be used. The format line is required
+
+```markdown
+| Month    | Savings |
+| -------- | ------- |
+| January  | $250    |
+| February | $80     |
+| March    | $420    |
+
+```
+
+#### With text alginment specified
+
+```markdown
+| Item              | In Stock | Price |
+| :---------------- | :------: | ----: |
+| Python Hat        |   True   | 23.99 |
+| SQL Hat           |   True   | 23.99 |
+| Codecademy Tee    |  False   | 19.99 |
+| Codecademy Hoodie |  False   | 42.99 |
+
+```
+The left column is aligned left, the center is aligned center and the right is aligned right. 
 
 ---
 
