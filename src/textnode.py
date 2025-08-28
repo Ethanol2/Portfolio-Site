@@ -1,6 +1,6 @@
 import re
 from enum import Enum
-from htmlnode import HTMLNode, LeafNode, ImageLeafNode, YoutubeLeafNode, PassthroughLeafNode
+from htmlnode import HTMLNode, ParentNode, LeafNode, ImageLeafNode, YoutubeLeafNode, PassthroughLeafNode
 
 
 class TextType(Enum):
@@ -15,8 +15,8 @@ class TextType(Enum):
 
 
 HTML_TEXT_TAGS = {
-    TextType.BOLD: "b",
-    TextType.ITALIC: "i",
+    TextType.BOLD: "strong",
+    TextType.ITALIC: "em",
     TextType.CODE: "code",
     TextType.IMAGE: "img",
     TextType.URL: "a",
@@ -27,15 +27,15 @@ HTML_TEXT_TAGS = {
 class TextNode:
     def __init__(
         self,
-        text: str,
+        text,
         text_type: TextType,
         url: str = "",
-        extra_tags: dict[str, str] = {},
+        props: dict[str, str] = {},
     ) -> None:
         self.text = text
         self.text_type = text_type
         self.url = url
-        self.extra_tags = extra_tags
+        self.props = props
 
     def __eq__(self, value) -> bool:
         if not isinstance(value, TextNode):
@@ -44,11 +44,11 @@ class TextNode:
             self.text == value.text
             and self.text_type == value.text_type
             and self.url == value.url
-            and self.extra_tags == value.extra_tags
+            and self.props == value.props
         )
 
     def __repr__(self) -> str:
-        return f"TextNode({self.text}, {self.text_type}, {self.url}, {self.extra_tags})"
+        return f"TextNode({self.text}, {self.text_type}, {self.url}, {self.props})"
 
 
 def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
@@ -57,30 +57,47 @@ def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
 
         case TextType.URL:
             return LeafNode(
-                tag="a", value=text_node.text, props={"href": text_node.url} | text_node.extra_tags
+                tag="a", value=text_node.text, props={"href": text_node.url} | text_node.props
             )
 
         case TextType.IMAGE:
             return ImageLeafNode(
-                props={"src": text_node.url, "alt": text_node.text} | text_node.extra_tags
+                props={"src": text_node.url, "alt": text_node.text} | text_node.props
             )
 
         case TextType.YOUTUBE:
-            return YoutubeLeafNode(props={"src": text_node.url} | text_node.extra_tags
+            return YoutubeLeafNode(props={"src": text_node.url} | text_node.props
             )
         
         case TextType.PASSTHROUGH:
             return PassthroughLeafNode(text_node.text)
+    
+    
+    if isinstance(text_node.text, str):            
+        return LeafNode(
+            tag=HTML_TEXT_TAGS[text_node.text_type], value=text_node.text
+        )
+    elif isinstance(text_node.text, list):
+        return ParentNode(
+            tag=HTML_TEXT_TAGS[text_node.text_type], childen=[text_node_to_html_node(node) for node in text_node.text]
+        )
+    
+    raise Exception("Error: Unexpected type")
 
-        case __:
-            return LeafNode(
-                tag=HTML_TEXT_TAGS[text_node.text_type], value=text_node.text
-            )
+def sort_delimiters(delimeters: list[str], text: str) -> list[str]:
+    delimeters.sort(key=len, reverse=True)
+    return_list = []
+    for delim in delimeters:
+        index = text.find(delim)
+        text = text.replace(delim, '\n100')
+        if index < 0:
+            continue
+        return_list.append((delim, index))
+    return_list.sort(key= lambda item: item[1])
+    for i in range(len(return_list)): return_list[i] = return_list[i][0]
+    return return_list
 
-
-def split_nodes_delimiter(
-    old_nodes: list[TextNode], delimiter: str, text_type: TextType
-) -> list[TextNode]:
+def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: TextType, parse_substring: bool=True) -> list[TextNode]:
     new_nodes = []
 
     for node in old_nodes:
@@ -105,14 +122,30 @@ def split_nodes_delimiter(
                 new_nodes.append(TextNode(node.text[marker:i], TextType.PLAIN))
 
                 k = i + delim_len
+                invalid = False
                 while node.text[k : k + delim_len] != delimiter:
                     if k + delim_len >= len(node.text):
-                        raise Exception(
-                            f'Error: Markdown tag "{delimiter}" not closed -> "{node.text[i:k]}"'
-                        )
+                        # raise Exception(
+                        #     f'Error: Markdown tag "{delimiter}" not closed -> "{node.text[i:k]}"'
+                        # )
+                        print(f'Warning: Markdown tag "{delimiter}" not closed -> "{node.text[i:k]}')
+                        invalid = True
+                        break
                     k += 1
+                    
+                if invalid:
+                    new_nodes[-1].text = node.text[marker:]
+                    marker = len(node.text)
+                    break
 
-                new_nodes.append(TextNode(node.text[i + delim_len : k], text_type))
+                if parse_substring:
+                    text_children = text_to_textnodes(node.text[i + delim_len : k])
+                    if len(text_children) == 1:
+                        text_children = text_children[0].text
+                else:
+                    text_children = node.text[i + delim_len : k]
+                
+                new_nodes.append(TextNode(text_children, text_type))
                 i = k + delim_len + 1
                 marker = i - 1
 
@@ -225,7 +258,12 @@ def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
                 
             split = text.split(raw_string, 1)
             new_nodes.append(TextNode(split[0], TextType.PLAIN))
-            new_nodes.append(TextNode(url[0], TextType.URL, url[1], extra_tags))
+            
+            text = text_to_textnodes(url[0])
+            if len(text) == 1:
+                text = text[0].text
+            
+            new_nodes.append(TextNode(text, TextType.URL, url[1], extra_tags))
             text = split[1]
         
         if len(text) > 0:
@@ -299,7 +337,6 @@ def split_nodes_youtube(old_nodes: list[TextNode]) -> list[TextNode]:
 
     return new_nodes
 
-
 def text_to_textnodes(text: str) -> list[TextNode]:
 
     new_nodes = [TextNode(text, TextType.PLAIN)]
@@ -307,9 +344,18 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     new_nodes = split_nodes_youtube(new_nodes)
     new_nodes = split_nodes_links_and_images(new_nodes)
     new_nodes = split_nodes_passthrough(new_nodes)
-    new_nodes = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
-    new_nodes = split_nodes_delimiter(new_nodes, "**", TextType.BOLD)
-    new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)
-    new_nodes = split_nodes_delimiter(new_nodes, "*", TextType.ITALIC)
+    
+    delim_types = {
+        '**': TextType.BOLD,
+        '_' : TextType.ITALIC,
+        '*' : TextType.ITALIC,
+        '`' : TextType.CODE   
+    }
+    
+    delimiters = sort_delimiters(list(delim_types.keys()), text)
+    
+    for delim in delimiters:
+        text_type = delim_types[delim]
+        new_nodes = split_nodes_delimiter(new_nodes, delim, text_type, delim != '`')
 
     return new_nodes
