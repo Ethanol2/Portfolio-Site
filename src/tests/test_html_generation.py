@@ -507,9 +507,58 @@ This is another paragraph with _italic_ text and `code` here
             "<table>"
             "<thead><tr><th>Mixed</th></tr></thead>"
             "<tbody>"
-            "<tr><td align=\"left\"><b>bold and <i>italic</i> with <code>code</code></b></td></tr>"
+            "<tr><td align=\"left\"><strong>bold and <em>italic</em> with <code>code</code></strong></td></tr>"
             "</tbody>"
             "</table>"
+            "</div>"
+        )
+        self.assertEqual(html, expected)
+    def test_nested_bold_inside_italic(self):
+        md = "_This is **bold inside italic** text_"
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            '<div>'
+            '<p><em>This is <strong>bold inside italic</strong> text</em></p>'
+            '</div>'
+        )
+        self.assertEqual(html, expected)
+
+    def test_nested_italic_inside_bold(self):
+        md = "**This is _italic inside bold_ text**"
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            '<div>'
+            '<p><strong>This is <em>italic inside bold</em> text</strong></p>'
+            '</div>'
+        )
+        self.assertEqual(html, expected)
+
+    def test_nested_code_inside_bold(self):
+        md = "**Here is `inline code` in bold**"
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            '<div>'
+            '<p><strong>Here is <code>inline code</code> in bold</strong></p>'
+            '</div>'
+        )
+        self.assertEqual(html, expected)
+
+    def test_multiple_nested_levels(self):
+        md = "_Italic with **bold and `code` inside** text_"
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            '<div>'
+            '<p><em>Italic with <strong>bold and <code>code</code> inside</strong> text</em></p>'
+            '</div>'
+        )
+        self.assertEqual(html, expected)
+
+    def test_invalid_overlap_not_nested(self):
+        md = "**bold _invalid overlap** still bold_"
+        html, _ = markdown_to_html_and_metadata(md)
+        expected = (
+            "<div>"
+            "<p><strong>bold _invalid overlap</strong> still bold_</p>"
             "</div>"
         )
         self.assertEqual(html, expected)

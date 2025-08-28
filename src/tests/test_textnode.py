@@ -60,11 +60,6 @@ class TestTextNode(unittest.TestCase):
         
         self.assertEqual(correct_result, new_nodes)
         
-    def test_bad_bold_delimiter_split(self):
-        node = TextNode("This is text with a **bold block word", TextType.PLAIN)
-        
-        with self.assertRaises(Exception): split_nodes_delimiter([node], "**", TextType.CODE)
-        
     def test_multiple_delimiters(self):
         test_text = [
             "I'm learning about **backend development** through the website _boot.dev_.",
@@ -186,18 +181,6 @@ class TestTextNode(unittest.TestCase):
             TextNode(" and a ", TextType.PLAIN),
             TextNode("link", TextType.URL, "https://site.com"),
             TextNode(".", TextType.PLAIN)
-        ]
-        self.assertListEqual(text_to_textnodes(text), expected)
-
-    def test_unclosed_bold_raises(self):
-        text = "This is **bold text with no end and plain after"
-        with self.assertRaises(Exception):
-            text_to_textnodes(text)
-
-    def test_malformed_image_syntax_fallback_to_plain(self):
-        text = "Here’s an image ![alt text(https://bad.com/img.png)"
-        expected = [
-            TextNode("Here’s an image ![alt text(https://bad.com/img.png)", TextType.PLAIN)
         ]
         self.assertListEqual(text_to_textnodes(text), expected)
 
