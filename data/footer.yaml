@@ -2,6 +2,7 @@ footer.site-footer:
   div.footer-nav:
     - "./": Home
     - "projects.html": Projects
+    - "about-me.html": "About Me"
     - "resume.html" : "Resume"
   
   div.footer-contacts:

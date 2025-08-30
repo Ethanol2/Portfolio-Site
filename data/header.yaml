@@ -17,6 +17,7 @@ header.site-header:
         nav.nav-links:
           - "./": Home
           - "projects.html": Projects
+          - "about-me.html": "About Me"
           - "resume.html" : "Resume"
         nav.contact-links:
           - "https://github.com/Ethanol2":

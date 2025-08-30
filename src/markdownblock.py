@@ -422,12 +422,20 @@ def block_to_html_node(block, block_type: BlockType) -> ParentNode:
         return table_node
     
     def custom_to_html(block: str) -> ParentNode:
-        split = block.split('\n', 1)
-        custom_class = split[0][3:].strip()
-        block = split[1].strip()[:-3].strip()
+        header_block = block.split('\n', 1)
+        
+        header = header_block[0][3:].strip()
+        header_contents = header.split(' ')
+        
+        properties = {"class":header_contents.pop(0)}
+        for item in header_contents:
+            prop, value = item.split('=', 1)
+            properties[prop] = value.replace('"', '')
+        
+        block = header_block[1].strip()[:-3].strip()
             
         custom_node = markdown_to_html_node(block)
-        custom_node.props = {"class":custom_class}
+        custom_node.props = properties
 
         return custom_node
 
@@ -553,4 +561,4 @@ def extract_metadata(markdown_file: str) -> tuple[dict[str, str], str]:
     return props, raw_text
 
 def ref_js_in_html(js_file: str) -> str:
-    return LeafNode("script", "", {"src":js_file}).to_html()
+    return LeafNode("script", "", {"src": js_file}).to_html()
