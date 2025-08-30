@@ -1,19 +1,18 @@
 footer.site-footer:
   div.footer-nav:
-    - "./": Home
-    - "projects.html": Projects
-    - "about-me.html": "About Me"
-    - "resume.html" : "Resume"
+    - "/./": Home
+    - "/about-me.html": "About Me"
+    - "/resume.html" : "Resume"
   
   div.footer-contacts:
     - "https://github.com/Ethanol2":
         img:
-          src: icons/github-mark-white.svg
+          src: /icons/github-mark-white.svg
           alt: GitHub
         label: " GitHub"
     - "https://www.linkedin.com/in/ethan-colucci/":
         img:
-          src: icons/InBug-White.png
+          src: /icons/InBug-White.png
           alt: LinkedIn
         label: " LinkedIn"
     - "mailto:E.Colucci@outlook.com":

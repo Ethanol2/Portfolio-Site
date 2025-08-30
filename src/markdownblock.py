@@ -486,6 +486,11 @@ def block_to_html_node(block, block_type: BlockType) -> ParentNode:
         case __:
             text_nodes = text_to_textnodes(block.replace("\n", " "))
             children_nodes = [text_node_to_html_node(node) for node in text_nodes]
+            
+            if len(children_nodes) == 1:
+                if children_nodes[0].tag == 'img':
+                    return children_nodes[0] # type: ignore
+            
             return ParentNode(HTML_BLOCK_TAGS[BlockType.PARAGRAPH], children_nodes)
 
 def markdown_to_html_and_metadata(markdown: str) -> tuple[str, dict[str,str]]:
@@ -503,6 +508,7 @@ def markdown_to_html_and_metadata(markdown: str) -> tuple[str, dict[str,str]]:
 def markdown_to_html_node(markdown: str) -> ParentNode:
 
     parent_html_node = ParentNode("div", [])
+    current_html_node = parent_html_node
     remainder = markdown.splitlines()
     
     while len(remainder) > 0:
@@ -510,11 +516,28 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
         block, block_type, remainder = markdown_to_block_and_type(remainder)
         
         if block_type == BlockType.HORIZONTAL_LINE:
-            parent_html_node.children.append(HorizontalLineLeafNode())
+            current_html_node.children.append(HorizontalLineLeafNode())
         elif block_type == BlockType.NONE:
             continue
+        elif block_type == BlockType.HEADING2:
+            
+            if current_html_node.tag == "section":
+                parent_html_node.children.append(current_html_node)
+            
+            heading = block
+            heading = heading[3:].strip()
+            heading = heading.replace(' ', '-')
+            
+            current_html_node = ParentNode(
+                "section", 
+                [block_to_html_node(block, block_type)],
+                {"id":heading})
+            
         elif len(block) > 0:
-            parent_html_node.children.append(block_to_html_node(block, block_type))
+            current_html_node.children.append(block_to_html_node(block, block_type))
+
+    if current_html_node.tag == "section":
+        parent_html_node.children.append(current_html_node)
 
     return parent_html_node
 

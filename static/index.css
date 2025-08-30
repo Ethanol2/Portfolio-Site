@@ -237,7 +237,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 16px;
   font-family: "Orbitron", sans-serif;
   text-transform: uppercase;
-  text-shadow: 0 0 8px var(--heading), 0 0 12px var(--heading);
+  text-shadow: 0 0 3px var(--heading), 0 0 12px var(--heading);
   z-index: 1;
 }
 
@@ -377,7 +377,6 @@ p img.inline-img {
 .column {
   flex: 50%;
   padding: 0px 16px 0px 16px;
-    text-align: center;
 }
 
 /* Make tables scroll on small screens */
@@ -389,6 +388,17 @@ p img.inline-img {
 .table-wrapper table {
   min-width: 500px; /* prevents columns from collapsing too much */
 }
+
+.banner-img {
+  width: 100%;              /* Ensure it can scale horizontally */
+  height: 100%;             /* Allow the image to scale vertically */
+  object-fit: cover;       /* Crop the image to cover the container */
+  border-radius: 8px;      /* Rounded corners (optional) */
+  box-shadow: 0 0 20px rgba(0, 246, 255, 0.3); /* Glowing border (optional) */
+  overflow: hidden;        /* Prevent anything outside the container from showing */
+  margin-bottom: 20px;     /* Space below the image, useful for some padding */
+}
+
 /*#endregion */
 
 /*#region Footer*/

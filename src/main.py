@@ -12,17 +12,17 @@ FOOTER = "footer"
 
 def main():
 
-    base_path = ""
+    base_path = "/"
 
     # Get base path
     if len(sys.argv) > 1:
         base_path = sys.argv[1]
 
     # Create paths
-    static_path = os.path.join(base_path, "static/")
-    content_path = os.path.join(base_path, "content/")
-    data_path = os.path.join(base_path, "data/")
-    templates_path = os.path.join(base_path, "templates/")
+    static_path = "static/"
+    content_path = "content/"
+    data_path = "data/"
+    templates_path = "templates/"
 
     public_path = "docs/"
 
@@ -52,21 +52,21 @@ def main():
     inserts = {}
     inserts[HEADER] = generate_html_from_yaml(data_path, "header.yaml")
     inserts[FOOTER] = generate_html_from_yaml(data_path, "footer.yaml")
-    inserts[JS] = generate_js_html(public_path)
+    inserts[JS] = generate_js_html(public_path, base_path)
     
     # Generate HTML
     generate_pages_recursive(content_path, templates, public_path, inserts)
 
-def generate_js_html(content_path: str) -> str:
+def generate_js_html(content_path: str, base_path: str) -> str:
 
     html = ""
     for item in os.listdir(content_path):
         path = os.path.join(content_path, item)
         if os.path.isfile(path):
             if '.js' in item:
-                html += '\n' + ref_js_in_html(item)
+                html += '\n' + ref_js_in_html(base_path + item)
         else:
-            html += generate_js_html(path)
+            html += generate_js_html(path, base_path)
     
     return html.strip()
 
@@ -133,6 +133,10 @@ def generate_page(templates: TemplateLibrary, src_path: str, dest_path: str, htm
     template_contents = template_contents.replace("{{ Content }}", html)
     template_contents = template_contents.replace("{{ JavaScript }}", html_inserts[JS])
     template_contents = template_contents.replace("{{ Footer }}", html_inserts[FOOTER])
+    
+    # template_contents = template_contents.replace('href="/', f'href="{base_path}')
+    # template_contents = template_contents.replace('src="/', f'src="{base_path}')
+
 
     dest_path_split = dest_path.split("/")
     if not os.path.isfile(dest_path_split[0]):

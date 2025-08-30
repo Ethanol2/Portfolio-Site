@@ -152,7 +152,7 @@ class TestTextNode(unittest.TestCase):
             "This is text with a [link](https://i.imgur.com/zjjcJKZ.png) and another [second link](https://i.imgur.com/3elNhQu.png)",
             TextType.PLAIN,
         )
-        new_nodes = split_nodes_links_and_images([node])        
+        new_nodes = split_nodes_links([node])        
         
         # for node in new_nodes:
         #     print("\n")

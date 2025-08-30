@@ -1,11 +1,11 @@
 header.site-header:
   div.header-content:
     div.header-top:
-      "./": 
+      "/./": 
         label:
           h1.logo:
           - img.inline-img:
-              src: images/profilePic2025.png
+              src: /images/profilePic2025.png
               alt: Ethan Colucci
           - " Ethan Colucci"
       button.hamburger:
@@ -15,18 +15,17 @@ header.site-header:
     div.header-bottom:
       div.hamburger-menu:
         nav.nav-links:
-          - "./": Home
-          - "projects.html": Projects
-          - "about-me.html": "About Me"
-          - "resume.html" : "Resume"
+          - "/./": Home
+          - "/about-me.html": "About Me"
+          - "/resume.html" : "Resume"
         nav.contact-links:
           - "https://github.com/Ethanol2":
               img:
-                src: icons/github-mark-white.svg
+                src: /icons/github-mark-white.svg
                 alt: GitHub
           - "https://www.linkedin.com/in/ethan-colucci/":
               img:
-                src: icons/InBug-White.png
+                src: /icons/InBug-White.png
                 alt: LinkedIn
           - "mailto:E.Colucci@outlook.com":
               label: "E.Colucci@outlook.com"

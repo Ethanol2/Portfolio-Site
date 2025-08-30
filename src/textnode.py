@@ -218,7 +218,53 @@ def extract_special_properties(text: str) -> dict[str,str]:
     
     return props
 
-def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
+def split_nodes_images(old_nodes: list[TextNode]) -> list[TextNode]:
+    new_nodes = []
+    
+    for node in old_nodes:
+        if node.text_type != TextType.PLAIN:
+            new_nodes.append(node)
+            continue
+        
+        imgs = extract_markdown_images(node.text)
+        
+        if len(imgs) == 0:
+            new_nodes.append(node)
+            continue
+        
+        text = node.text
+        
+        for img in imgs:
+            
+            raw_string = f'![{img[0]}]({img[1]})'
+            extra_tags = {}
+            
+            if img[2] != '':
+                raw_string += '{' + img[2] + '}'                
+                extra_tags = extract_special_properties(img[2])            
+            
+            split = text.split(raw_string, 1)
+            
+            img_node = TextNode(img[0], TextType.IMAGE, img[1], extra_tags)
+            
+            if split[1][:2] == "{}":
+                split[1] = split[1][2:]
+            
+            # Check if wrapped in link syntax
+            if '[' in split[0] and ']' in split[1]:
+                img_html = text_node_to_html_node(img_node)
+                text = split[0] + img_html.to_html() + split[1]
+            else:
+                new_nodes.append(TextNode(split[0], TextType.PLAIN))
+                new_nodes.append(img_node)
+                text = split[1]
+        
+        if len(text) > 0:
+            new_nodes.append(TextNode(text, TextType.PLAIN))
+            
+    return new_nodes
+    
+def split_nodes_links(old_nodes: list[TextNode]) -> list[TextNode]:
     new_nodes = []
 
     for node in old_nodes:        
@@ -227,24 +273,9 @@ def split_nodes_links_and_images(old_nodes: list[TextNode]) -> list[TextNode]:
             continue
         
         text = node.text
-        
-        imgs = extract_markdown_images(node.text)
-        
-        for img in imgs:
-            raw_string = f'![{img[0]}]({img[1]})'
-            extra_tags = {}
-            
-            if img[2] != '':
-                raw_string += '{' + img[2] + '}'                
-                extra_tags = extract_special_properties(img[2])            
-            
-            text_node = TextNode(img[0], TextType.IMAGE, img[1], extra_tags)
-            html_node = text_node_to_html_node(text_node)
-            text = text.replace(raw_string, html_node.to_html())
-        
         urls = extract_markdown_links(text)
 
-        if len(urls) == 0 and len(imgs) == 0:
+        if len(urls) == 0:
             new_nodes.append(node)
             continue
         
@@ -342,7 +373,8 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     new_nodes = [TextNode(text, TextType.PLAIN)]
 
     new_nodes = split_nodes_youtube(new_nodes)
-    new_nodes = split_nodes_links_and_images(new_nodes)
+    new_nodes = split_nodes_images(new_nodes)
+    new_nodes = split_nodes_links(new_nodes)
     new_nodes = split_nodes_passthrough(new_nodes)
     
     delim_types = {

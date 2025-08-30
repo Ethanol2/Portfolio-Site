@@ -4,7 +4,7 @@ title: Home | Ethan Colucci
 
 # About Me
 
-::: row
+::: row style="margin:auto;width:80%"
 ::: column
 Driven and adaptable Game Developer with 7 years of experience building interactive experiences, including 4 years in professional environments. Currently specializing in Unity, C#, and Virtual Reality (VR) development for training and simulation. I create immersive, high-performance applications by combining strong technical foundations with creative design thinking. Experienced across VR, mobile, and traditional platforms, I thrive on solving complex problems, rapidly learning new technologies, and collaborating across disciplines to deliver polished results.
 :::
