@@ -8,12 +8,12 @@ title: Home | Ethan Colucci
 Welcome to my website. Completely generated with my custom static website generator. I'm a driven and adaptable Developer with 7 years of experience building interactive game and game-like experiences, inclding 4 years of professional work. I currently specialize in Unity and C#, but I'm always excited to branch into new areas. Like this website project!
 :::
 ::: column style="text-align:center;align-content:center"
-![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height="300" style="}
+![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height="300"}
 :::
 :::
 
 ---
-::: row style="text-align:center"
+::: forced-row style="text-align:center"
 ::: column
 [About Me](about-me.html){class=fancy-btn}
 :::
@@ -21,6 +21,8 @@ Welcome to my website. Completely generated with my custom static website genera
 [My Resume](resume.html){class=fancy-btn}
 :::
 :::
+
+---
 
 # My Work
 ## VR Vision
@@ -116,6 +118,40 @@ Project Moon Rock was an ambitious educational game that I was the sole Unity de
 
 {<div style="text-align:right">}
 
+### Static Website Generator
+
+{</div>}
+
+::: row
+::: column
+![Website Generator](/images/projects/personal/static-site-generator/website-project-banner.jpg){class=banner-img}
+:::
+::: column style="text-align:right"
+This website is the fruit of this project. It started from Boot.Dev's guided project and expanded in to an all-consuming hobby. Many, many added features on top of the content and front end of my actual website.
+
+[See More](/projects/personal/static-site-generator.html){class=fancy-btn}
+:::
+:::
+
+{<div style="text-align:right">}
+
+### Snake Game
+
+{</div>}
+
+::: row
+::: column
+![Snake Game](/images/projects/personal/special-snake/special-snake-banner.jpg){class=banner-img}
+:::
+::: column style="text-align:right"
+It's basicaly just snake, but built in Godot. This is my first project made in the engine. It was a challenge, but a fun and engaging experience.
+
+[See More](/projects/personal/special-snake.html){class=fancy-btn}
+:::
+:::
+
+{<div style="text-align:right">}
+
 ### Road to Olympus
 
 {</div>}
@@ -128,5 +164,56 @@ Project Moon Rock was an ambitious educational game that I was the sole Unity de
 This was a gamejam project that was partially inspired by text-based games, with retro stylized graphics. You're an ancient greek taking the long 500km road to Mount Olympus. Use your cunning and strength to make the journey.
 
 [See More](/projects/personal/road-to-olympus.html){class=fancy-btn}
+:::
+:::
+
+{<div style="text-align:right">}
+
+### Sudoku Bot
+
+{</div>}
+
+::: row
+::: column
+![Sudoku](/images/projects/personal/sudoku/sudoku-banner.jpg){class=banner-img}
+:::
+::: column style="text-align:right"
+I project I made in Unity after getting absorbed in the classic game of Sudoku. The purpose of the project was to solve most puzzles presented.
+
+[See More](/projects/personal/sudoku.html){class=fancy-btn}
+:::
+:::
+
+{<div style="text-align:right">}
+
+### Word Search
+
+{</div>}
+
+::: row
+::: column
+![Word Search](/images/projects/other/word-search/word-search-banner.jpg){class=banner-img}
+:::
+::: column style="text-align:right"
+A project I was hired to do when I did freelance on Fiver. It's a word search game that allows users to add their own list of words. Each puzzle is generated randomly, for a unique experience each time.
+
+[See More](/projects/other/word-search.html){class=fancy-btn}
+:::
+:::
+
+{<div style="text-align:right">}
+
+### Craft Wars
+
+{</div>}
+
+::: row
+::: column
+![Craft Wars](/images/projects/other/craft-wars/craft-wars-banner.jpg){class=banner-img}
+:::
+::: column style="text-align:right"
+A couch co-op game where the goal is to not fall while shooting the tiles from under your friends' feet. This started as a gamejam project that grew in to something a little larger.
+
+[See More](/projects/personal/craft-wars.html){class=fancy-btn}
 :::
 :::

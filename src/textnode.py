@@ -89,9 +89,9 @@ def sort_delimiters(delimeters: list[str], text: str) -> list[str]:
     return_list = []
     for delim in delimeters:
         index = text.find(delim)
-        text = text.replace(delim, '\n100')
         if index < 0:
             continue
+        text = text.replace(delim, '\n100')
         return_list.append((delim, index))
     return_list.sort(key= lambda item: item[1])
     for i in range(len(return_list)): return_list[i] = return_list[i][0]
@@ -104,57 +104,48 @@ def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: 
         if not isinstance(node, TextNode):
             continue
 
-        if node.text_type != TextType.PLAIN:
+        if node.text_type != TextType.PLAIN or not isinstance(node.text, str):
             new_nodes.append(node)
             continue
+        
+        text = node.text
 
-        delim_len = len(delimiter)
-        i = 0
-        marker = 0
-        while i < len(node.text):
-
-            if "<img" in node.text[i : i + 4]:
-                while node.text[i] != '>':
-                    i += 1
+        while len(text) > 0:
             
-            if node.text[i : i + delim_len] == delimiter:
-
-                new_nodes.append(TextNode(node.text[marker:i], TextType.PLAIN))
-
-                k = i + delim_len
-                invalid = False
-                while node.text[k : k + delim_len] != delimiter:
-                    if k + delim_len >= len(node.text):
-                        # raise Exception(
-                        #     f'Error: Markdown tag "{delimiter}" not closed -> "{node.text[i:k]}"'
-                        # )
-                        print(f'Warning: Markdown tag "{delimiter}" not closed -> "{node.text[i:k]}')
-                        invalid = True
-                        break
-                    k += 1
-                    
-                if invalid:
-                    new_nodes[-1].text = node.text[marker:]
-                    marker = len(node.text)
-                    break
-
-                if parse_substring:
-                    text_children = text_to_textnodes(node.text[i + delim_len : k])
-                    if len(text_children) == 1:
-                        text_children = text_children[0].text
-                else:
-                    text_children = node.text[i + delim_len : k]
+            # If the delimiter is right at the start of the string
+            if text[:len(delimiter)] == delimiter:
+                text_split = ['', text[len(delimiter):]]
+            else:
+                text_split = text.split(' ' + delimiter, 1)
                 
-                new_nodes.append(TextNode(text_children, text_type))
-                i = k + delim_len + 1
-                marker = i - 1
-
-            i += 1
-
-        if marker < len(node.text):
-            new_nodes.append(
-                TextNode(node.text[marker : len(node.text)], TextType.PLAIN)
-            )
+                if len(text_split) == 1:
+                    new_nodes.append(TextNode(text_split[0], TextType.PLAIN))
+                    break
+                
+                new_nodes.append(TextNode(text_split[0] + ' ', TextType.PLAIN))
+            
+            delim_split = text_split[1].split(delimiter, 1)
+            
+            # If the delimiter isn't closed
+            if len(delim_split) == 1:
+                print(f'Warning: Delimiter "{delimiter}" is not closed. -> "{text}"')
+                new_nodes.append(TextNode(delimiter + text_split[1], TextType.PLAIN))
+                break
+            
+            substring = delim_split[0]
+            
+            if parse_substring:
+                sub_text_nodes = text_to_textnodes(substring)
+                
+                # If there's nothing of note in the substring
+                if len(sub_text_nodes) == 1 and sub_text_nodes[0].text_type == TextType.PLAIN:
+                    substring = sub_text_nodes[0].text
+                else:
+                    substring = sub_text_nodes
+            
+            new_nodes.append(TextNode(substring, text_type))
+            
+            text = delim_split[1]
 
     return new_nodes
 
@@ -371,11 +362,6 @@ def split_nodes_youtube(old_nodes: list[TextNode]) -> list[TextNode]:
 def text_to_textnodes(text: str) -> list[TextNode]:
 
     new_nodes = [TextNode(text, TextType.PLAIN)]
-
-    new_nodes = split_nodes_youtube(new_nodes)
-    new_nodes = split_nodes_images(new_nodes)
-    new_nodes = split_nodes_links(new_nodes)
-    new_nodes = split_nodes_passthrough(new_nodes)
     
     delim_types = {
         '**': TextType.BOLD,
@@ -388,6 +374,13 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     
     for delim in delimiters:
         text_type = delim_types[delim]
+        
+        # Parse substring only if not code
         new_nodes = split_nodes_delimiter(new_nodes, delim, text_type, delim != '`')
+
+    new_nodes = split_nodes_youtube(new_nodes)
+    new_nodes = split_nodes_images(new_nodes)
+    new_nodes = split_nodes_links(new_nodes)
+    new_nodes = split_nodes_passthrough(new_nodes)
 
     return new_nodes

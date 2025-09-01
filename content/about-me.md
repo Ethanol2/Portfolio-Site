@@ -4,28 +4,12 @@ title: Home | Ethan Colucci
 
 # About Me
 
-::: row style="margin:auto;width:80%"
+::: row style="margin:auto;max-width:90%"
 ::: column
 Driven and adaptable Game Developer with 7 years of experience building interactive experiences, including 4 years in professional environments. Currently specializing in Unity, C#, and Virtual Reality (VR) development for training and simulation. I create immersive, high-performance applications by combining strong technical foundations with creative design thinking. Experienced across VR, mobile, and traditional platforms, I thrive on solving complex problems, rapidly learning new technologies, and collaborating across disciplines to deliver polished results.
 :::
-::: column
-![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height="300"}
-:::
-:::
-
----
-
-### My Links
-
-::: row
-::: column
-- [Projects Showcase](projects.html)
-- [My Resume](resume.html)
-:::
-::: column
-- [![GitHub](icons/github-mark-white.svg) GitHub](https://github.com/Ethanol2)
-- [![LinkedIn](icons/InBug-White.png) LinkedIn](https://www.linkedin.com/in/ethan-colucci/)
-- [E.Colucci@outlook.com](mailto:E.Colucci@outlook.com)
+::: column style="text-align:center;align-content:center"
+![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height=350}
 :::
 :::
 
@@ -43,9 +27,11 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - API Integration
 :::
 ::: column
-### 🎮 Game Engines
+### 🎮 Game Engines and Packages
 - Unity Engine (VR, mobile, and desktop platforms)
 - Godot
+- Photon Pun
+- Photon Fusion
 :::
 :::
 
@@ -56,24 +42,12 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - PlasticSCM
 :::
 ::: column
-### 🥽 Virtual Reality
+### 🥽 Virtual Reality and Mobile
 - VR application development  
 - Interaction design  
 - Real-world tool simulation
-:::
-:::
-
-::: row
-::: column
-### 📱 Mobile Development
 - Cross-platform optimization  
 - Deployment for multiple platforms
-:::
-::: column
-### 🎨 Creative Tools
-- Basic 3D modeling and texturing  
-- Illustration  
-- Video editing"
 :::
 :::
 

@@ -373,6 +373,9 @@ p img.inline-img {
 .row {
   display: flex;
 }
+.forced-row {
+  display: flex;
+}
 
 .column {
   flex: 50%;
@@ -522,7 +525,6 @@ p img.inline-img {
   width: 100%;
 }
 /*#endregion */
-
 
 /*#region Screen Size Rules*/
 /* Extra small devices (phones, up to 615px) */

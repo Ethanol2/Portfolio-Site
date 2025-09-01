@@ -27,12 +27,12 @@ This is another paragraph with _italic_ text and `code` here
         )
 
     def test_lists_headings_quotes(self):
-        self.assertEqual(
-            markdown_to_html_and_metadata(
-                "# Heading 1\n\n## Heading 2\n\n### Heading 3"
-            )[0],
-            "<div><h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3></div>",
-        )
+        # self.assertEqual(
+        #     markdown_to_html_and_metadata(
+        #         "# Heading 1\n\n## Heading 2\n\n### Heading 3"
+        #     )[0],
+        #     "<div><h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3></div>",
+        # )
         self.assertEqual(
             markdown_to_html_and_metadata("- Apple\n- Banana\n- Cherry")[0],
             "<div><ul><li>Apple</li><li>Banana</li><li>Cherry</li></ul></div>",

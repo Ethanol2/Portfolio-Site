@@ -59,8 +59,10 @@ def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[Any, BlockTyp
         return n is not None and line.find(f'{n}. ') == 0, n
     
     def get_indent_level(line: str) -> int:
-        line = line.replace('    ', '\t')
-        return line.count('\t')
+        prefix = line.split('- ', 1)[0]
+        prefix = prefix.replace('    ', '\t')
+        prefix = prefix.replace('  ', '\t')
+        return prefix.count('\t')
     
     def parse_unordered_list(lines: list[str], indent_lvl: int) -> tuple[list, int]:        
         md_list = []
@@ -208,14 +210,13 @@ def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[Any, BlockTyp
                 contents = ""
                 i = 0
                 for line in lines:
-                    line = line.strip()
-                    if line == ':::':
+                    if line.strip() == ':::':
                         nest -= 1
                         if nest == 0:
                             contents += '\n' + line
                             i += 1
                             break
-                    elif line[:4] == '::: ':
+                    elif line.strip()[:4] == '::: ':
                         nest += 1
                     
                     contents += '\n' + line
