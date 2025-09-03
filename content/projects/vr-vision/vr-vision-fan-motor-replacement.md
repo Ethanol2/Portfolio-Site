@@ -7,7 +7,7 @@ title: "VRV Megger Testing | Ethan Colucci"
 @[VR Vision Megger Testing & Generator Fan Motor Replacement VR Training](https://www.youtube.com/watch?v=TUBfFgAgtE4)
 
 #### Tech Stack
-- Unity
+- Unity C#
 - Meta/Oculus VR
 - Photon Pun Multiplayer
 

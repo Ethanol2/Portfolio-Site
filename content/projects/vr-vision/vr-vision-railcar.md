@@ -7,7 +7,7 @@ title: "VRV Railcar Training | Ethan Colucci"
 @[VR Vision Railcar Training](https://www.youtube.com/watch?v=uOtPLN9U_P4)
 
 #### Tech Stack
-- Unity
+- Unity C#
 - Meta/Oculus VR
 
 ## Overview

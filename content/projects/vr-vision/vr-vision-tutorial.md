@@ -7,7 +7,7 @@ title: "VRV Tutorial | Ethan Colucci"
 @[VR Vision Tutorial](https://www.youtube.com/watch?v=WkB_i6dFh8c)
 
 #### Tech Stack
-- Unity
+- Unity C#
 - Meta/Oculus VR
 
 ## Overview

@@ -7,7 +7,7 @@ title: "VRV Prop Valve Training | Ethan Colucci"
 @[VR Vision Proportional Valve Replacement VR Training](https://www.youtube.com/watch?v=u78ikhtwD4I)
 
 #### Tech Stack
-- Unity
+- Unity C#
 - Meta/Oculus VR
 - Photon Pun Multiplayer
 
