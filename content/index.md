@@ -141,7 +141,7 @@ This website is the fruit of this project. It started from Boot.Dev's guided pro
 
 ::: row
 ::: column
-![Snake Game](/images/projects/personal/special-snake/special-snake-banner.jpg){class=banner-img}
+![Snake Game](/images/projects/personal/snake-game/special-snake-banner.jpg){class=banner-img}
 :::
 ::: column style="text-align:right"
 It's basicaly just snake, but built in Godot. This is my first project made in the engine. It was a challenge, but a fun and engaging experience.
