@@ -11,6 +11,10 @@ title: "VRV Prop Valve Training | Ethan Colucci"
 - Meta/Oculus VR
 - Photon Pun Multiplayer
 
+### Platforms
+- Unity XR
+- Meta XR
+
 ## Overview
 
 This training is the second of two modules created mostly by myself as part of a series of five modules for a client. The other module that I focused on was the [Megger Testing & Generator Fan Motor Replacement VR Training](/projects/vr-vision/vr-vision-fan-motor-replacement.html). This project was created early in my time with the company, and I would take the lead of developing and improving multiple packages used within.

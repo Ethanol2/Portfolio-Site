@@ -97,7 +97,7 @@ def sort_delimiters(delimeters: list[str], text: str) -> list[str]:
     for i in range(len(return_list)): return_list[i] = return_list[i][0]
     return return_list
 
-def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: TextType, parse_substring: bool=True) -> list[TextNode]:
+def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: TextType, space_before_delim: bool = False, parse_substring: bool=True) -> list[TextNode]:
     new_nodes = []
 
     for node in old_nodes:
@@ -112,17 +112,23 @@ def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: 
 
         while len(text) > 0:
             
-            # If the delimiter is right at the start of the string
-            if text[:len(delimiter)] == delimiter:
-                text_split = ['', text[len(delimiter):]]
+            if space_before_delim:
+                # If delim is at the start of the string
+                if text[:len(delimiter)] == delimiter:
+                    text_split = ['', text[len(delimiter):]]
+                else:
+                    text_split = text.split(' ' + delimiter, 1)
+                    if len(text_split) > 1:
+                        text_split[0] = text_split[0] + ' '
+                                    
             else:
-                text_split = text.split(' ' + delimiter, 1)
-                
-                if len(text_split) == 1:
-                    new_nodes.append(TextNode(text_split[0], TextType.PLAIN))
-                    break
-                
-                new_nodes.append(TextNode(text_split[0] + ' ', TextType.PLAIN))
+                text_split = text.split(delimiter, 1)
+            
+            if len(text_split) == 1:
+                new_nodes.append(TextNode(text_split[0], TextType.PLAIN))
+                break
+            
+            new_nodes.append(TextNode(text_split[0], TextType.PLAIN))
             
             delim_split = text_split[1].split(delimiter, 1)
             
@@ -375,8 +381,12 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     for delim in delimiters:
         text_type = delim_types[delim]
         
-        # Parse substring only if not code
-        new_nodes = split_nodes_delimiter(new_nodes, delim, text_type, delim != '`')
+        new_nodes = split_nodes_delimiter(
+            old_nodes = new_nodes, 
+            delimiter = delim, 
+            text_type = text_type, 
+            space_before_delim = delim == '_', # Space before delim for '_' 
+            parse_substring = delim != '`') # Parse substring for everything except '`'
 
     new_nodes = split_nodes_youtube(new_nodes)
     new_nodes = split_nodes_images(new_nodes)

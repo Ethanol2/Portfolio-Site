@@ -4,17 +4,21 @@ title: Godot Snake | Ethan Colucci
 
 # Personal Projects - Snake Game
 
-![Static Site Generator](/images/projects/personal/snake-game/special-snake.jpg)
+![Road to Olympus](/images/projects/personal/snake-game/special-snake.jpg)
 
 #### Tech Stack
 - Godot C#
+
+#### Platforms
+- Windows
+- Linux
 
 ## Overview
 
 A basic snake game created with the game engine Godot. As a Unity developer it was an interesting (and challenging) experience creating my first project in the relatively new engine. I wanted to create something simple to soften the learning curve, and I'm very glad I did!
 
 ## Links
-[![Github Logo](/icons/github-mark-white.svg) GitHub](https://github.com/Ethanol2/Special-Snake){class=fancy-btn}
+[![Github Logo](/icons/github-mark-white.svg) GitHub](https://github.com/Ethanol2/Snake-Game){class=fancy-btn}
 
 ---
 

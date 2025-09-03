@@ -10,6 +10,10 @@ title: "VRV Railcar Training | Ethan Colucci"
 - Unity C#
 - Meta/Oculus VR
 
+### Platforms
+- Unity XR
+- Meta XR
+
 ## Overview
 
 This project was created as a demo for the company. Using a YouTube video as reference, I worked with a couple of the artists to create this short but impactful tutorial.

@@ -95,6 +95,8 @@ This training is the second of two modules created mostly by myself as part of a
 :::
 :::
 
+---
+
 ## No Fuss Tutors
 
 {<div style="text-align:right">}
@@ -113,6 +115,8 @@ Project Moon Rock was an ambitious educational game that I was the sole Unity de
 [See More](/projects/no-fuss-tutors/no-fuss-tutors-project.html){class=fancy-btn}
 :::
 :::
+
+---
 
 ## Freelance and Personal
 
@@ -146,7 +150,7 @@ This website is the fruit of this project. It started from Boot.Dev's guided pro
 ::: column style="text-align:right"
 It's basicaly just snake, but built in Godot. This is my first project made in the engine. It was a challenge, but a fun and engaging experience.
 
-[See More](/projects/personal/special-snake.html){class=fancy-btn}
+[See More](/projects/personal/snake-game.html){class=fancy-btn}
 :::
 :::
 

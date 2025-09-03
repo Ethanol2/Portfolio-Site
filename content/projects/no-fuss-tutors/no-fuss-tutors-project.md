@@ -11,6 +11,12 @@ title: "No Fuss Tutors Project | Ethan Colucci"
 - MongoDB
 - AWS
 
+### Intended Platforms
+- Android
+- IOS
+- Windows
+- WebGL
+
 ## Overview
 
 Project Moon Rock was an ambitious educational game that I was the sole Unity developer on. When I left the project it had gameplay for city building and management, a tutorial and cutscenes and a quiz system for players to earn rewards. Looking back on the development, I'm proud of a lot of the features that I created for the game, many of which are visible in the tutorial.

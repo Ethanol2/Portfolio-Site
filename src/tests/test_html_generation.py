@@ -131,8 +131,8 @@ This is another paragraph with _italic_ text and `code` here
         md = """\
     ::: special-table
     ::: csv
-    a,b,c
-    1,2,3
+a,b,c
+1,2,3
     :::
     :::
     """
@@ -167,9 +167,9 @@ This is another paragraph with _italic_ text and `code` here
     def test_csv_block(self):
         md = """\
     ::: csv
-    a,b,c
-    1,2,3
-    4,5,6
+a,b,c
+1,2,3
+4,5,6
     :::
     """
         html, _ = markdown_to_html_and_metadata(md)
@@ -185,9 +185,9 @@ This is another paragraph with _italic_ text and `code` here
     def test_csv_headers_block(self):
         md = """\
     ::: csv_headers
-    a,b,c
-    1,2,3
-    4,5,6
+a,b,c
+1,2,3
+4,5,6
     :::
     """
         html, _ = markdown_to_html_and_metadata(md)

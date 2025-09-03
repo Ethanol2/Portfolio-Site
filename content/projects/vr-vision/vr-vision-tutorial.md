@@ -10,6 +10,10 @@ title: "VRV Tutorial | Ethan Colucci"
 - Unity C#
 - Meta/Oculus VR
 
+### Platforms
+- Unity XR
+- Meta XR
+
 ## Overview
 
 I refactored the VR Vision tutorial in summer 2024, adding some new elements and removing others. The cannon was my idea, and with some workshopping, I implemented it as a demo for some of the interactions users will face.
