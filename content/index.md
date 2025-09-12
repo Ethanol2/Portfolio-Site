@@ -95,8 +95,6 @@ This training is the second of two modules created mostly by myself as part of a
 :::
 :::
 
----
-
 ## No Fuss Tutors
 
 {<div style="text-align:right">}
@@ -115,8 +113,6 @@ Project Moon Rock was an ambitious educational game that I was the sole Unity de
 [See More](/projects/no-fuss-tutors/no-fuss-tutors-project.html){class=fancy-btn}
 :::
 :::
-
----
 
 ## Freelance and Personal
 
@@ -156,6 +152,23 @@ It's basicaly just snake, but built in Godot. This is my first project made in t
 
 {<div style="text-align:right">}
 
+### Sudoku Bot
+
+{</div>}
+
+::: row
+::: column
+![Sudoku](/images/projects/personal/sudoku/sudoku-banner.jpg){class=banner-img}
+:::
+::: column style="text-align:right"
+A Unity-based Sudoku app that can solve, generate, and (hopefully eventually) grade puzzles.
+
+[See More](/projects/personal/sudoku.html){class=fancy-btn}
+:::
+:::
+
+{<div style="text-align:right">}
+
 ### Road to Olympus
 
 {</div>}
@@ -168,23 +181,6 @@ It's basicaly just snake, but built in Godot. This is my first project made in t
 This was a gamejam project that was partially inspired by text-based games, with retro stylized graphics. You're an ancient greek taking the long 500km road to Mount Olympus. Use your cunning and strength to make the journey.
 
 [See More](/projects/personal/road-to-olympus.html){class=fancy-btn}
-:::
-:::
-
-{<div style="text-align:right">}
-
-### Sudoku Bot
-
-{</div>}
-
-::: row
-::: column
-![Sudoku](/images/projects/personal/sudoku/sudoku-banner.jpg){class=banner-img}
-:::
-::: column style="text-align:right"
-I project I made in Unity after getting absorbed in the classic game of Sudoku. The purpose of the project was to solve most puzzles presented.
-
-[See More](/projects/personal/sudoku.html){class=fancy-btn}
 :::
 :::
 

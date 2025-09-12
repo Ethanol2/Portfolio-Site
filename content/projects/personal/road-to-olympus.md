@@ -87,12 +87,12 @@ While I think the project has potential, it's indefinitely shelved for the momen
 
 ::: forced-row
 ::: column style="text-align:center"
-[Previous](/projects/personal/snake-game.html){class=fancy-btn style="width:75px;flex-direction:column;"}
+[Previous](/projects/personal/sudoku.html){class=fancy-btn style="width:75px;flex-direction:column;"}
 :::
 ::: column style="text-align:center"
 [Back](/./#Freelance-and-Personal){class=fancy-btn}
 :::
 ::: column style="text-align:center"
-[Next](/projects/personal/sudoku.html){class=fancy-btn style="width:75px;flex-direction:column;"}
+[Next](/projects/personal/word-search.html){class=fancy-btn style="width:75px;flex-direction:column;"}
 :::
 :::

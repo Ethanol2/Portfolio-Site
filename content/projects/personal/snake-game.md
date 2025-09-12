@@ -70,6 +70,6 @@ A basic snake game created with the game engine Godot. As a Unity developer it w
 [Back](/./#Freelance-and-Personal){class=fancy-btn}
 :::
 ::: column style="text-align:center"
-[Next](/projects/personal/road-to-olympus.html){class=fancy-btn style="width:75px;flex-direction:column;"}
+[Next](/projects/personal/sudoku.html){class=fancy-btn style="width:75px;flex-direction:column;"}
 :::
 :::

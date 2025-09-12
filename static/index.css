@@ -382,6 +382,10 @@ p img.inline-img {
   padding: 0px 16px 0px 16px;
 }
 
+section {
+  padding-bottom: 66px;
+}
+
 /* Make tables scroll on small screens */
 .table-wrapper {
   overflow-x: auto;
