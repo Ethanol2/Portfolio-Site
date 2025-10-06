@@ -152,16 +152,16 @@ It's basicaly just snake, but built in Godot. This is my first project made in t
 
 {<div style="text-align:right">}
 
-### Sudoku Bot
+### Sudoku Solver
 
 {</div>}
 
 ::: row
 ::: column
-![Sudoku](/images/projects/personal/sudoku/sudoku-banner.jpg){class=banner-img}
+![Sudoku](/images/projects/personal/sudoku-solver/Sudoku-Solver-Banner.jpg){class=banner-img}
 :::
 ::: column style="text-align:right"
-A Unity-based Sudoku app that can solve, generate, and (hopefully eventually) grade puzzles.
+A Unity-based Sudoku app that can solve puzzles and generate full boards.
 
 [See More](/projects/personal/sudoku.html){class=fancy-btn}
 :::
@@ -192,7 +192,7 @@ This was a gamejam project that was partially inspired by text-based games, with
 
 ::: row
 ::: column
-![Word Search](/images/projects/other/word-search/word-search-banner.jpg){class=banner-img}
+![Word Search](/images/projects/personal/word-search/word-search-banner.jpg){class=banner-img}
 :::
 ::: column style="text-align:right"
 A project I was hired to do when I did freelance on Fiver. It's a word search game that allows users to add their own list of words. Each puzzle is generated randomly, for a unique experience each time.
@@ -209,11 +209,11 @@ A project I was hired to do when I did freelance on Fiver. It's a word search ga
 
 ::: row
 ::: column
-![Craft Wars](/images/projects/other/craft-wars/craft-wars-banner.jpg){class=banner-img}
+![Craft Wars](/images/projects/personal/craft-wars/craft-wars-banner.jpg){class=banner-img}
 :::
 ::: column style="text-align:right"
 A couch co-op game where the goal is to not fall while shooting the tiles from under your friends' feet. This started as a gamejam project that grew in to something a little larger.
 
-[See More](/projects/personal/craft-wars.html){class=fancy-btn}
+[See More](/projects/personal/craftwars.html){class=fancy-btn}
 :::
 :::

@@ -1,7 +1,7 @@
 import re
 from enum import Enum
 from typing import Any
-from htmlnode import ParentNode, LeafNode, HorizontalLineLeafNode
+from htmlnode import ParentNode, LeafNode, HorizontalLineLeafNode, PassthroughLeafNode
 from textnode import TextNode, TextType, text_to_textnodes, text_node_to_html_node
 
 
@@ -22,6 +22,7 @@ class BlockType(Enum):
     CSV_WITH_HEADERS = "csv_with_headers",
     HORIZONTAL_LINE = "horizontal_line",
     CUSTOM = "custom",
+    PASSTHROUGH = "passthrough",
     NONE = "empty"
 
 
@@ -257,7 +258,17 @@ def markdown_to_block_and_type(markdown_lines: list[str]) -> tuple[Any, BlockTyp
                             i += 1
                             
                         return table, BlockType.TABLE, lines[i:]
-    
+        
+        case "{":
+            if lines[0][:2] == "{{":
+                passthrough_lines = []
+                for line in lines[1:]:                    
+                    if line.strip() == "}}":
+                        break
+                    passthrough_lines.append(line)                    
+                
+                return passthrough_lines, BlockType.PASSTHROUGH, lines[len(passthrough_lines)+2:]
+            
     contents = ""
     i = 0
     while i < len(lines) and lines[i] != '':
@@ -480,6 +491,12 @@ def block_to_html_node(block, block_type: BlockType) -> ParentNode:
 
         case BlockType.CSV_WITH_HEADERS:
             return csv_to_html(True, block)
+        
+        case BlockType.PASSTHROUGH:
+            content = ""
+            for line in block:
+                content += line + "\n"
+            return PassthroughLeafNode(content.strip()) # type: ignore
         
         case BlockType.CUSTOM:
             return custom_to_html(block)

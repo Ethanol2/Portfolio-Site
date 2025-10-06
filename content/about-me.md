@@ -22,7 +22,8 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 ### 🧠 Programming
 - C#  
 - C++  
-- Python  
+- Python
+- Go (Golang)
 - Object-Oriented Programming  
 - API Integration
 :::
@@ -113,6 +114,7 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - [Learn Functional Programming in Python](https://www.boot.dev/courses/learn-functional-programming-python)
 - [Learn Data Structures and Algorithms in Python](https://www.boot.dev/courses/learn-data-structures-and-algorithms-python)
 - [Learn Memory Management in C](https://www.boot.dev/courses/learn-memory-management-c)
+- [Learn Go](https://www.boot.dev/courses/learn-golang)
 :::
 ::: column
 #### Guided Projects ![GitHub](icons/github-mark-white.svg)
