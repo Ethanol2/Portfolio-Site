@@ -161,6 +161,6 @@ I also decided it was important for the instructions to have a prominent positio
 [Back](/./#Freelance-and-Personal){class=fancy-btn}
 :::
 ::: column style="text-align:center"
-[Next](/projects/personal/road-to-olympus.html){class=fancy-btn style="width:75px;flex-direction:column;"}
+[Next](/projects/personal/word-search.html){class=fancy-btn style="width:75px;flex-direction:column;"}
 :::
 :::

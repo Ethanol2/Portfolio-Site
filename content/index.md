@@ -197,7 +197,7 @@ This was a gamejam project that was partially inspired by text-based games, with
 ::: column style="text-align:right"
 A project I was hired to do when I did freelance on Fiver. It's a word search game that allows users to add their own list of words. Each puzzle is generated randomly, for a unique experience each time.
 
-[See More](/projects/other/word-search.html){class=fancy-btn}
+[See More](/projects/personal/word-search.html){class=fancy-btn}
 :::
 :::
 
@@ -214,6 +214,6 @@ A project I was hired to do when I did freelance on Fiver. It's a word search ga
 ::: column style="text-align:right"
 A couch co-op game where the goal is to not fall while shooting the tiles from under your friends' feet. This started as a gamejam project that grew in to something a little larger.
 
-[See More](/projects/personal/craftwars.html){class=fancy-btn}
+[See More](/projects/personal/craft-wars.html){class=fancy-btn}
 :::
 :::
