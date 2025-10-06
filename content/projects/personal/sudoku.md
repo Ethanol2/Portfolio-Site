@@ -6,7 +6,7 @@ title: Sudoku Solver | Ethan Colucci
 
 @[Sudoku Solver Video](https://www.youtube.com/watch?v=O7-FakW7aB0)
 
-[Try the game in your web browser](/unity/Sudoku-Solver-1.0.0-WebGL/index.html)
+[Try the game in your web browser](/unity/Sudoku-Solver-1.0.0-WebGL/index.html){target="blank"}
 
 #### Tech Stack
 - Unity C#
@@ -131,7 +131,7 @@ The ui for this project is mainly to show off the implemented features, namely t
 
 That said, I also wanted to make sure the interface was solid and easy to navigate. I decided against creating my own UI assets and imported a free mobile game asset pack. This skips over a lot of the work related to theming and asset cohesion. 
 
-![Asset pack sprite sheet](/Assets/Belevich/Hyper-casual-mobile-GUI/Sprites/buttons.png)
+![Asset pack sprite sheet](/images/projects/personal/sudoku-solver/buttons.png)
 
 The layout was a point that I struggled with for a few days. My aspirations for this project is for a variation of it to be published to the Google Play Store, so I originally gravitated towards a mobile-focused design. For example the board selection menu was orginally going to be a swipe menu, but I found it frustrating to work with and use. So I ultimately decided to keep it simple, which allows the current iteration to perform well on most platforms.
 
