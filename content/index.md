@@ -195,7 +195,7 @@ This was a gamejam project that was partially inspired by text-based games, with
 ![Word Search](/images/projects/personal/word-search/word-search-banner.jpg){class=banner-img}
 :::
 ::: column style="text-align:right"
-A project I was hired to do when I did freelance on Fiver. It's a word search game that allows users to add their own list of words. Each puzzle is generated randomly, for a unique experience each time.
+A project I was hired to do when I did freelance on Fiver. It's a word search game that allows users to add their own list of words. Each puzzle is generated randomly for a unique experience each time.
 
 [See More](/projects/personal/word-search.html){class=fancy-btn}
 :::
