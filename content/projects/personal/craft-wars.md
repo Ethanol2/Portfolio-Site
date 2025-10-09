@@ -1,5 +1,5 @@
 ---
-title: Godot Snake | Ethan Colucci
+title: Craft Wars | Ethan Colucci
 ---
 
 # Personal Projects - Craft Wars
