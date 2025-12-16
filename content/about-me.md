@@ -24,6 +24,7 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - C++  
 - Python
 - Go (Golang)
+- SQL
 - Object-Oriented Programming  
 - API Integration
 :::
@@ -115,6 +116,8 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - [Learn Data Structures and Algorithms in Python](https://www.boot.dev/courses/learn-data-structures-and-algorithms-python)
 - [Learn Memory Management in C](https://www.boot.dev/courses/learn-memory-management-c)
 - [Learn Go](https://www.boot.dev/courses/learn-golang)
+- [Learn HTTP Clients in Go](https://www.boot.dev/courses/learn-http-clients-golang)
+- [Learn SQL](https://www.boot.dev/courses/learn-sql)
 :::
 ::: column
 #### Guided Projects ![GitHub](icons/github-mark-white.svg)
@@ -122,6 +125,9 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - [Build Asteroids using Python and Pygame](https://github.com/Ethanol2/pygame-asteroids)
 - [Build and AI Agent in Python](https://github.com/Ethanol2/Ai-Agent)
 - [Build a Static Site Generator in Python](https://github.com/Ethanol2/Static-Site-Generator)
+- [Build a Pokedex in Go](https://github.com/Ethanol2/PokedexCLI)
+- [Build a Blog Aggregator in Go](https://github.com/Ethanol2/Gator)
+- [Learn (and build) HTTP Servers in Go](https://github.com/Ethanol2/Chirpy)
 :::
 :::
 
