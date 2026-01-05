@@ -5,7 +5,7 @@ title: Home | Ethan Colucci
 # Hello!
 ::: row style="margin:auto;width:80%"
 ::: column
-Welcome to my website. Completely generated with my custom static website generator. I'm a driven and adaptable Developer with 7 years of experience building interactive game and game-like experiences, including 4 years of professional work. I currently specialize in Unity and C#, but I'm always excited to branch into new areas. Like this website project!
+Welcome to my website. Completely generated with my custom static website generator. I'm a driven and adaptable Developer with 7 years of experience building interactive experiences. Recently I've been expanding my skillset by studying Backend Development with Boot.Dev and working on projects like this website!
 :::
 ::: column style="text-align:center;align-content:center"
 ![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height="300"}

@@ -6,7 +6,10 @@ title: Home | Ethan Colucci
 
 ::: row style="margin:auto;max-width:90%"
 ::: column
-Driven and adaptable Game Developer with 7 years of experience building interactive experiences, including 4 years in professional environments. Currently specializing in Unity, C#, and Virtual Reality (VR) development for training and simulation. I create immersive, high-performance applications by combining strong technical foundations with creative design thinking. Experienced across VR, mobile, and traditional platforms, I thrive on solving complex problems, rapidly learning new technologies, and collaborating across disciplines to deliver polished results.
+Software Developer with 7 years of experience across interactive, real-time, and production applications. While I have a strong background in game and simulation development, I’ve been actively expanding my skill set in backend development,
+databases, APIs, and system design to strengthen my overall engineering foundation. I’m motivated by continuous
+improvement, enjoy learning new technologies, and am happy contributing in a wide range of development roles where strong
+fundamentals, adaptability, and collaboration are valued.
 :::
 ::: column style="text-align:center;align-content:center"
 ![Me in Shibuya, Tokyo, Japan](images/Japan_2024_052.jpg){height=350}
@@ -19,47 +22,48 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 
 ::: row
 ::: column
-### 🧠 Programming
+### 🧠 Programming & Concepts
 - C#  
 - C++  
-- Python
-- Go (Golang)
-- SQL
+- Python  
+- Go (Golang)  
+- SQL  
 - Object-Oriented Programming  
-- API Integration
+- Asynchronous Programming  
+- Event-Driven Design
 :::
 ::: column
-### 🎮 Game Engines and Packages
-- Unity Engine (VR, mobile, and desktop platforms)
-- Godot
-- Photon Pun
-- Photon Fusion
+### 🧩 Backend & Systems
+- RESTful APIs  
+- HTTP / JSON  
+- Docker  
+- AWS (S3, CloudFront)  
+- MongoDB  
+- Relational Databases
 :::
 :::
 
 ::: row
 ::: column
 ### 🗂️ Version Control
-- Git (GitHub, SourceTree)  
+- Git (GitHub)  
 - PlasticSCM
 :::
 ::: column
-### 🥽 Virtual Reality and Mobile
-- VR application development  
-- Interaction design  
-- Real-world tool simulation
-- Cross-platform optimization  
-- Deployment for multiple platforms
+### 🎮 Engines & Frameworks
+- Unity Engine (VR, mobile, and desktop)  
+- Godot  
+- Photon PUN / Fusion
 :::
 :::
 
 ::: row
 ::: column
-### ☁️ Other Technologies
-- AWS  
-- MongoDB  
-- Photon PUN and Fusion  
-- Database interaction
+### 🥽 Interactive & XR Development
+- Virtual Reality applications  
+- Interaction design  
+- Real-world tool simulation  
+- Cross-platform optimization
 :::
 ::: column
 ### 🗣️ Languages
@@ -72,32 +76,35 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 
 ## Professional Experience
 
-### ![vr vision logo](images/company-logos/vr_vision_inc_logo.jpeg){class=inline-img} VR Vision — *Intermediate VR Developer*
+### ![vr vision logo](images/company-logos/vr_vision_inc_logo.jpeg){class=inline-img} VR Vision — *Intermediate Software Developer*
 **September 2022 – June 2025**
 
-- Develop VR Training apps in Unity  
-- Create accurate simulacrums of professional tools  
-- Create designs based on real training processes  
-- Participate in on-site visits to document training processes  
-- Participate in the design and development of the in-house VR toolkit  
+- Designed, developed, and maintained production VR training applications using Unity and C#
+- Owned features from concept through deployment, including technical planning and documentation
+- Built accurate simulations of professional tools and real-world workflows in collaboration with subject matter experts
+- Supported and extended an internal development toolkit used across multiple client projects
+- Worked closely with designers, artists, and stakeholders, including on-site visits to document requirements and workflows
+- Troubleshot, maintained, and improved deployed applications to ensure reliability and performance
 
-### ![no fuss tutors logo](images/company-logos/no_fuss_tutors_logo.jpeg){class=inline-img} No Fuss Tutors — *Game Programmer*  
+### ![no fuss tutors logo](images/company-logos/no_fuss_tutors_logo.jpeg){class=inline-img} No Fuss Tutors — *Software Developer*
 **October 2021 – September 2022**
 
-- Sole C# programmer for a Unity-based game  
-- Participated in the design process  
-- Developed for multiple platforms  
-- Integrated AWS and MongoDB for database interaction  
+- Sole developer responsible for a Unity-based application written in C#
+- Designed and implemented core application architecture and features
+- Integrated backend services using AWS and MongoDB to support user profiles and analytics
+- Developed for multiple platforms and managed build and deployment processes
+- Collaborated with non-technical stakeholders to refine requirements and iterate on features
 
-### ![unity logo](images/company-logos/unity_logo.jpeg){class=inline-img} Unity Game Developer — *Freelance*  
+### ![unity logo](images/company-logos/unity_logo.jpeg){class=inline-img} Unity Developer — *Freelance*
 **January 2021 – October 2021**
 
-- Collaborated with clients to define project goals and timelines  
-- Developed projects using Unity  
-- Communicated effectively and adapted to client needs  
-- Quickly learned and implemented new APIs
+- Collaborated with clients to define technical requirements, project scope, and timelines
+- Developed and delivered interactive applications using Unity and C#
+- Integrated third-party APIs and tools, quickly learning new technologies as required
+- Communicated progress clearly and adapted to changing client needs
 
 ---
+
 
 ## Education
 
@@ -118,6 +125,9 @@ Driven and adaptable Game Developer with 7 years of experience building interact
 - [Learn Go](https://www.boot.dev/courses/learn-golang)
 - [Learn HTTP Clients in Go](https://www.boot.dev/courses/learn-http-clients-golang)
 - [Learn SQL](https://www.boot.dev/courses/learn-sql)
+- [Learn File Servers and CDNs with S3 and CloudFront](https://www.boot.dev/courses/learn-file-servers-s3-cloudfront-golang)
+- [Learn Docker](https://www.boot.dev/courses/learn-docker)
+- [Learn Pub/Sub Architecture in RabbitMQ](https://www.boot.dev/courses/learn-pub-sub-rabbitmq-golang)
 :::
 ::: column
 #### Guided Projects ![GitHub](icons/github-mark-white.svg)
