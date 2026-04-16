@@ -118,6 +118,24 @@ Project Moon Rock was an ambitious educational game that I was the sole Unity de
 
 {<div style="text-align:right">}
 
+### Book Organizer (Under Development)
+
+{</div>}
+
+::: row
+::: column
+![Website Generator](/images/projects/personal/book-organizer/website-project-banner.jpg){class=banner-img}
+:::
+::: column style="text-align:right"
+This project started as my capstone project and culmination of my Boot.Dev backend developer course. The goal of the project is to help me organize my book downloads on my nas. It's intended to run in Docker, with the backend built in Go and the frontend build using vue.js.
+
+[See More](/projects/personal/book-organizer.html){class=fancy-btn}
+:::
+:::
+
+{<div style="text-align:right">}
+
+
 ### Static Website Generator
 
 {</div>}

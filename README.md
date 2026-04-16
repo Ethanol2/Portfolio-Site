@@ -1,5 +1,4 @@
 # My-Portfolio-Site
-**STILL A WORK IN PROGRESS!**
 
 This is a custom markdown to html static site generator that I'm using to build my portfolio website.
 
