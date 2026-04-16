@@ -4,10 +4,11 @@ title: Book Organizer | Ethan Colucci
 
 # Personal Projects - Book Organizer (Under Development)
 
-![Book Organizer Banner](/images/projects/personal/book-organizer/book-organizer-banner-2.png)
+![Book Organizer Banner](/images/projects/personal/book-organizer/book-organizer-library.jpg)
 
 #### Tech Stack
 - Golang Backend
+    - SQLite Database
 - Vue.js Frontend
 
 #### Platforms
@@ -53,7 +54,8 @@ Currently the backend can make queries to Google Books and OpenLibrary.
 
 After the core library flow is working, the app will integrate with qBittorrent to track labeled downloads. For completed torrents with a specific label (e.g. `books`), the app will automatically add them to the pending list. The frontend will also surface whether qBittorrent is reachable.
 
-
+![Metadata View](/images/projects/personal/book-organizer/book-organizer-metadata.jpg)
+![Metadata View](/images/projects/personal/book-organizer/book-organizer-downloads.jpg)
 
 ## Links
 ::: row
